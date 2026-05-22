@@ -1,17 +1,427 @@
+html
 ---
-
 ---
-
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="viewport" content="width=device-width" />
+        <title>Acorn - AI That Works For You</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    </head>
+    <body>
+        <nav>
+            <div class="nav-logo">ACORN</div>
+            <a href="#waitlist" class="nav-btn">Join Waitlist</a>
+        </nav>
+
+        <section class="hero">
+            <p class="hero-label">ROOTED INTELLIGENCE</p>
+            <h1>You need AI that works for you.</h1>
+            <p class="hero-sub">Not a chatbot. Not a copilot. A sovereign AI system that protects your data, learns your business, and acts on your behalf.</p>
+            <div class="hero-buttons">
+                <a href="#waitlist" class="btn-primary">Join the Acorn Waitlist</a>
+            </div>
+        </section>
+        <section class="control-context">
+            <div class="cc-grid">
+                <div class="cc-card">
+                    <h3>Control</h3>
+                    <p>Your data is yours. Acorn runs in your cloud, on your terms. No co-mingling, no model training on your private conversations. True data sovereignty.</p>
+                </div>
+                <div class="cc-card">
+                    <h3>Context</h3>
+                    <p>Acorn reads what you allow it to read: Slack, Drive, Notion, email. It builds a private model of your business, learning your team, your projects, and your voice.</p>
+                </div>
+            </div>
+        </section>
+		<section class="orientation">
+            <div class="orient-grid">
+                <div class="orient-text">
+                    <p class="section-label">THE FRAMEWORK</p>
+                    <h2>Orientation beats delegation.</h2>
+                    <p>Most people use AI to delegate tasks. Faster email, faster docs, no real thinking. Acorn is different. It uses the OODA loop: Observe, Orient, Decide, Act. Your AI doesn't just do what you say. It understands why.</p>
+                </div>
+                <div class="orient-diagram">
+                    <div class="loop-step">Observe</div>
+                    <div class="loop-step">Orient</div>
+                    <div class="loop-step">Decide</div>
+                    <div class="loop-step">Act</div>
+                </div>
+            </div>
+        </section>
+		<section class="meet-acorn">
+            <p class="section-label">MEET YOUR CHIEF OF STAFF</p>
+            <h2>An AI that knows your business.</h2>
+            <div class="chat-mock">
+                <div class="chat-bubble user-bubble">What's our top priority this week?</div>
+                <div class="chat-bubble acorn-bubble">Based on your Q2 targets and yesterday's client call with Martinez, closing the proposal revision is the highest-leverage move. Want me to draft the updated scope?</div>
+            </div>
+        </section>
+		<section class="trust">
+            <p class="section-label">TRUST MODEL</p>
+            <h2>How trust is earned.</h2>
+            <div class="trust-grid">
+                <div class="trust-card">
+                    <h3>Act and Report</h3>
+                    <p>For routine tasks within its authority, Acorn acts first and tells you what it did. No bottleneck. No waiting.</p>
+                </div>
+                <div class="trust-card">
+                    <h3>Propose and Wait</h3>
+                    <p>For decisions that need your judgment, Acorn presents options and waits for your call. It never overreaches.</p>
+                </div>
+                <div class="trust-card">
+                    <h3>Escalate</h3>
+                    <p>When something falls outside its scope, Acorn flags it immediately. No guessing. No pretending to know.</p>
+                </div>
+            </div>
+        </section>
+		<section class="why-acorn">
+            <div class="why-inner">
+                <p class="section-label">THE VISION</p>
+                <h2>Why Acorn exists.</h2>
+                <blockquote>"The 7-figure business owner is the most underserved person in AI. Enterprise gets custom builds. Consumers get ChatGPT. The founder running a real business with real employees and real risk? Nobody is building for them. Until now."</blockquote>
+                <p class="attribution">Brian Keith, Founder</p>
+            </div>
+        </section>
+		<section class="waitlist" id="waitlist">
+            <p class="section-label">GET EARLY ACCESS</p>
+            <h2>Join the Acorn Waitlist.</h2>
+            <p class="waitlist-sub">Be among the first founders to deploy a sovereign AI system built for your business.</p>
+            <form class="waitlist-form" action="https://formspree.io/f/xjgzwqvl" method="post">
+<input type="email" name="email" placeholder="Enter your email" required />
+                <button type="submit" class="btn-primary">Join the Waitlist</button>
+            </form>
+        </section>
+
+        <footer>
+            <div class="footer-inner">
+                <div class="footer-logo">ACORN</div>
+                <p class="footer-copy">&copy; 2026 Red Beard Consulting LLC. All rights reserved.</p>
+            </div>
+        </footer>
+    </body>
 </html>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        background: #FBF9F8;
+        color: #1B1C1C;
+        font-family: 'Inter', sans-serif;
+    }
+    nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 24px 64px;
+    }
+    .nav-logo {
+        font-family: 'EB Garamond', serif;
+        font-size: 24px;
+        font-weight: 500;
+        color: #0A3D2F;
+        letter-spacing: 0.05em;
+    }
+    .nav-btn {
+        background: #0A3D2F;
+        color: #FFFFFF;
+        padding: 12px 24px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-family: 'Inter', sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+    }
+    .hero {
+        text-align: center;
+        padding: 120px 64px 80px;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    .hero-label {
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        color: #006A62;
+        margin-bottom: 24px;
+    }
+    h1 {
+        font-family: 'EB Garamond', serif;
+        font-size: 64px;
+        font-weight: 500;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+        color: #00261B;
+        margin-bottom: 24px;
+    }
+    .hero-sub {
+        font-size: 18px;
+        line-height: 1.6;
+        color: #404945;
+        margin-bottom: 48px;
+    }
+    .btn-primary {
+        background: #0A3D2F;
+        color: #FFFFFF;
+        padding: 16px 32px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+    }
+	.control-context {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 80px 64px;
+    }
+    .cc-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+    }
+    .cc-card {
+        background: #FFFFFF;
+        border: 1px solid #EAE8E7;
+        border-radius: 8px;
+        padding: 48px;
+    }
+    .cc-card h3 {
+        font-family: 'EB Garamond', serif;
+        font-size: 32px;
+        font-weight: 400;
+        color: #0A3D2F;
+        margin-bottom: 16px;
+    }
+    .cc-card p {
+        font-size: 18px;
+        line-height: 1.6;
+        color: #404945;
+    }
+	.section-label {
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        color: #006A62;
+        margin-bottom: 16px;
+        text-transform: uppercase;
+    }
+    .orientation {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 80px 64px;
+    }
+    .orient-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 64px;
+        align-items: center;
+    }
+    .orient-text h2 {
+        font-family: 'EB Garamond', serif;
+        font-size: 48px;
+        font-weight: 500;
+        line-height: 1.2;
+        color: #00261B;
+        margin-bottom: 24px;
+    }
+    .orient-text p {
+        font-size: 18px;
+        line-height: 1.6;
+        color: #404945;
+    }
+    .orient-diagram {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+    .loop-step {
+        background: #FFFFFF;
+        border: 1px solid #EAE8E7;
+        padding: 16px 32px;
+        border-radius: 4px;
+        font-weight: 600;
+        color: #404945;
+        text-align: center;
+    }
+.meet-acorn {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 80px 64px;
+        text-align: center;
+    }
+    .meet-acorn h2 {
+        font-family: 'EB Garamond', serif;
+        font-size: 48px;
+        font-weight: 500;
+        line-height: 1.2;
+        color: #00261B;
+        margin-bottom: 24px;
+    }
+    .chat-mock {
+        margin-top: 48px;
+        text-align: left;
+    }
+    .chat-bubble {
+        padding: 20px 24px;
+        border-radius: 8px;
+        margin-bottom: 16px;
+        font-size: 16px;
+        line-height: 1.5;
+    }
+    .user-bubble {
+        background: #EAE8E7;
+        color: #1B1C1C;
+        max-width: 70%;
+        border-radius: 8px 8px 8px 0;
+    }
+    .acorn-bubble {
+        background: #0A3D2F;
+        color: #FFFFFF;
+        max-width: 85%;
+        margin-left: auto;
+        border-radius: 8px 8px 0 8px;
+    }
+	.trust {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 80px 64px;
+        text-align: center;
+    }
+    .trust h2 {
+        font-family: 'EB Garamond', serif;
+        font-size: 48px;
+        font-weight: 500;
+        line-height: 1.2;
+        color: #00261B;
+        margin-bottom: 24px;
+    }
+    .trust-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 32px;
+        margin-top: 48px;
+    }
+    .trust-card {
+        background: #FFFFFF;
+        border: 1px solid #EAE8E7;
+        border-radius: 8px;
+        padding: 40px 32px;
+        text-align: left;
+    }
+    .trust-card h3 {
+        font-family: 'EB Garamond', serif;
+        font-size: 24px;
+        font-weight: 500;
+        color: #0A3D2F;
+        margin-bottom: 12px;
+    }
+    .trust-card p {
+        font-size: 16px;
+        line-height: 1.5;
+        color: #404945;
+    }
+	.why-acorn {
+        background: #0A3D2F;
+        padding: 80px 64px;
+    }
+    .why-inner {
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+    }
+    .why-acorn .section-label {
+        color: #59DACD;
+    }
+    .why-acorn h2 {
+        font-family: 'EB Garamond', serif;
+        font-size: 48px;
+        font-weight: 500;
+        line-height: 1.2;
+        color: #FFFFFF;
+        margin-bottom: 24px;
+    }
+    blockquote {
+        font-family: 'EB Garamond', serif;
+        font-size: 28px;
+        font-weight: 400;
+        line-height: 1.4;
+        color: #A0D1BD;
+        font-style: italic;
+        margin-bottom: 24px;
+    }
+    .attribution {
+        font-size: 14px;
+        font-weight: 600;
+        color: #59DACD;
+        letter-spacing: 0.05em;
+    }
+	.waitlist {
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 100px 64px;
+        text-align: center;
+    }
+    .waitlist h2 {
+        font-family: 'EB Garamond', serif;
+        font-size: 48px;
+        font-weight: 500;
+        line-height: 1.2;
+        color: #00261B;
+        margin-bottom: 24px;
+    }
+    .waitlist-sub {
+        font-size: 18px;
+        line-height: 1.6;
+        color: #404945;
+        margin-bottom: 32px;
+    }
+    .waitlist-form {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+    }
+    .waitlist-form input {
+        padding: 16px 20px;
+        border: 1px solid #C0C8C3;
+        border-radius: 4px;
+        font-size: 16px;
+        font-family: 'Inter', sans-serif;
+        width: 320px;
+        background: #FFFFFF;
+    }
+    .waitlist-form input:focus {
+        outline: none;
+        border-color: #006A62;
+    }
+    footer {
+        border-top: 1px solid #EAE8E7;
+        padding: 32px 64px;
+    }
+    .footer-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .footer-logo {
+        font-family: 'EB Garamond', serif;
+        font-size: 20px;
+        font-weight: 500;
+        color: #0A3D2F;
+        letter-spacing: 0.05em;
+    }
+    .footer-copy {
+        font-size: 14px;
+        color: #717974;
+    }
+</style>
