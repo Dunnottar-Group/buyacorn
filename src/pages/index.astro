@@ -12,7 +12,13 @@ html
     </head>
     <body>
         <nav>
-            <div class="nav-logo">ACORN</div>
+            <div class="nav-logo">
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 2C9 5 7 8 7 12c0 3.5 2 6 5 7 3-1 5-3.5 5-7 0-4-2-7-5-10z" fill="currentColor"/>
+    <path d="M12 9v13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+  </svg>
+  <span>ACORN</span>
+</div>
             <a href="#waitlist" class="nav-btn">Join Waitlist</a>
         </nav>
 
@@ -102,7 +108,13 @@ html
 
         <footer>
             <div class="footer-inner">
-                <div class="footer-logo">ACORN</div>
+                <div class="footer-logo">
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 2C9 5 7 8 7 12c0 3.5 2 6 5 7 3-1 5-3.5 5-7 0-4-2-7-5-10z" fill="currentColor"/>
+    <path d="M12 9v13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+  </svg>
+  <span>ACORN</span>
+</div>
                 <p class="footer-copy">&copy; 2026 Red Beard Consulting LLC. All rights reserved.</p>
             </div>
         </footer>
@@ -133,12 +145,20 @@ html
         padding: 24px 64px;
     }
     .nav-logo {
-        font-family: 'EB Garamond', serif;
-        font-size: 24px;
-        font-weight: 500;
-        color: #0A3D2F;
-        letter-spacing: 0.05em;
-    }
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'EB Garamond', serif;
+    font-size: 24px;
+    font-weight: 500;
+    color: #0A3D2F;
+    letter-spacing: 0.05em;
+}
+
+.nav-logo svg {
+    width: 22px;
+    height: 22px;
+}
     .nav-btn {
         background: #0A3D2F;
         color: #FFFFFF;
@@ -423,12 +443,20 @@ html
         justify-content: space-between;
         align-items: center;
     }
-    .footer-logo {
-        font-family: 'EB Garamond', serif;
-        font-size: 20px;
-        font-weight: 500;
-        color: #0A3D2F;
-        letter-spacing: 0.05em;
+   .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'EB Garamond', serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: #0A3D2F;
+    letter-spacing: 0.05em;
+}
+
+.footer-logo svg {
+    width: 18px;
+    height: 18px;
     }
     .footer-copy {
         font-size: 14px;
