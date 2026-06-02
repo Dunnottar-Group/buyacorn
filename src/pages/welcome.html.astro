@@ -1,12 +1,16 @@
 ---
+import acornWordmark from './public/acorn-wordmark.png';
 ---
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>You're on the list. Here's what's next. — Acorn</title>
+<title>You're on the list. Here's what's next. - Acorn</title>
 <meta name="description" content="You're on the Acorn waitlist. Watch the briefing and book your call." />
 <meta name="robots" content="noindex" />
+<script is:inline>
+  document.documentElement.classList.add('is-loaded');
+</script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -14,382 +18,514 @@
 
 <style>
   :root {
-    --surface: #fbf9f8;
-    --surface-container-lowest: #ffffff;
-    --surface-container-low: #f6f3f2;
-    --surface-container: #f0eded;
-    --surface-container-high: #eae8e7;
-    --on-surface: #1b1c1c;
-    --on-surface-variant: #404945;
-    --outline: #717974;
-    --outline-variant: #c0c8c3;
-    --primary: #00261b;
-    --on-primary: #ffffff;
-    --primary-container: #0a3d2f;
-    --on-primary-container: #79a896;
-    --inverse-primary: #a0d1bd;
-    --secondary: #006a62;
-    --tertiary: #2a1d17;
-    --background: #fbf9f8;
-
+    --rooted-green: #0A3D2F;
+    --signal-sage: #8FA89A;
+    --oak-brown: #5C4B43;
+    --paper-white: #F5F2EB;
+    --paper-deep: #ECE6D9;
+    --tech-grey: #333333;
+    --muted: #615D55;
+    --border: #DED8CA;
+    --white: #FFFFFF;
     --font-serif: 'EB Garamond', Georgia, serif;
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-
-    --radius: 0.25rem;
-    --radius-md: 0.375rem;
-    --radius-lg: 0.5rem;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
+    background: var(--rooted-green);
+    color: var(--white);
     font-family: var(--font-sans);
     font-size: 16px;
     line-height: 1.5;
-    background: var(--background);
-    color: var(--on-surface);
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .confirmation-inner > *,
+  .calendly-section .shell > *,
+  .section-inner,
+  .footer-inner {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  .is-loaded .confirmation-inner > *,
+  .is-loaded .calendly-section .shell > *,
+  .is-loaded .section-inner,
+  .is-loaded .footer-inner {
+    animation: reveal-up 720ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+
+  .is-loaded .confirmation-inner > *:nth-child(2) { animation-delay: 80ms; }
+  .is-loaded .confirmation-inner > *:nth-child(3) { animation-delay: 150ms; }
+  .is-loaded .confirmation-inner > *:nth-child(4) { animation-delay: 220ms; }
+  .is-loaded .confirmation-inner > *:nth-child(5) { animation-delay: 300ms; }
+
+  .shell {
+    width: min(1120px, calc(100% - 48px));
+    margin: 0 auto;
+  }
+
+  .display-lg,
+  .headline-xl,
+  h3 {
+    font-family: var(--font-serif);
+    font-weight: 500;
   }
 
   .display-lg {
-    font-family: var(--font-serif);
-    font-size: clamp(40px, 5.5vw, 56px);
-    font-weight: 500;
-    line-height: 1.1;
-    letter-spacing: -0.015em;
-  }
-  .headline-xl {
-    font-family: var(--font-serif);
-    font-size: clamp(30px, 4vw, 40px);
-    font-weight: 500;
-    line-height: 1.2;
-    letter-spacing: -0.01em;
-  }
-  .label-sm {
-    font-family: var(--font-sans);
-    font-size: 12px;
-    font-weight: 600;
+    font-size: clamp(44px, 6vw, 68px);
     line-height: 1;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: var(--on-surface-variant);
   }
 
-  /* NAV */
-  nav.topbar {
-    padding: 20px 40px;
-    background: var(--background);
-    border-bottom: 1px solid var(--outline-variant);
+  .headline-xl {
+    font-size: clamp(32px, 4vw, 48px);
+    line-height: 1.08;
   }
-  .nav-inner {
-    max-width: 1240px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    color: var(--primary-container);
-  }
-  .brand svg { width: 22px; height: 22px; }
-  .brand-text {
-    font-family: var(--font-sans);
-    font-size: 14px;
+
+  .label-sm {
+    color: var(--signal-sage);
+    font-size: 12px;
     font-weight: 700;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.12em;
+    line-height: 1.2;
     text-transform: uppercase;
-    color: var(--primary-container);
   }
-  .nav-back {
-    font-family: var(--font-sans);
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-    color: var(--on-surface-variant);
+
+  p {
+    color: rgba(255, 255, 255, 0.78);
+    line-height: 1.65;
+  }
+
+  nav.topbar,
+  footer.footer {
+    background: var(--rooted-green);
+  }
+
+  nav.topbar {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 10px 0;
+  }
+
+  .nav-inner,
+  .footer-inner {
+    align-items: center;
+    display: flex;
+    gap: 24px;
+    justify-content: space-between;
+  }
+
+  .nav-logo,
+  .footer-logo {
+    align-items: center;
+    background: var(--white);
+    border-radius: 6px;
+    display: inline-flex;
+    padding: 4px 8px;
     text-decoration: none;
   }
-  .nav-back:hover { color: var(--primary-container); }
 
-  /* CONFIRMATION */
+  .nav-logo img,
+  .footer-logo img {
+    display: block;
+    height: auto;
+    width: 158px;
+  }
+
+  .nav-back {
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    transition: color 160ms ease, transform 160ms ease;
+  }
+
+  .nav-back:hover {
+    color: var(--white);
+    transform: translateX(-4px);
+  }
+
   .confirmation {
-    padding: 80px 40px 60px;
+    background:
+      radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.1), transparent 30%),
+      var(--rooted-green);
+    color: var(--white);
+    padding: 96px 0 84px;
     text-align: center;
-    background: var(--background);
   }
+
   .confirmation-inner {
-    max-width: 720px;
-    margin: 0 auto;
+    max-width: 760px;
   }
+
   .checkmark {
-    width: 56px;
-    height: 56px;
-    border: 1.5px solid var(--primary-container);
-    border-radius: 50%;
-    display: inline-flex;
     align-items: center;
+    border: 1.5px solid rgba(255, 255, 255, 0.72);
+    border-radius: 50%;
+    color: var(--white);
+    display: inline-flex;
+    height: 58px;
     justify-content: center;
     margin-bottom: 28px;
-    color: var(--primary-container);
-  }
-  .checkmark svg { width: 24px; height: 24px; }
-  .confirmation .eyebrow { color: var(--primary-container); margin-bottom: 20px; }
-  .confirmation h1 { margin-bottom: 22px; color: var(--on-surface); }
-  .confirmation .lead {
-    font-family: var(--font-sans);
-    font-size: 17px;
-    line-height: 1.65;
-    color: var(--on-surface-variant);
-    max-width: 600px;
-    margin: 0 auto;
+    width: 58px;
   }
 
-  /* SECTION */
-  .section {
-    padding: 64px 40px;
-    background: var(--surface-container-low);
+  .checkmark svg { width: 24px; height: 24px; }
+  .confirmation .eyebrow { color: var(--white); margin-bottom: 18px; }
+  .confirmation h1 { color: var(--white); margin-bottom: 22px; }
+  .confirmation .lead {
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 18px;
+    margin: 0 auto;
+    max-width: 600px;
   }
+
+  .success-panel {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 8px;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 38px;
+    padding: 12px;
+  }
+
+  .success-panel span {
+    align-items: center;
+    color: var(--white);
+    display: inline-flex;
+    font-size: 12px;
+    font-weight: 800;
+    gap: 8px;
+    justify-content: center;
+    letter-spacing: 0.03em;
+    min-height: 44px;
+    text-transform: uppercase;
+    transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+  }
+
+  .success-panel span:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
+    transform: translateY(-4px);
+  }
+
+  .success-panel span::before {
+    background: var(--signal-sage);
+    border-radius: 50%;
+    content: "";
+    height: 7px;
+    width: 7px;
+    animation: status-pulse 1800ms ease-in-out infinite;
+  }
+
+  .section {
+    background: var(--rooted-green);
+    padding: 74px 0;
+  }
+
+  .section.alt {
+    background: var(--rooted-green);
+  }
+
   .section-inner {
     max-width: 980px;
-    margin: 0 auto;
   }
+
   .card {
-    background: var(--surface-container-lowest);
-    border: 1px solid var(--outline-variant);
-    border-radius: var(--radius-lg);
-    padding: 36px;
-  }
-  .card .label-sm { margin-bottom: 14px; }
-  .card h2 { margin-bottom: 18px; color: var(--on-surface); }
-  .card p {
-    font-family: var(--font-sans);
-    font-size: 16px;
-    line-height: 1.65;
-    color: var(--on-surface-variant);
-    margin-bottom: 14px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 22px 60px rgba(51, 51, 51, 0.12);
+    padding: 42px;
+    position: relative;
   }
 
-  /* VIDEO PLACEHOLDER (dark) */
-  .video-card {
-    margin-top: 26px;
-    background: var(--primary-container);
-    color: var(--on-primary);
-    border-radius: var(--radius-lg);
-    padding: 48px 36px;
-    text-align: center;
-  }
-  .video-card .vc-eyebrow {
-    font-family: var(--font-sans);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--inverse-primary);
-    margin-bottom: 16px;
-  }
-  .video-card h3 {
-    font-family: var(--font-serif);
-    font-size: 26px;
-    font-weight: 500;
-    line-height: 1.2;
-    color: var(--on-primary);
-    margin-bottom: 12px;
-  }
-  .video-card p {
-    color: var(--on-primary-container);
-    font-size: 15px;
-    line-height: 1.6;
-    margin: 0 auto;
-    max-width: 480px;
+  .expect-card {
+    transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
   }
 
-  /* EXPECTATIONS */
+  .expect-card:hover,
+  .expect-card:focus-within {
+    border-color: rgba(92, 75, 67, 0.28);
+    box-shadow: 0 40px 96px rgba(51, 51, 51, 0.18);
+    transform: translateY(-8px);
+  }
+
+  .card::before {
+    background: var(--signal-sage);
+    border-radius: 999px;
+    content: "";
+    height: 3px;
+    left: 42px;
+    position: absolute;
+    right: 42px;
+    top: 0;
+  }
+
+  .expect-card::before {
+    display: none;
+  }
+
+  .card .label-sm { display: block; margin-bottom: 14px; }
+  .card h2 { color: var(--rooted-green); margin-bottom: 18px; }
+  .card p { font-size: 17px; margin-bottom: 14px; }
+
+  .card p,
+  .card li {
+    color: var(--tech-grey);
+  }
+
   .exp-list {
     list-style: none;
-    margin: 18px 0 0;
-    padding: 0;
-  }
-  .exp-list li {
-    padding: 16px 20px;
-    margin-bottom: 10px;
-    background: var(--surface-container);
-    border-radius: var(--radius);
-    font-family: var(--font-sans);
-    font-size: 15px;
-    line-height: 1.6;
-    color: var(--on-surface);
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-  }
-  .exp-list li::before {
-    content: "";
-    width: 6px;
-    height: 6px;
-    background: var(--primary-container);
-    border-radius: 50%;
-    margin-top: 8px;
-    flex-shrink: 0;
+    margin: 22px 0 0;
   }
 
-  /* CALENDLY */
+  .exp-list li {
+    align-items: flex-start;
+    background: var(--paper-white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--tech-grey);
+    display: flex;
+    gap: 12px;
+    line-height: 1.6;
+    margin-bottom: 10px;
+    padding: 16px 18px;
+    transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease, color 160ms ease, transform 160ms ease;
+  }
+
+  .exp-list li:hover {
+    background: var(--white);
+    border-color: rgba(92, 75, 67, 0.28);
+    box-shadow: 0 20px 38px rgba(51, 51, 51, 0.14);
+    color: var(--rooted-green);
+    transform: translateX(8px) translateY(-2px);
+  }
+
+  .exp-list li::before {
+    background: var(--signal-sage);
+    border-radius: 50%;
+    content: "";
+    flex-shrink: 0;
+    height: 8px;
+    margin-top: 8px;
+    width: 8px;
+  }
+
   .calendly-section {
-    background: var(--primary);
-    color: var(--on-primary);
-    padding: 72px 40px 80px;
+    background: var(--rooted-green);
+    color: var(--white);
+    padding: 78px 0 84px;
     text-align: center;
   }
+
   .calendly-section .label-sm {
-    color: var(--inverse-primary);
+    color: var(--signal-sage);
     display: block;
     margin-bottom: 14px;
   }
+
   .calendly-section h2 {
-    color: var(--on-primary);
+    color: var(--white);
     margin-bottom: 14px;
   }
+
   .calendly-section .sub {
-    color: var(--on-primary-container);
-    font-size: 16px;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 17px;
     margin: 0 auto 36px;
     max-width: 520px;
   }
-  .calendly-inline-widget {
-    background: var(--surface-container-lowest);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    max-width: 980px;
-    margin: 0 auto;
+
+  .call-card {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 8px;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(3, 1fr);
+    margin: 0 auto 28px;
+    max-width: 820px;
+    padding: 12px;
   }
 
-  /* FOOTER */
-  footer.footer {
-    padding: 32px 40px;
-    background: var(--background);
-    border-top: 1px solid var(--outline-variant);
+  .call-card span {
+    color: var(--white);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    padding: 14px 12px;
+    text-transform: uppercase;
+    transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
   }
-  .footer-inner {
-    max-width: 1240px;
+
+  .call-card span:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.14);
+    transform: translateY(-4px);
+  }
+
+  .calendly-inline-widget {
+    background: var(--white);
+    border-radius: 8px;
     margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    max-width: 980px;
+    overflow: hidden;
+    transition: box-shadow 180ms ease, transform 180ms ease;
+  }
+
+  .calendly-inline-widget:hover {
+    box-shadow: 0 28px 70px rgba(0, 0, 0, 0.18);
+    transform: translateY(-4px);
+  }
+
+  @keyframes reveal-up {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes status-pulse {
+    0%, 100% {
+      box-shadow: 0 0 0 0 rgba(143, 168, 154, 0.36);
+    }
+    50% {
+      box-shadow: 0 0 0 6px rgba(143, 168, 154, 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0.001ms !important;
+    }
+
+    .confirmation-inner > *,
+    .calendly-section .shell > *,
+    .section-inner,
+    .footer-inner {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  footer.footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 14px 0;
+  }
+
+  .footer-inner {
     flex-wrap: wrap;
-    gap: 14px;
   }
-  .footer-meta {
-    font-family: var(--font-sans);
-    font-size: 12px;
-    color: var(--on-surface-variant);
-    letter-spacing: 0.02em;
-  }
-  .footer-links { display: flex; gap: 22px; }
+
+  .footer-meta,
   .footer-links a {
-    font-family: var(--font-sans);
+    color: rgba(255, 255, 255, 0.78);
     font-size: 12px;
-    color: var(--on-surface-variant);
-    text-decoration: none;
     letter-spacing: 0.02em;
+    text-decoration: none;
   }
-  .footer-links a:hover { color: var(--primary-container); }
+
+  .footer-links { display: flex; gap: 18px; }
+  .footer-links a:hover { color: var(--white); }
 
   @media (max-width: 768px) {
-    nav.topbar { padding: 14px 20px; }
-    .confirmation { padding: 56px 20px 40px; }
-    .section { padding: 48px 20px; }
-    .card { padding: 28px; }
-    .video-card { padding: 36px 24px; }
-    .calendly-section { padding: 56px 20px 64px; }
-    footer.footer { padding: 24px 20px; }
+    .shell { width: min(100% - 32px, 1120px); }
+    nav.topbar { padding: 10px 0; }
+    .nav-logo img,
+    .footer-logo img { width: 140px; }
+    .confirmation { padding: 72px 0 62px; }
+    .section { padding: 56px 0; }
+    .card { padding: 30px; }
+    .success-panel,
+    .call-card { grid-template-columns: 1fr; }
+    .calendly-section { padding: 60px 0 68px; }
+    .footer-inner { align-items: flex-start; flex-direction: column; }
   }
 </style>
 </head>
 <body>
 
 <nav class="topbar">
-  <div class="nav-inner">
-    <a href="/" class="brand">
-      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2C9 5 7 8 7 12c0 3.5 2 6 5 7 3-1 5-3.5 5-7 0-4-2-7-5-10z" fill="currentColor"/>
-        <path d="M12 9v13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-      </svg>
-      <span class="brand-text">Acorn</span>
+  <div class="shell nav-inner">
+    <a href="/" class="nav-logo" aria-label="Acorn home">
+      <img src={acornWordmark.src} alt="Acorn Rooted Intelligence" />
     </a>
-    <a href="/" class="nav-back">← Back to home</a>
+    <a href="/" class="nav-back">Back to home</a>
   </div>
 </nav>
 
 <section class="confirmation">
-  <div class="confirmation-inner">
+  <div class="shell confirmation-inner">
     <div class="checkmark">
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </div>
     <div class="label-sm eyebrow">You're on the waitlist</div>
     <h1 class="display-lg">You're in. Here's what's next.</h1>
-    <p class="lead">Watch the briefing, then book a call. We'll figure out the fit together. I'm only taking founders most likely to push the system to greatness, and this conversation is how I learn whether that's you.</p>
-  </div>
-</section>
-
-<section class="section">
-  <div class="section-inner">
-    <div class="card">
-      <div class="label-sm">Step one</div>
-      <h2 class="headline-xl">Watch the briefing first.</h2>
-      <p>A short video walking you through what Acorn is, who it's for, and what we'll cover on the call. Five minutes. Worth watching before you book.</p>
-
-      <div class="video-card">
-        <div class="vc-eyebrow">Coming soon</div>
-        <h3>Briefing video</h3>
-        <p>The briefing video is being recorded this week. For now, book a call below and I'll walk you through it live.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section" style="background: var(--surface-container);">
-  <div class="section-inner">
-    <div class="card">
-      <div class="label-sm">Step two</div>
-      <h2 class="headline-xl">What to expect on the call.</h2>
-      <ul class="exp-list">
-        <li>30 minutes. No pitch. We talk about what you're trying to build and where AI is helping or breaking.</li>
-        <li>I'll ask about your team size, current AI use, and what sovereignty means in your context.</li>
-        <li>If Acorn is a fit, you'll know on the call. If it's not, I'll tell you what would actually help.</li>
-        <li>Bring your LinkedIn and your work email. The booking form will ask for both.</li>
-      </ul>
+    <p class="lead">I'm selective about who gets early access. Book a call and we'll decide together whether Acorn fits what you're building, how you operate, and the level of control your business requires. The goal is leverage without surrendering your data, judgment, or operating context.</p>
+    <div class="success-panel" aria-label="Acorn waitlist confirmation summary">
+      <span>Waitlist received</span>
+      <span>Founder review queued</span>
+      <span>Orientation call recommended</span>
     </div>
   </div>
 </section>
 
 <section class="calendly-section">
-  <span class="label-sm">Book your orientation</span>
-  <h2 class="headline-xl">Pick a time.</h2>
-  <p class="sub">30 minutes. We'll figure out the fit together.</p>
+  <div class="shell">
+    <span class="label-sm">Book your orientation</span>
+    <h2 class="headline-xl">Pick a time.</h2>
+    <p class="sub">30 minutes. We'll figure out the fit together.</p>
 
-  <!-- Calendly inline widget begin -->
-  <div class="calendly-inline-widget" data-url="https://calendly.com/redbeardbrian/acorn-welcome?hide_event_type_details=1&hide_gdpr_banner=1&primary_color=0a3d2f" style="min-width:320px;height:720px;"></div>
-<script is:inline type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
-  <!-- Calendly inline widget end -->
+    <div class="call-card" aria-label="Orientation call agenda">
+      <span>01 Current AI stack</span>
+      <span>02 Data sovereignty posture</span>
+      <span>03 Trust gradient fit</span>
+    </div>
+
+    <!-- Calendly inline widget begin -->
+    <div class="calendly-inline-widget" data-url="https://calendly.com/redbeardbrian/acorn-welcome?hide_event_type_details=1&hide_gdpr_banner=1&primary_color=0a3d2f" style="min-width:320px;height:720px;"></div>
+    <script is:inline type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+    <!-- Calendly inline widget end -->
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="shell section-inner">
+    <div class="card expect-card">
+      <div class="label-sm">Before the call</div>
+      <h2 class="headline-xl">What to expect on the call.</h2>
+      <ul class="exp-list">
+        <li>30 minutes. No pitch. We talk about what you're trying to build and where AI is helping or breaking.</li>
+        <li>I'll ask about your team size, current AI use, and what sovereignty means in your context.</li>
+        <li>If Acorn is a fit, you'll know on the call. If it's not, I'll tell you what would actually help.</li>
+        <li>The booking form asks for your LinkedIn and work email so I can do my homework before we talk.</li>
+      </ul>
+    </div>
+  </div>
 </section>
 
 <footer class="footer">
-  <div class="footer-inner">
-    <a href="/" class="brand">
-      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2C9 5 7 8 7 12c0 3.5 2 6 5 7 3-1 5-3.5 5-7 0-4-2-7-5-10z" fill="currentColor"/>
-        <path d="M12 9v13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-      </svg>
-      <span class="brand-text">Acorn</span>
+  <div class="shell footer-inner">
+    <a href="/" class="footer-logo" aria-label="Acorn home">
+      <img src={acornWordmark.src} alt="Acorn Rooted Intelligence" />
     </a>
     <div class="footer-meta">&copy; 2026 Red Beard Consulting LLC. All rights reserved.</div>
-    <div class="footer-links">
-      <a href="#">Privacy Protocol</a>
-      <a href="#">Contact Concierge</a>
-    </div>
   </div>
 </footer>
 
