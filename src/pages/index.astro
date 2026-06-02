@@ -503,7 +503,7 @@ import acornWordmark from './public/acorn-wordmark.png';
         background:
             linear-gradient(120deg, rgba(10, 61, 47, 0.04) 1px, transparent 1px),
             radial-gradient(circle at 15% 18%, rgba(143, 168, 154, 0.16), transparent 28%),
-            linear-gradient(180deg, var(--rooted-green) 0%, #6F8778 7%, rgba(255, 255, 255, 0.62) 16%, var(--paper-white) 30%, var(--paper-white) 100%);
+            var(--paper-white);
         background-size: 42px 42px, auto, auto;
         min-height: 680px;
         overflow: hidden;
@@ -1303,10 +1303,9 @@ import acornWordmark from './public/acorn-wordmark.png';
     }
 
     .site-footer {
-        background:
-            linear-gradient(180deg, var(--paper-white) 0%, #B9C6B8 24%, var(--rooted-green) 54%, var(--rooted-green) 100%);
+        background: var(--rooted-green);
         border-top: none;
-        padding: 42px 0 14px;
+        padding: 14px 0;
     }
 
     .footer-copy,
