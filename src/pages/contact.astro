@@ -1,0 +1,171 @@
+---
+import acornWordmark from './public/acorn-wordmark.png';
+import favicon from './public/favicon.png';
+---
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" type="image/png" sizes="32x32" href={favicon.src} />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Contact - Acorn</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    </head>
+    <body>
+        <nav class="site-header">
+            <div class="shell nav-inner">
+                <a href="/" class="logo" aria-label="Acorn home">
+                    <img src={acornWordmark.src} alt="Acorn Rooted Intelligence" />
+                </a>
+                <a href="/" class="nav-link">Back to home</a>
+            </div>
+        </nav>
+
+        <main>
+            <section class="hero-section">
+                <div class="shell hero-inner">
+                    <p class="eyebrow">CONTACT</p>
+                    <h1>Talk to Acorn</h1>
+                    <p>For early access, founder calls, or implementation questions, reach Brian directly.</p>
+                </div>
+            </section>
+
+            <section class="contact-options">
+                <div class="shell option-grid">
+                    <article class="contact-card">
+                        <span>Phone</span>
+                        <h2>Call Brian</h2>
+                        <a href="tel:+12063719544">(206) 371-9544</a>
+                    </article>
+                    <article class="contact-card">
+                        <span>Email</span>
+                        <h2>Send a note</h2>
+                        <a href="mailto:brian@buyacorn.com">brian@buyacorn.com</a>
+                    </article>
+                </div>
+            </section>
+
+            <section class="contact-form-section">
+                <div class="shell form-card">
+                    <div>
+                        <p class="eyebrow">DIRECT INQUIRY</p>
+                        <h2>Share what you are building.</h2>
+                        <p>Use the form for context. It opens an email draft addressed to Brian so your message stays direct.</p>
+                    </div>
+                    <form action="mailto:brian@buyacorn.com" method="POST" enctype="text/plain">
+                        <label>
+                            Name
+                            <input type="text" name="name" autocomplete="name" required />
+                        </label>
+                        <label>
+                            Work email
+                            <input type="email" name="email" autocomplete="email" required />
+                        </label>
+                        <label>
+                            Message
+                            <textarea name="message" rows="5" required></textarea>
+                        </label>
+                        <button type="submit">Send Message</button>
+                    </form>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="shell footer-inner">
+                <a href="/" class="logo" aria-label="Acorn home">
+                    <img src={acornWordmark.src} alt="Acorn Rooted Intelligence" />
+                </a>
+                <p>&copy; 2026 Red Beard Consulting LLC. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="/contact">Contact</a>
+                    <a href="/terms">Terms</a>
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>
+
+<style>
+    :root {
+        --bg-primary: #021F1C;
+        --bg-deep: #021F1C;
+        --bg-secondary: #032B27;
+        --text-primary: #F4F2EC;
+        --text-secondary: #B9C1BB;
+        --text-subtle: #8C9690;
+        --accent: #A9C3B1;
+        --accent-light: #C7D9CD;
+        --border: rgba(190, 230, 200, 0.16);
+        --glass: rgba(255, 255, 255, 0.045);
+        --font-serif: 'EB Garamond', Georgia, serif;
+        --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg-primary); color: var(--text-primary); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+    .shell { margin: 0 auto; width: min(1080px, calc(100% - 48px)); }
+    .site-header, .site-footer { background: var(--bg-primary); padding: 10px 0; }
+    .nav-inner, .footer-inner { align-items: center; display: flex; gap: 24px; justify-content: space-between; }
+    .logo { align-items: center; display: inline-flex; text-decoration: none; transition: transform 180ms ease; }
+    .logo:hover { transform: translateY(-2px); }
+    .logo img { display: block; height: 48px; object-fit: contain; width: auto; }
+    .nav-link, .footer-links a, .site-footer p { color: var(--text-secondary); font-size: 13px; font-weight: 700; text-decoration: none; }
+    .nav-link, .footer-links a { transition: color 160ms ease, transform 160ms ease; }
+    .nav-link:hover, .footer-links a:hover { color: var(--text-primary); transform: translateY(-2px); }
+    .hero-section { padding: 138px 0 92px; text-align: center; }
+    .hero-inner { max-width: 760px; }
+    .eyebrow { color: var(--accent); font-size: 12px; font-weight: 800; letter-spacing: 0.12em; margin-bottom: 16px; text-transform: uppercase; }
+    h1, h2 { color: var(--text-primary); font-family: var(--font-serif); font-weight: 500; }
+    h1 { font-size: clamp(54px, 8vw, 88px); line-height: 0.96; margin-bottom: 24px; }
+    h2 { font-size: clamp(30px, 4vw, 46px); line-height: 1.05; }
+    p { color: var(--text-secondary); line-height: 1.7; }
+    .contact-options, .contact-form-section { padding: 0 0 118px; }
+    .option-grid { display: grid; gap: 18px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .contact-card, .form-card {
+        background: var(--glass);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+    }
+    .contact-card { display: grid; gap: 14px; min-height: 220px; padding: 34px; }
+    .contact-card:hover, .form-card:hover { border-color: rgba(199, 217, 205, 0.34); box-shadow: 0 28px 70px rgba(0,0,0,0.24); transform: translateY(-5px); }
+    .contact-card span { color: var(--accent); font-size: 12px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
+    .contact-card a { align-self: end; color: var(--accent-light); font-weight: 800; text-decoration: none; overflow-wrap: anywhere; }
+    .form-card { display: grid; gap: 42px; grid-template-columns: 0.9fr 1.1fr; padding: 48px; }
+    form { display: grid; gap: 16px; }
+    label { color: var(--text-secondary); display: grid; font-size: 13px; font-weight: 800; gap: 8px; letter-spacing: 0.04em; text-transform: uppercase; }
+    input, textarea {
+        background: rgba(255,255,255,0.035);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        color: var(--text-primary);
+        font: inherit;
+        padding: 14px 16px;
+        resize: vertical;
+        width: 100%;
+    }
+    input:focus, textarea:focus { border-color: var(--accent-light); outline: none; }
+    button {
+        background: var(--text-primary);
+        border: 1px solid var(--text-primary);
+        border-radius: 6px;
+        color: var(--bg-primary);
+        cursor: pointer;
+        font: inherit;
+        font-weight: 800;
+        min-height: 50px;
+        padding: 14px 18px;
+        transition: box-shadow 180ms ease, transform 180ms ease;
+    }
+    button:hover { box-shadow: 0 18px 34px rgba(0,0,0,0.22); transform: translateY(-3px); }
+    .footer-links { display: flex; gap: 18px; }
+    @media (max-width: 800px) {
+        .nav-inner, .footer-inner { align-items: flex-start; flex-direction: column; }
+        .logo img { height: 40px; }
+        .option-grid, .form-card { grid-template-columns: 1fr; }
+        .form-card, .contact-card { padding: 30px; }
+        .hero-section { padding-top: 92px; }
+    }
+</style>

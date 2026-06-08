@@ -1,10 +1,11 @@
 ---
 import acornWordmark from './public/acorn-wordmark.png';
+import favicon from './public/favicon.png';
 ---
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="icon" type="image/png" sizes="32x32" href={favicon.src} />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Acorn | Sovereign AI for 7-Figure Founders</title>
         <script is:inline>
@@ -21,7 +22,7 @@ import acornWordmark from './public/acorn-wordmark.png';
                     <img src={acornWordmark.src} alt="Acorn Rooted Intelligence" />
                 </a>
 
-                <a href="#waitlist" class="nav-btn">Join Waitlist</a>
+                <a href="#waitlist" class="nav-btn">Get Early Access</a>
             </div>
         </nav>
 
@@ -29,17 +30,16 @@ import acornWordmark from './public/acorn-wordmark.png';
             <section class="hero">
                 <div class="shell hero-inner">
                     <p class="eyebrow">ROOTED INTELLIGENCE</p>
-                    <h1>Does your AI work for you?</h1>
-                    <p class="hero-sub">Acorn is a business-first AI operating system that lives in Slack, and is loyal to you, not big tech.</p>
+                    <h1>A smarter business starts with sovereign intelligence</h1>
+                    <p class="hero-sub">Acorn is a private AI Chief of Staff that lives in Slack, runs on your Amazon server, and learns how your business operates.</p>
                     <div class="hero-buttons">
-                        <a href="#waitlist" class="btn-primary">Join the Acorn Waitlist</a>
-                        <a href="#orientation-protocol" class="btn-secondary">Read the Orientation Protocol</a>
+                        <a href="#waitlist" class="btn-primary">Get Early Access</a>
                     </div>
                     <div class="metric-strip" aria-label="Acorn operating system attributes">
-                        <div><span>Private Memory</span><strong>Your cloud</strong></div>
-                        <div><span>Interface</span><strong>Slack-native</strong></div>
-                        <div><span>Execution</span><strong>You approve actions</strong></div>
-                        <div><span>Context</span><strong>You choose what it sees</strong></div>
+                        <div><span>Private Memory</span><strong>Your server</strong><small>Retains context across conversations.</small></div>
+                        <div><span>Interface</span><strong>Slack-native</strong><small>Works inside your team rhythm.</small></div>
+                        <div><span>Execution</span><strong>You approve actions</strong><small>Authority expands only when earned.</small></div>
+                        <div><span>Permissions</span><strong>You choose who sees what</strong><small>Your infrastructure. Your rules.</small></div>
                     </div>
                 </div>
                 <div class="hero-wave" aria-hidden="true"></div>
@@ -48,15 +48,15 @@ import acornWordmark from './public/acorn-wordmark.png';
             <section class="control-context section-pad">
                 <div class="shell cc-grid">
                     <article class="need-card need-card-light">
-                        <p class="eyebrow">SOVEREIGNTY</p>
+                        <p class="eyebrow">01 — CONTROL</p>
                         <h2>You Need Control.</h2>
-                        <p>Your data is yours. Acorn runs in your cloud, on your terms. No co-mingling, no model training on your private conversations, and no hidden dependency on someone else's memory.</p>
+                        <p>Your data is yours. Acorn runs on your Amazon server, on your terms, with no hidden dependency on someone else's infrastructure or memory.</p>
                     </article>
                     <article class="need-card need-card-dark">
-                        <p class="eyebrow">INTELLIGENCE LAYER</p>
+                        <p class="eyebrow">02 — CONTEXT</p>
                         <h2>You Need Context.</h2>
-                        <p>Acorn reads what you allow it to read: Slack, Drive, Notion, email. It builds a private operating picture of your business, learning your team, projects, standards, and voice.</p>
-                        <span class="status-pill">Unified Intelligence</span>
+                        <p>Acorn reads what you allow it to read and builds a private operating picture of your business: the team, projects, standards, commitments, and voice.</p>
+                        <span class="status-pill">Private Memory</span>
                     </article>
                 </div>
             </section>
@@ -64,26 +64,31 @@ import acornWordmark from './public/acorn-wordmark.png';
             <section class="context-map section-pad">
                 <div class="shell map-grid">
                     <div class="map-copy">
-                        <p class="eyebrow">PRIVATE CONTEXT ARCHITECTURE</p>
-                        <h2>Acorn only sees what you allow.</h2>
+                        <p class="eyebrow">CONTEXT SYSTEM</p>
+                        <h2>How Acorn Builds Context</h2>
                         <p>Connect the systems that already carry your business context. Acorn turns those signals into private operating memory, then routes the right work back into your team rhythm.</p>
                     </div>
-                    <div class="map-card" aria-label="Context architecture diagram">
-                        <div class="source-list">
-                            <span>Slack</span>
-                            <span>Drive</span>
-                            <span>Notion</span>
-                            <span>Email</span>
+                    <div class="map-card architecture-system" aria-label="Context architecture diagram">
+                        <div class="context-column">
+                            <span class="map-group-label">Inputs</span>
+                            <div class="map-node"><strong>Slack</strong><small>Team signal</small></div>
+                            <div class="map-node"><strong>Email</strong><small>Client context</small></div>
+                            <div class="map-node"><strong>Drive</strong><small>Business docs</small></div>
+                            <div class="map-node"><strong>mcps</strong><small>Approved systems</small></div>
                         </div>
+                        <div class="flow-arrow" aria-hidden="true">→</div>
                         <div class="map-core">
-                            <span class="core-ring"></span>
                             <strong>Acorn</strong>
                             <small>Private Business Context</small>
+                            <em>Orientation layer active</em>
                         </div>
-                        <div class="output-list">
-                            <span>Oriented Decisions</span>
-                            <span>Context-Aware Drafts</span>
-                            <span>Prioritized Follow-ups</span>
+                        <div class="flow-arrow" aria-hidden="true">→</div>
+                        <div class="context-column">
+                            <span class="map-group-label">Outputs</span>
+                            <div class="map-node"><strong>Decisions</strong><small>With context</small></div>
+                            <div class="map-node"><strong>Drafts</strong><small>In your voice</small></div>
+                            <div class="map-node"><strong>Follow-ups</strong><small>No dropped threads</small></div>
+                            <div class="map-node"><strong>Priorities</strong><small>Weekly focus</small></div>
                         </div>
                     </div>
                 </div>
@@ -92,15 +97,27 @@ import acornWordmark from './public/acorn-wordmark.png';
             <section class="orientation section-pad">
                 <div class="shell editorial-card">
                     <div class="orient-copy">
-                        <p class="eyebrow">THE FRAMEWORK</p>
+                        <p class="eyebrow">03 — ORIENTATION</p>
                         <h2>Orientation beats delegation.</h2>
-                        <p>Most people use AI to delegate tasks: faster email, faster docs, faster noise. Acorn is different. It uses the OODA loop to understand your terrain before it acts, so execution stays connected to judgment.</p>
+                        <p>It focuses on orientation to understand your terrain before it acts, so execution stays connected to judgment.</p>
                     </div>
-                    <div class="ooda-grid" aria-label="OODA loop">
-                        <div class="ooda-step">Observe</div>
-                        <div class="ooda-step active">Orient</div>
-                        <div class="ooda-step">Decide</div>
-                        <div class="ooda-step">Act</div>
+                    <div class="orientation-steps" aria-label="OODA loop">
+                        <article class="orientation-card">
+                            <h3>Observe</h3>
+                            <p>Read the terrain.</p>
+                        </article>
+                        <article class="orientation-card orient">
+                            <h3>Orient</h3>
+                            <p>Understand what matters.</p>
+                        </article>
+                        <article class="orientation-card">
+                            <h3>Decide</h3>
+                            <p>Choose the right move.</p>
+                        </article>
+                        <article class="orientation-card">
+                            <h3>Act</h3>
+                            <p>Execute with judgment.</p>
+                        </article>
                     </div>
                 </div>
             </section>
@@ -109,17 +126,26 @@ import acornWordmark from './public/acorn-wordmark.png';
                 <div class="shell meet-grid">
                     <div class="meet-copy">
                         <p class="eyebrow">AGENTIC AI ARCHITECTURE</p>
-                        <h2>Meet Acorn</h2>
-                        <p>A Chief of Staff agent that lives in your cloud, talks to you in Slack, and earns your trust over time.</p>
+                        <h2>A Chief of Staff That Understands Context</h2>
+                        <p>A Chief of Staff agent that lives on your server, talks to you in Slack, and earns your trust over time.</p>
                         <div class="feature-row">
                             <span class="feature-dot" aria-hidden="true"></span>
-                            <span>Lives in your cloud</span>
+                            <span>Lives on your server</span>
                         </div>
                         <div class="feature-row">
                             <span class="feature-dot" aria-hidden="true"></span>
                             <span>Slack interface</span>
                         </div>
-                        <button class="demo-replay" type="button" aria-controls="acorn-demo">Replay demo</button>
+                        <div class="acorn-examples" aria-label="Acorn examples">
+                            <p>Acorn catches a missed follow-up.</p>
+                            <p>Acorn summarizes a client thread.</p>
+                            <p>Acorn flags a project risk.</p>
+                            <p>Acorn drafts next week's priorities.</p>
+                            <p>Acorn prepares meeting context.</p>
+                            <p>Acorn identifies bottlenecks.</p>
+                            <p>Acorn drafts the proposal.</p>
+                            <p>Acorn surfaces the risk.</p>
+                        </div>
                     </div>
                     <div class="slack-card" id="acorn-demo" aria-label="Acorn Slack-style conversation">
                         <div class="slack-top">
@@ -128,11 +154,19 @@ import acornWordmark from './public/acorn-wordmark.png';
                         </div>
                         <div class="status-stack">
                             <span>Reading Q2 targets</span>
-                            <span>Cross-checking Martinez call</span>
-                            <span>Draft ready</span>
+                            <span>Checking Martinez proposal thread</span>
+                            <span>Reviewing open commitments</span>
                         </div>
-                        <div class="chat-bubble user-bubble">What's our top priority this week?</div>
-                        <div class="chat-bubble acorn-bubble">Based on your Q2 targets and yesterday's client call with Martinez, closing the proposal revision is the highest-leverage move. Want me to draft the updated scope?</div>
+                        <div class="chat-bubble user-bubble reveal-1">What's our top priority this week?</div>
+                        <div class="chat-bubble acorn-bubble reveal-2">Your highest-leverage move is closing the Martinez proposal revision.</div>
+                        <div class="context-panel reveal-3" aria-label="Acorn referenced context">
+                            <span>Referenced Q2 revenue target</span>
+                            <span>Found open commitment from Thursday</span>
+                            <span>Matched scope notes against Drive draft</span>
+                        </div>
+                        <div class="chat-bubble acorn-bubble secondary reveal-4">Reason: it blocks two follow-up decisions, has a Friday deadline, and is the only item tied directly to this month's target.</div>
+                        <div class="chat-bubble user-bubble reveal-5">What should I do next?</div>
+                        <div class="chat-bubble acorn-bubble reveal-6">Approve the revised scope and send the pricing note. I can draft both, then wait for your review before anything goes out.</div>
                         <div class="trust-badge">Trust mode: Propose and Wait</div>
                     </div>
                 </div>
@@ -141,36 +175,35 @@ import acornWordmark from './public/acorn-wordmark.png';
             <section class="sovereignty-band">
                 <div class="shell sovereignty-inner">
                     <div>
-                        <p class="eyebrow">SOVEREIGN AI INFRASTRUCTURE</p>
-                        <h2>Leverage without surrendering control.</h2>
+                        <p class="eyebrow">04 — TRUST</p>
+                        <h2>Control Without Bottlenecks.</h2>
                     </div>
                     <div class="security-claims">
-                        <span>Runs in your cloud</span>
+                        <span>Runs on your Amazon server</span>
                         <span>No training on private data</span>
-                        <span>Permissioned memory only</span>
+                        <span>You choose who sees what</span>
                     </div>
                 </div>
             </section>
 
             <section class="trust section-pad">
                 <div class="shell trust-inner">
-                    <p class="eyebrow">THE TRUST GRADIENT</p>
+                    <p class="eyebrow">05 — AUTHORITY MODEL</p>
                     <h2>How Trust Is Earned</h2>
                     <p class="trust-sub">Acorn wins your trust through performance and never oversteps.</p>
-                    <div class="trust-grid">
+                    <div class="trust-progression">
                         <article class="trust-card">
-                            <span class="icon-mark" aria-hidden="true"></span>
+                            <span class="trust-level">Level 01</span>
                             <h3>Act and Report</h3>
                             <p>For routine tasks within its authority, Acorn acts first and tells you what it did. No bottleneck. No waiting.</p>
                         </article>
                         <article class="trust-card featured">
-                            <span class="card-pill">DEFAULT STATE</span>
-                            <span class="icon-mark" aria-hidden="true"></span>
+                            <span class="trust-level">Level 02</span>
                             <h3>Propose and Wait</h3>
                             <p>For decisions that need your judgment, Acorn presents options and waits for your call. It never overreaches.</p>
                         </article>
                         <article class="trust-card">
-                            <span class="icon-mark" aria-hidden="true"></span>
+                            <span class="trust-level">Level 03</span>
                             <h3>Escalate</h3>
                             <p>When something falls outside its scope, Acorn flags it immediately. No guessing. No pretending to know.</p>
                         </article>
@@ -178,55 +211,46 @@ import acornWordmark from './public/acorn-wordmark.png';
                 </div>
             </section>
 
-            <section class="why-acorn section-pad">
-                <div class="shell vision-card">
-                    <p class="eyebrow">FOUNDER'S VISION</p>
-                    <h2>Why Acorn</h2>
-                    <blockquote>"The 7-figure business owner is the most underserved person in AI. Enterprise gets custom builds. Consumers get ChatGPT. The founder running a real business with real employees and real risk? Nobody is building for them. Until now."</blockquote>
-                    <p class="attribution">Brian Keith, Founder</p>
+            <section class="founder-presence section-pad">
+                <div class="shell founder-strip">
+                    <div class="founder-mark" aria-hidden="true">BK</div>
+                    <div>
+                        <p class="eyebrow">FOUNDER-LED BUILD</p>
+                        <h2>Brian Keith is building Acorn for operators who cannot outsource judgment.</h2>
+                        <blockquote>"The founder running a real business with real employees and real risk has been underserved by AI. Acorn is built for them."</blockquote>
+                        <p class="attribution">Brian Keith, Founder</p>
+                    </div>
                 </div>
             </section>
 
-            <section class="protocol section-pad" id="orientation-protocol">
-                <div class="shell protocol-grid">
+            <section class="deployment section-pad">
+                <div class="shell deployment-inner">
                     <div>
-                        <p class="eyebrow">FOUNDER RESOURCE</p>
-                        <h2>Download the Orientation Protocol</h2>
-                        <p>Not ready for the waitlist? Use the Orientation Protocol to start giving your current AI tools better context on your judgment, risk tolerance, and values.</p>
+                        <p class="eyebrow">06 — DEPLOYMENT</p>
+                        <h2>How Deployment Works</h2>
                     </div>
-                    <div class="protocol-preview">
-                        <div class="pdf-card" aria-label="Orientation Protocol PDF preview">
-                            <span class="pdf-kicker">ACORN DOCTRINE</span>
-                            <h3>Orientation Protocol</h3>
-                            <div class="pdf-lines">
-                                <span></span><span></span><span></span>
-                            </div>
-                            <ul>
-                                <li>Judgment map</li>
-                                <li>Risk tolerances</li>
-                                <li>Values and constraints</li>
-                            </ul>
-                        </div>
-                        <form class="protocol-form">
-                            <input type="email" name="email" placeholder="Enter your email" required />
-                            <button class="btn-secondary" type="submit">Download Orientation Protocol PDF</button>
-                        </form>
+                    <div class="deployment-steps">
+                        <article><span>01</span><strong>Join waitlist</strong></article>
+                        <article><span>02</span><strong>Receive Orientation Protocol</strong></article>
+                        <article><span>03</span><strong>Meet with founder</strong></article>
+                        <article><span>04</span><strong>Deploy to your Amazon server</strong></article>
+                        <article><span>05</span><strong>Train Acorn on your operating context</strong></article>
                     </div>
                 </div>
             </section>
 
             <section class="waitlist-wrap section-pad" id="waitlist">
                 <div class="waitlist-card">
-                    <p class="eyebrow">GET EARLY ACCESS</p>
-                    <h2>Join the Acorn Waitlist</h2>
-                    <p class="waitlist-sub">Deploy a sovereign AI system built for your business. Limited early access.</p>
+                    <p class="eyebrow">FOUNDING ACCESS</p>
+                    <h2>Get Early Access + Receive the Orientation Protocol</h2>
+                    <p class="capacity-note">Join the waitlist for early access updates and the free Orientation Protocol. Early participants help shape Acorn before broader availability.</p>
                     <form accept-charset="UTF-8" action="https://redbeard.infusionsoft.com/app/form/process/8bce157b4a83074b0edda9c55e1ed0ba" class="infusion-form waitlist-form" id="inf_form_8bce157b4a83074b0edda9c55e1ed0ba" method="POST">
                         <input name="inf_form_xid" type="hidden" value="8bce157b4a83074b0edda9c55e1ed0ba" />
                         <input name="inf_thank_you" type="hidden" value="https://buyacorn.com/welcome.html/" />
                         <input name="inf_form_name" type="hidden" value="BuyAcorn.com Waitlist" />
                         <input name="infusionsoft_version" type="hidden" value="1.70.0.942760" />
                         <input id="inf_field_Email" name="inf_field_Email" placeholder="Enter your email" type="email" required />
-                        <button class="btn-primary infusion-recaptcha" id="recaptcha_8bce157b4a83074b0edda9c55e1ed0ba" type="submit">Join Acorn Waitlist</button>
+                        <button class="btn-primary infusion-recaptcha" id="recaptcha_8bce157b4a83074b0edda9c55e1ed0ba" type="submit">Get Early Access</button>
                         <input type="text" name="inf-sbt" style="display:none !important;" />
                     </form>
                 </div>
@@ -234,12 +258,27 @@ import acornWordmark from './public/acorn-wordmark.png';
         </main>
 
         <footer class="site-footer">
-            <div class="shell footer-inner">
-                <a href="/" class="footer-logo" aria-label="Acorn home">
-                    <img src={acornWordmark.src} alt="Acorn Rooted Intelligence" />
-                </a>
-                <p class="footer-copy">&copy; 2026 Red Beard Consulting LLC. All rights reserved.</p>
+            <div class="shell footer-grid">
+                <div class="footer-brand">
+                    <a href="/" class="footer-logo" aria-label="Acorn home">
+                        <img src={acornWordmark.src} alt="Acorn Rooted Intelligence" />
+                    </a>
+                </div>
+                <div>
+                    <h3>Contact</h3>
+                    <a href="/contact">Contact</a>
+                </div>
+                <div>
+                    <h3>Resources</h3>
+                    <a href="/terms">Terms</a>
+                </div>
+                <div>
+                    <h3>Founder</h3>
+                    <a href="https://www.linkedin.com/in/briankeithal/" target="_blank" rel="noreferrer">LinkedIn</a>
+                    <a href="https://x.com/briankeithai" target="_blank" rel="noreferrer">X</a>
+                </div>
             </div>
+            <div class="shell footer-meta">&copy; 2026 Red Beard Consulting LLC.</div>
         </footer>
         <script is:inline type="text/javascript" src="https://redbeard.infusionsoft.app/app/webTracking/getTrackingCode"></script>
         <script is:inline type="text/javascript" src="https://redbeard.infusionsoft.com/resources/external/recaptcha/production/recaptcha.js?b=1.70.0.942760"></script>
@@ -259,34 +298,28 @@ import acornWordmark from './public/acorn-wordmark.png';
                 });
             });
 
-            const demoButton = document.querySelector('.demo-replay');
-            const acornDemo = document.getElementById('acorn-demo');
-
-            if (demoButton && acornDemo) {
-                const replayDemo = () => {
-                    acornDemo.classList.remove('is-replaying');
-                    void acornDemo.offsetWidth;
-                    acornDemo.classList.add('is-replaying');
-                };
-
-                demoButton.addEventListener('click', replayDemo);
-                window.setTimeout(replayDemo, 900);
-            }
         </script>
     </body>
 </html>
 
 <style>
     :root {
-        --rooted-green: #0A3D2F;
-        --signal-sage: #8FA89A;
+        --rooted-green: #032B27;
+        --signal-sage: #A9C3B1;
+        --deep-green: #032B27;
+        --ink-green: #021F1C;
+        --surface-green: #032B27;
+        --glass: rgba(255, 255, 255, 0.045);
+        --glass-strong: rgba(255, 255, 255, 0.07);
+        --glass-border: rgba(190, 230, 200, 0.16);
+        --glass-line: rgba(169, 195, 177, 0.5);
         --oak-brown: #5C4B43;
-        --paper-white: #F5F2EB;
-        --paper-deep: #ECE6D9;
+        --paper-white: #F4F2EC;
+        --paper-deep: #D7DED8;
         --tech-grey: #333333;
-        --muted: #615D55;
-        --border: #DED8CA;
-        --white: #FFFFFF;
+        --muted: #B9C1BB;
+        --border: rgba(190, 230, 200, 0.18);
+        --white: #F4F2EC;
         --font-serif: 'EB Garamond', Georgia, serif;
         --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     }
@@ -302,13 +335,14 @@ import acornWordmark from './public/acorn-wordmark.png';
     }
 
     body {
-        background: var(--paper-white);
+        background: var(--ink-green);
         color: var(--tech-grey);
         font-family: var(--font-sans);
         -webkit-font-smoothing: antialiased;
     }
 
     .hero-inner > *,
+    .founder-strip,
     .need-card,
     .map-copy,
     .map-card,
@@ -317,14 +351,14 @@ import acornWordmark from './public/acorn-wordmark.png';
     .slack-card,
     .sovereignty-inner > *,
     .trust-inner > *,
-    .vision-card,
-    .protocol-grid > *,
+    .deployment-inner > *,
     .waitlist-card {
         opacity: 0;
         transform: translateY(18px);
     }
 
     .is-loaded .hero-inner > *,
+    .is-loaded .founder-strip,
     .is-loaded .need-card,
     .is-loaded .map-copy,
     .is-loaded .map-card,
@@ -333,8 +367,7 @@ import acornWordmark from './public/acorn-wordmark.png';
     .is-loaded .slack-card,
     .is-loaded .sovereignty-inner > *,
     .is-loaded .trust-inner > *,
-    .is-loaded .vision-card,
-    .is-loaded .protocol-grid > *,
+    .is-loaded .deployment-inner > *,
     .is-loaded .waitlist-card {
         animation: reveal-up 720ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
     }
@@ -354,7 +387,7 @@ import acornWordmark from './public/acorn-wordmark.png';
     }
 
     .section-pad {
-        padding: 88px 0;
+        padding: 156px 0;
     }
 
     h1,
@@ -366,13 +399,13 @@ import acornWordmark from './public/acorn-wordmark.png';
     }
 
     h1 {
-        font-size: clamp(48px, 7vw, 82px);
-        line-height: 0.98;
-        max-width: 880px;
+        font-size: clamp(58px, 8vw, 96px);
+        line-height: 0.94;
+        max-width: 980px;
     }
 
     h2 {
-        font-size: clamp(36px, 4.5vw, 56px);
+        font-size: clamp(42px, 5vw, 64px);
         line-height: 1.05;
     }
 
@@ -398,7 +431,7 @@ import acornWordmark from './public/acorn-wordmark.png';
 
     .site-header,
     .site-footer {
-        background: var(--rooted-green);
+        background: var(--ink-green);
         border-color: transparent;
     }
 
@@ -407,29 +440,40 @@ import acornWordmark from './public/acorn-wordmark.png';
         padding: 10px 0;
     }
 
-    .nav-inner,
-    .footer-inner {
+    .nav-inner {
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 24px;
     }
 
-    .nav-logo,
-    .footer-logo {
-        background: var(--white);
-        border-radius: 6px;
+    .nav-logo {
         display: inline-flex;
         align-items: center;
-        padding: 4px 8px;
+        justify-content: center;
         text-decoration: none;
     }
 
-    .nav-logo img,
+    .footer-logo {
+        align-items: center;
+        box-shadow: none;
+        display: inline-flex;
+        justify-content: center;
+        text-decoration: none;
+    }
+
+    .nav-logo img {
+        display: block;
+        height: 48px;
+        object-fit: contain;
+        width: auto;
+    }
+
     .footer-logo img {
         display: block;
-        height: auto;
-        width: 158px;
+        height: 48px;
+        object-fit: contain;
+        width: auto;
     }
 
     .nav-btn,
@@ -500,16 +544,20 @@ import acornWordmark from './public/acorn-wordmark.png';
     }
 
     .hero {
-        background:
-            linear-gradient(120deg, rgba(10, 61, 47, 0.04) 1px, transparent 1px),
-            radial-gradient(circle at 15% 18%, rgba(143, 168, 154, 0.16), transparent 28%),
-            var(--paper-white);
-        background-size: 42px 42px, auto, auto;
-        min-height: 680px;
+        background: transparent;
+        min-height: calc(100vh - 76px);
         overflow: hidden;
-        padding: 118px 0 138px;
+        padding: 148px 0 162px;
         position: relative;
         text-align: center;
+    }
+
+    .hero h1 {
+        color: var(--white);
+    }
+
+    .hero .eyebrow {
+        color: rgba(245, 242, 235, 0.78);
     }
 
     .hero-inner {
@@ -521,11 +569,11 @@ import acornWordmark from './public/acorn-wordmark.png';
     }
 
     .hero-sub {
-        color: var(--muted);
-        font-size: 19px;
+        color: rgba(245, 242, 235, 0.72);
+        font-size: clamp(21px, 2.1vw, 24px);
         line-height: 1.7;
         margin: 28px auto 38px;
-        max-width: 720px;
+        max-width: 700px;
     }
 
     .hero-buttons {
@@ -535,10 +583,15 @@ import acornWordmark from './public/acorn-wordmark.png';
         justify-content: center;
     }
 
+    .hero-buttons .btn-primary {
+        animation: cta-pulse 2200ms ease-in-out infinite;
+    }
+
     .metric-strip {
-        background: rgba(255, 255, 255, 0.78);
-        border: 1px solid rgba(92, 75, 67, 0.16);
+        background: rgba(2, 35, 31, 0.72);
+        border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: 8px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.24);
         display: grid;
         gap: 0;
         grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -549,7 +602,7 @@ import acornWordmark from './public/acorn-wordmark.png';
     }
 
     .metric-strip div {
-        border-right: 1px solid rgba(92, 75, 67, 0.14);
+        border-right: 1px solid rgba(255, 255, 255, 0.08);
         cursor: default;
         padding: 18px 20px;
         text-align: left;
@@ -557,8 +610,8 @@ import acornWordmark from './public/acorn-wordmark.png';
     }
 
     .metric-strip div:hover {
-        background: var(--white);
-        box-shadow: inset 0 3px 0 var(--rooted-green), 0 20px 38px rgba(51, 51, 51, 0.12);
+        background: rgba(6, 47, 42, 0.82);
+        box-shadow: inset 0 3px 0 rgba(143, 168, 154, 0.8), 0 20px 38px rgba(0, 0, 0, 0.2);
         transform: translateY(-4px);
     }
 
@@ -567,7 +620,7 @@ import acornWordmark from './public/acorn-wordmark.png';
     }
 
     .metric-strip span {
-        color: var(--oak-brown);
+        color: rgba(245, 242, 235, 0.62);
         display: block;
         font-size: 11px;
         font-weight: 700;
@@ -577,25 +630,85 @@ import acornWordmark from './public/acorn-wordmark.png';
     }
 
     .metric-strip strong {
-        color: var(--rooted-green);
+        color: var(--white);
         font-family: var(--font-serif);
         font-size: 22px;
         font-weight: 500;
     }
 
+    .metric-strip small {
+        color: rgba(245, 242, 235, 0.58);
+        display: block;
+        font-size: 12px;
+        line-height: 1.5;
+        margin-top: 8px;
+    }
+
     .hero-wave {
-        background: linear-gradient(180deg, rgba(245, 242, 235, 0), var(--paper-white) 72%);
-        border-radius: 48% 52% 0 0 / 70% 62% 0 0;
-        bottom: -92px;
-        height: 180px;
-        left: -5%;
-        position: absolute;
-        right: -5%;
+        display: none;
+    }
+
+    .founder-presence,
+    .control-context,
+    .context-map,
+    .orientation,
+    .meet-acorn,
+    .sovereignty-band,
+    .trust,
+    .deployment,
+    .waitlist-wrap {
+        background: transparent;
+    }
+
+    .founder-strip {
+        align-items: center;
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-radius: 8px;
+        display: grid;
+        gap: 34px;
+        grid-template-columns: auto minmax(0, 1fr);
+        padding: 44px;
+    }
+
+    .founder-strip h2 {
+        color: var(--white);
+        font-family: var(--font-sans);
+        font-size: clamp(18px, 2.2vw, 24px);
+        font-weight: 600;
+        line-height: 1.35;
+        max-width: 740px;
+    }
+
+    .founder-strip blockquote {
+        color: rgba(245, 242, 235, 0.76);
+        font-family: var(--font-serif);
+        font-size: clamp(24px, 3vw, 34px);
+        font-style: italic;
+        line-height: 1.35;
+        margin: 18px 0 12px;
+        max-width: 820px;
+    }
+
+    .founder-strip .attribution {
+        color: rgba(245, 242, 235, 0.58);
+    }
+
+    .founder-mark {
+        align-items: center;
+        background: var(--paper-white);
+        border-radius: 50%;
+        color: var(--rooted-green);
+        display: inline-flex;
+        font-family: var(--font-serif);
+        font-size: 24px;
+        height: 64px;
+        justify-content: center;
+        width: 64px;
     }
 
     .cc-grid,
-    .meet-grid,
-    .protocol-grid {
+    .meet-grid {
         display: grid;
         gap: 28px;
         grid-template-columns: 1fr 1fr;
@@ -604,47 +717,42 @@ import acornWordmark from './public/acorn-wordmark.png';
     .need-card,
     .editorial-card,
     .slack-card,
-    .vision-card,
     .waitlist-card,
     .card-surface {
         border-radius: 8px;
-        box-shadow: 0 22px 60px rgba(51, 51, 51, 0.12);
+        box-shadow: 0 24px 70px rgba(0, 0, 0, 0.22);
     }
 
     .need-card,
     .editorial-card,
     .slack-card,
-    .vision-card,
-    .waitlist-card,
-    .pdf-card {
+    .waitlist-card {
         transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
     }
 
     .need-card:hover,
     .editorial-card:hover,
     .slack-card:hover,
-    .vision-card:hover,
-    .waitlist-card:hover,
-    .pdf-card:hover {
-        border-color: rgba(92, 75, 67, 0.28);
-        box-shadow: 0 38px 96px rgba(51, 51, 51, 0.18);
+    .waitlist-card:hover {
+        border-color: rgba(255, 255, 255, 0.16);
+        box-shadow: 0 38px 96px rgba(0, 0, 0, 0.3);
         transform: translateY(-7px);
     }
 
     .need-card {
-        border: 1px solid var(--border);
+        border: 1px solid var(--glass-border);
         min-height: 360px;
         padding: 44px;
         position: relative;
     }
 
     .need-card-light {
-        background: var(--white);
+        background: var(--glass);
     }
 
     .need-card-dark {
-        background: var(--rooted-green);
-        border-color: var(--rooted-green);
+        background: var(--glass-strong);
+        border-color: var(--glass-border);
     }
 
     .need-card-dark h2,
@@ -656,8 +764,7 @@ import acornWordmark from './public/acorn-wordmark.png';
         opacity: 0.86;
     }
 
-    .status-pill,
-    .card-pill {
+    .status-pill {
         border-radius: 999px;
         display: inline-flex;
         font-size: 11px;
@@ -674,16 +781,55 @@ import acornWordmark from './public/acorn-wordmark.png';
         position: absolute;
     }
 
+    .control-context .need-card-light {
+        background: var(--glass);
+        border-color: var(--glass-border);
+    }
+
+    .control-context .need-card-light h2,
+    .control-context .need-card-light p {
+        color: var(--white);
+    }
+
+    .control-context .need-card-light p {
+        opacity: 0.72;
+    }
+
+    .need-card .eyebrow,
+    .sovereignty-band .eyebrow,
+    .trust .eyebrow {
+        color: var(--signal-sage);
+        opacity: 1;
+    }
+
+    .need-card-dark {
+        background: rgba(6, 47, 42, 0.82);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
     .context-map {
-        background: var(--paper-white);
-        padding-top: 24px;
+        background: transparent;
+        color: var(--white);
+    }
+
+    .context-map h2 {
+        color: var(--white);
+    }
+
+    .context-map .map-copy p:last-child {
+        color: rgba(245, 242, 235, 0.72);
     }
 
     .map-grid {
-        align-items: center;
         display: grid;
-        gap: 42px;
-        grid-template-columns: 0.85fr 1.15fr;
+        gap: 60px;
+        grid-template-columns: 1fr;
+    }
+
+    .map-copy {
+        margin: 0 auto;
+        max-width: 700px;
+        text-align: center;
     }
 
     .map-copy p:last-child {
@@ -692,97 +838,97 @@ import acornWordmark from './public/acorn-wordmark.png';
     }
 
     .map-card {
-        background:
-            linear-gradient(90deg, rgba(10, 61, 47, 0.06) 1px, transparent 1px),
-            linear-gradient(0deg, rgba(10, 61, 47, 0.06) 1px, transparent 1px),
-            var(--white);
-        background-size: 34px 34px;
-        border: 1px solid var(--border);
+        align-items: center;
+        background: rgba(2, 35, 31, 0.58);
+        border: 1px solid var(--glass-border);
         border-radius: 8px;
-        box-shadow: 0 22px 60px rgba(51, 51, 51, 0.12);
+        box-shadow: 0 28px 90px rgba(0, 0, 0, 0.34);
         display: grid;
         gap: 24px;
-        grid-template-columns: 1fr 1.1fr 1fr;
-        min-height: 340px;
-        padding: 34px;
-        position: relative;
+        grid-template-columns: minmax(0, 1fr) 34px minmax(220px, 0.8fr) 34px minmax(0, 1fr);
+        margin: 0 auto;
+        max-width: 1040px;
+        padding: 42px;
+        width: 100%;
     }
 
-    .source-list,
-    .output-list {
+    .context-column {
+        display: grid;
+        gap: 12px;
+    }
+
+    .map-group-label {
+        color: var(--signal-sage);
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        margin-bottom: 4px;
+        text-transform: uppercase;
+    }
+
+    .map-node {
+        align-items: center;
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-radius: 8px;
+        color: var(--white);
         display: flex;
         flex-direction: column;
-        gap: 14px;
-        justify-content: center;
-    }
-
-    .source-list span,
-    .output-list span {
-        background: rgba(245, 242, 235, 0.92);
-        border: 1px solid var(--border);
-        border-radius: 999px;
-        color: var(--oak-brown);
         font-size: 13px;
         font-weight: 700;
-        padding: 10px 14px;
-        position: relative;
-        transition: background 180ms ease, border-color 180ms ease, box-shadow 180ms ease, color 180ms ease, transform 180ms ease;
+        justify-content: center;
+        min-height: 82px;
+        padding: 16px 18px;
+        text-align: center;
+        transition: background 180ms ease, border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
     }
 
-    .source-list span:hover,
-    .output-list span:hover {
-        background: var(--white);
-        border-color: rgba(92, 75, 67, 0.28);
-        box-shadow: 0 16px 30px rgba(51, 51, 51, 0.13);
-        color: var(--rooted-green);
-        transform: translateX(5px);
+    .map-node strong {
+        display: block;
+        font-size: 15px;
+        margin-bottom: 6px;
     }
 
-    .source-list span::after,
-    .output-list span::before {
-        background: var(--signal-sage);
-        content: "";
-        height: 1px;
-        position: absolute;
-        top: 50%;
-        width: 28px;
+    .map-node small {
+        color: rgba(245, 242, 235, 0.56);
+        display: block;
+        font-size: 11px;
+        font-weight: 600;
+        line-height: 1.35;
     }
 
-    .source-list span::after {
-        left: 100%;
+    .map-node:hover {
+        background: rgba(255, 255, 255, 0.09);
+        border-color: rgba(255, 255, 255, 0.18);
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.24);
+        color: var(--white);
+        transform: translateY(-5px);
     }
 
-    .output-list span::before {
-        right: 100%;
+    .flow-arrow {
+        color: var(--signal-sage);
+        font-size: 26px;
+        font-weight: 700;
+        text-align: center;
     }
 
     .map-core {
         align-items: center;
-        align-self: center;
-        background: var(--rooted-green);
-        border-radius: 50%;
+        background: var(--surface-green);
+        border: 1px solid var(--glass-border);
+        border-radius: 8px;
         color: var(--white);
         display: flex;
         flex-direction: column;
-        height: 190px;
+        min-height: 300px;
         justify-content: center;
-        justify-self: center;
-        position: relative;
+        padding: 34px;
         text-align: center;
-        width: 190px;
-    }
-
-    .core-ring {
-        border: 1px solid rgba(143, 168, 154, 0.82);
-        border-radius: 50%;
-        inset: -14px;
-        position: absolute;
-        animation: signal-pulse 2400ms ease-in-out infinite;
     }
 
     .map-core strong {
         font-family: var(--font-serif);
-        font-size: 34px;
+        font-size: 48px;
         font-weight: 500;
     }
 
@@ -794,65 +940,144 @@ import acornWordmark from './public/acorn-wordmark.png';
         text-transform: uppercase;
     }
 
+    .map-core em {
+        color: rgba(245, 242, 235, 0.58);
+        font-size: 11px;
+        font-style: normal;
+        letter-spacing: 0.08em;
+        margin-top: 14px;
+        text-transform: uppercase;
+    }
+
     .editorial-card {
-        align-items: center;
-        background: var(--white);
-        border: 1px solid var(--border);
+        align-items: start;
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
         display: grid;
-        gap: 56px;
-        grid-template-columns: 1.1fr 0.9fr;
-        padding: 54px;
+        gap: 42px;
+        grid-template-columns: 1fr;
+        padding: 70px;
+    }
+
+    .editorial-card h2 {
+        color: var(--white);
+    }
+
+    .editorial-card p {
+        color: rgba(245, 242, 235, 0.72);
     }
 
     .orient-copy p:last-child,
-    .meet-copy > p,
-    .protocol p {
+    .meet-copy > p {
         font-size: 18px;
         margin-top: 22px;
     }
 
-    .ooda-grid {
+    .orientation {
+        background: transparent;
+    }
+
+    .orientation-steps {
+        align-items: stretch;
         display: grid;
-        gap: 14px;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 28px;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        width: 100%;
     }
 
-    .ooda-step {
-        background: var(--paper-white);
-        border: 1px solid var(--border);
+    .orientation-card {
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
         border-radius: 8px;
-        color: var(--oak-brown);
-        font-weight: 700;
-        min-height: 118px;
-        padding: 24px;
-        transition: background 180ms ease, border-color 180ms ease, box-shadow 180ms ease, color 180ms ease, transform 180ms ease;
+        min-height: 220px;
+        overflow: visible;
+        padding: 28px;
+        position: relative;
+        width: 100%;
+        transition: background 180ms ease, border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
     }
 
-    .ooda-step:hover {
-        background: var(--white);
-        border-color: rgba(92, 75, 67, 0.28);
-        box-shadow: 0 18px 34px rgba(51, 51, 51, 0.14);
-        color: var(--rooted-green);
+    .orientation-card:not(:last-child)::after {
+        color: rgba(143, 168, 154, 0.62);
+        content: "→";
+        font-size: 20px;
+        position: absolute;
+        right: -24px;
+        top: 50%;
+        transform: translateY(-50%);
+        text-align: center;
+        width: 20px;
+        z-index: 2;
+    }
+
+    .orientation-card h3 {
+        color: var(--white);
+        font-family: var(--font-serif);
+        font-size: clamp(1.75rem, 2.5vw, 2.125rem);
+        font-weight: 500;
+        line-height: 1.05;
+        margin: 0 0 18px;
+    }
+
+    .orientation-card p {
+        color: rgba(245, 242, 235, 0.68);
+        font-size: 1rem;
+        line-height: 1.5;
+        margin: 0;
+    }
+
+    .orientation-card.orient {
+        background: rgba(6, 47, 42, 0.74);
+        border-color: rgba(190, 230, 200, 0.55);
+        box-shadow: 0 0 24px rgba(120, 180, 140, 0.16);
+    }
+
+    .orientation-card:hover {
+        background: rgba(255, 255, 255, 0.09);
+        border-color: rgba(255, 255, 255, 0.18);
+        box-shadow: 0 22px 48px rgba(0, 0, 0, 0.22);
         transform: translateY(-5px);
-    }
-
-    .ooda-step.active {
-        background: var(--rooted-green);
-        border-color: var(--rooted-green);
-        color: var(--white);
-    }
-
-    .ooda-step.active:hover {
-        background: #083329;
-        color: var(--white);
-    }
-
-    .meet-acorn {
-        background: var(--paper-white);
     }
 
     .meet-grid {
         align-items: center;
+        gap: 52px;
+        grid-template-columns: 0.9fr 1.1fr;
+    }
+
+    .meet-copy h2,
+    .meet-copy p,
+    .meet-copy .feature-row {
+        color: var(--white);
+    }
+
+    .meet-copy > p {
+        opacity: 0.74;
+    }
+
+    .acorn-examples {
+        border-left: none;
+        display: grid;
+        gap: 12px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: 30px;
+    }
+
+    .acorn-examples p {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+        color: rgba(245, 242, 235, 0.72);
+        font-size: 14px;
+        line-height: 1.45;
+        padding: 14px;
+        transition: background 180ms ease, border-color 180ms ease, transform 180ms ease;
+    }
+
+    .acorn-examples p:hover {
+        background: rgba(255, 255, 255, 0.075);
+        border-color: rgba(255, 255, 255, 0.16);
+        transform: translateY(-4px);
     }
 
     .feature-row {
@@ -873,37 +1098,12 @@ import acornWordmark from './public/acorn-wordmark.png';
         width: 10px;
     }
 
-    .demo-replay {
-        background: var(--white);
-        border: 1px solid rgba(92, 75, 67, 0.24);
-        border-radius: 6px;
-        color: var(--rooted-green);
-        cursor: pointer;
-        display: inline-flex;
-        font: inherit;
-        font-size: 14px;
-        font-weight: 800;
-        justify-content: center;
-        margin-top: 26px;
-        min-height: 44px;
-        padding: 12px 18px;
-        transition: background 180ms ease, border-color 180ms ease, box-shadow 180ms ease, color 180ms ease, transform 180ms ease;
-    }
-
-    .demo-replay:hover,
-    .demo-replay:focus-visible {
-        background: var(--rooted-green);
-        border-color: var(--rooted-green);
-        box-shadow: 0 18px 34px rgba(10, 61, 47, 0.18);
-        color: var(--white);
-        outline: none;
-        transform: translateY(-4px);
-    }
-
     .slack-card {
-        background: var(--white);
-        border: 1px solid var(--border);
-        padding: 28px;
+        background: rgba(244, 242, 236, 0.92);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 34px 100px rgba(0, 0, 0, 0.34);
+        padding: 34px;
+        overflow: hidden;
     }
 
     .slack-top {
@@ -948,6 +1148,30 @@ import acornWordmark from './public/acorn-wordmark.png';
         padding: 8px 12px;
     }
 
+    .context-panel {
+        background: rgba(143, 168, 154, 0.12);
+        border: 1px solid rgba(143, 168, 154, 0.28);
+        border-radius: 8px;
+        display: grid;
+        gap: 8px;
+        margin: 4px 0 14px auto;
+        max-width: 88%;
+        padding: 14px;
+    }
+
+    .context-panel span {
+        color: var(--rooted-green);
+        font-size: 12px;
+        font-weight: 750;
+        line-height: 1.35;
+    }
+
+    .context-panel span::before {
+        color: var(--signal-sage);
+        content: "•";
+        margin-right: 8px;
+    }
+
     .status-stack span::before {
         background: var(--signal-sage);
         border-radius: 50%;
@@ -959,11 +1183,31 @@ import acornWordmark from './public/acorn-wordmark.png';
 
     .chat-bubble {
         border-radius: 8px;
-        font-size: 15px;
+        font-size: 16px;
         line-height: 1.55;
         margin-bottom: 14px;
-        padding: 18px 20px;
+        padding: 20px 22px;
     }
+
+    .slack-card .status-stack span,
+    .slack-card .chat-bubble,
+    .slack-card .context-panel,
+    .slack-card .trust-badge {
+        animation: slack-reveal 680ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    .slack-card .status-stack span:nth-child(1) { animation-delay: 120ms; }
+    .slack-card .status-stack span:nth-child(2) { animation-delay: 240ms; }
+    .slack-card .status-stack span:nth-child(3) { animation-delay: 360ms; }
+    .slack-card .reveal-1 { animation-delay: 520ms; }
+    .slack-card .reveal-2 { animation-delay: 760ms; }
+    .slack-card .reveal-3 { animation-delay: 980ms; }
+    .slack-card .reveal-4 { animation-delay: 1180ms; }
+    .slack-card .reveal-5 { animation-delay: 1380ms; }
+    .slack-card .reveal-6 { animation-delay: 1580ms; }
+    .slack-card .trust-badge { animation-delay: 1760ms; }
 
     .user-bubble {
         background: var(--paper-white);
@@ -978,9 +1222,13 @@ import acornWordmark from './public/acorn-wordmark.png';
         max-width: 88%;
     }
 
+    .acorn-bubble.secondary {
+        background: #062F2A;
+    }
+
     .trust-badge {
-        background: rgba(143, 168, 154, 0.16);
-        border: 1px solid rgba(143, 168, 154, 0.32);
+        background: rgba(169, 195, 177, 0.14);
+        border: 1px solid rgba(169, 195, 177, 0.28);
         border-radius: 999px;
         color: var(--rooted-green);
         display: inline-flex;
@@ -992,21 +1240,7 @@ import acornWordmark from './public/acorn-wordmark.png';
         text-transform: uppercase;
     }
 
-    .slack-card.is-replaying .status-stack span,
-    .slack-card.is-replaying .chat-bubble,
-    .slack-card.is-replaying .trust-badge {
-        animation: chat-reveal 560ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
-    }
-
-    .slack-card.is-replaying .status-stack span:nth-child(1) { animation-delay: 40ms; }
-    .slack-card.is-replaying .status-stack span:nth-child(2) { animation-delay: 180ms; }
-    .slack-card.is-replaying .status-stack span:nth-child(3) { animation-delay: 320ms; }
-    .slack-card.is-replaying .user-bubble { animation-delay: 560ms; }
-    .slack-card.is-replaying .acorn-bubble { animation-delay: 900ms; }
-    .slack-card.is-replaying .trust-badge { animation-delay: 1240ms; }
-
     .sovereignty-band {
-        background: var(--paper-white);
         padding: 68px 0;
     }
 
@@ -1017,45 +1251,51 @@ import acornWordmark from './public/acorn-wordmark.png';
         grid-template-columns: 0.9fr 1.1fr;
     }
 
-    .sovereignty-band .eyebrow {
-        color: var(--signal-sage);
-    }
-
     .sovereignty-band h2 {
-        color: var(--rooted-green);
+        color: var(--white);
     }
 
     .security-claims {
         display: grid;
-        gap: 12px;
+        gap: 18px;
         grid-template-columns: repeat(3, 1fr);
     }
 
     .security-claims span {
-        background: var(--white);
-        border: 1px solid var(--border);
+        background: rgba(6, 47, 42, 0.74);
+        border: 1px solid var(--glass-border);
         border-radius: 8px;
-        color: var(--rooted-green);
-        font-size: 13px;
+        color: var(--white);
+        font-size: 16px;
         font-weight: 800;
-        letter-spacing: 0.02em;
-        min-height: 88px;
-        padding: 20px;
+        letter-spacing: 0;
+        min-height: 128px;
+        padding: 28px;
+        position: relative;
         transition: background 180ms ease, border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
     }
 
+    .security-claims span::before {
+        background: var(--signal-sage);
+        border-radius: 50%;
+        box-shadow: 0 0 0 7px rgba(143, 168, 154, 0.12);
+        content: "";
+        display: block;
+        height: 10px;
+        margin-bottom: 22px;
+        width: 10px;
+    }
+
     .security-claims span:hover {
-        background: var(--white);
-        border-color: rgba(92, 75, 67, 0.28);
-        box-shadow: 0 18px 34px rgba(51, 51, 51, 0.14);
+        background: rgba(6, 47, 42, 0.96);
+        border-color: rgba(255, 255, 255, 0.16);
+        box-shadow: 0 18px 34px rgba(0, 0, 0, 0.22);
         transform: translateY(-5px);
     }
 
     .trust {
-        background: var(--paper-white);
-        color: var(--tech-grey);
-        padding-bottom: 88px;
-        padding-top: 88px;
+        background: transparent;
+        color: var(--white);
     }
 
     .trust .eyebrow,
@@ -1064,16 +1304,12 @@ import acornWordmark from './public/acorn-wordmark.png';
         text-align: center;
     }
 
-    .trust .eyebrow {
-        color: var(--signal-sage);
-    }
-
     .trust h2 {
-        color: var(--rooted-green);
+        color: var(--white);
     }
 
     .trust-sub {
-        color: var(--muted);
+        color: rgba(245, 242, 235, 0.74);
     }
 
     .trust-sub {
@@ -1083,36 +1319,56 @@ import acornWordmark from './public/acorn-wordmark.png';
         opacity: 0.84;
     }
 
-    .trust-grid {
+    .trust-progression {
         display: grid;
-        gap: 18px;
-        grid-template-columns: repeat(3, 1fr);
-        margin-top: 44px;
+        gap: 22px;
+        margin: 56px auto 0;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        max-width: 1040px;
+        position: relative;
+    }
+
+    .trust-progression::before,
+    .trust-progression::after,
+    .trust-card::before,
+    .trust-card::after {
+        content: none;
+        display: none;
     }
 
     .trust-card {
-        background: var(--white);
-        border: 1px solid var(--border);
+        background: rgba(6, 47, 42, 0.62);
+        border: 1px solid rgba(255, 255, 255, 0.09);
         border-radius: 8px;
-        min-height: 260px;
+        min-height: 0;
         padding: 30px;
         position: relative;
         transition: background 180ms ease, border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
     }
 
+    .trust-level {
+        color: var(--signal-sage);
+        display: block;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        margin-bottom: 18px;
+        text-transform: uppercase;
+    }
+
     .trust-card:hover {
-        background: var(--white);
-        border-color: rgba(92, 75, 67, 0.28);
-        box-shadow: 0 22px 44px rgba(51, 51, 51, 0.14);
+        background: rgba(6, 47, 42, 0.86);
+        border-color: rgba(255, 255, 255, 0.16);
+        box-shadow: 0 22px 44px rgba(0, 0, 0, 0.22);
         transform: translateY(-7px);
     }
 
     .trust-card h3 {
-        color: var(--rooted-green);
+        color: var(--white);
     }
 
     .trust-card p {
-        color: var(--muted);
+        color: rgba(245, 242, 235, 0.72);
     }
 
     .trust-card p {
@@ -1120,29 +1376,55 @@ import acornWordmark from './public/acorn-wordmark.png';
         margin-top: 14px;
     }
 
-    .card-pill {
-        background: rgba(143, 168, 154, 0.18);
-        color: var(--rooted-green);
-        margin-bottom: 18px;
+    .deployment h2 {
+        color: var(--white);
     }
 
-    .icon-mark {
-        margin-bottom: 20px;
+    .deployment {
+        padding-bottom: 66px;
+        padding-top: 66px;
     }
 
-    .why-acorn {
-        background: var(--paper-white);
+    .deployment-inner {
+        display: grid;
+        gap: 38px;
+        grid-template-columns: 0.85fr 1.15fr;
     }
 
-    .vision-card {
-        background:
-            linear-gradient(135deg, rgba(143, 168, 154, 0.12), transparent 32%),
-            var(--white);
-        border: 1px solid var(--border);
-        margin: 0 auto;
-        max-width: 820px;
-        padding: 54px;
-        text-align: center;
+    .deployment-steps {
+        display: grid;
+        gap: 12px;
+        position: relative;
+    }
+
+    .deployment-steps article {
+        align-items: center;
+        background: rgba(6, 47, 42, 0.5);
+        border: 1px solid var(--glass-border);
+        border-radius: 8px;
+        display: grid;
+        gap: 18px;
+        grid-template-columns: 60px 1fr;
+        padding: 16px 18px;
+        transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+    }
+
+    .deployment-steps article:hover {
+        border-color: rgba(255, 255, 255, 0.16);
+        box-shadow: 0 22px 44px rgba(0, 0, 0, 0.22);
+        transform: translateY(-5px);
+    }
+
+    .deployment-steps span {
+        color: var(--signal-sage);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+    }
+
+    .deployment-steps strong {
+        color: var(--white);
+        font-size: 17px;
     }
 
     blockquote {
@@ -1162,90 +1444,9 @@ import acornWordmark from './public/acorn-wordmark.png';
         text-transform: uppercase;
     }
 
-    .protocol {
-        background: var(--paper-white);
-    }
-
-    .protocol-grid {
-        align-items: center;
-        grid-template-columns: 1.15fr 0.85fr;
-    }
-
-    .protocol-preview,
-    .protocol-form,
     .waitlist-form {
         display: flex;
         gap: 12px;
-    }
-
-    .protocol-preview {
-        flex-direction: column;
-    }
-
-    .pdf-card {
-        background:
-            linear-gradient(135deg, rgba(143, 168, 154, 0.16), transparent 40%),
-            var(--white);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        box-shadow: 0 22px 60px rgba(51, 51, 51, 0.12);
-        padding: 30px;
-        position: relative;
-    }
-
-    .protocol .btn-secondary {
-        background: var(--paper-white);
-        width: 100%;
-    }
-
-    .pdf-card::after {
-        background: var(--rooted-green);
-        border-radius: 0 8px 0 8px;
-        content: "";
-        height: 42px;
-        position: absolute;
-        right: -1px;
-        top: -1px;
-        width: 42px;
-    }
-
-    .pdf-kicker {
-        color: var(--signal-sage);
-        display: block;
-        font-size: 11px;
-        font-weight: 800;
-        letter-spacing: 0.12em;
-        margin-bottom: 14px;
-    }
-
-    .pdf-card h3 {
-        max-width: 240px;
-    }
-
-    .pdf-lines {
-        display: grid;
-        gap: 8px;
-        margin: 24px 0;
-    }
-
-    .pdf-lines span {
-        background: var(--border);
-        border-radius: 999px;
-        display: block;
-        height: 8px;
-    }
-
-    .pdf-lines span:nth-child(1) { width: 82%; }
-    .pdf-lines span:nth-child(2) { width: 64%; }
-    .pdf-lines span:nth-child(3) { width: 74%; }
-
-    .pdf-card ul {
-        color: var(--oak-brown);
-        display: grid;
-        font-size: 14px;
-        font-weight: 700;
-        gap: 8px;
-        list-style: none;
     }
 
     input {
@@ -1284,44 +1485,81 @@ import acornWordmark from './public/acorn-wordmark.png';
     }
 
     .waitlist-wrap {
-        background: var(--paper-white);
+        background: transparent;
     }
 
     .waitlist-card {
-        background: var(--white);
-        border: 1px solid var(--border);
+        background: rgba(2, 35, 31, 0.62);
+        border: 1px solid rgba(255, 255, 255, 0.14);
         margin: 0 auto;
         max-width: 760px;
-        padding: 48px;
+        padding: 56px;
         text-align: center;
     }
 
+    .waitlist-card h2 {
+        color: var(--white);
+    }
+
+    .capacity-note {
+        color: rgba(245, 242, 235, 0.86);
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 0;
+        line-height: 1.6;
+        margin: 18px auto 0;
+        max-width: 640px;
+        text-transform: none;
+    }
+
     .waitlist-sub {
+        color: rgba(245, 242, 235, 0.68);
         font-size: 17px;
         margin: 18px auto 30px;
         max-width: 560px;
     }
 
     .site-footer {
-        background: var(--rooted-green);
-        border-top: none;
-        padding: 14px 0;
+        background: var(--ink-green);
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 36px 0 22px;
     }
 
-    .footer-copy,
-    .footer-links a {
+    .footer-grid {
+        display: grid;
+        gap: 40px;
+        grid-template-columns: 1.4fr repeat(3, 0.8fr);
+    }
+
+    .footer-grid > div {
+        display: grid;
+        gap: 10px;
+        align-content: start;
+    }
+
+    .footer-grid h3 {
+        color: var(--white);
+        font-family: var(--font-sans);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+    }
+
+    .footer-grid a {
         color: rgba(255, 255, 255, 0.78);
         font-size: 12px;
         text-decoration: none;
     }
 
-    .footer-links {
-        display: flex;
-        gap: 18px;
+    .footer-grid a:hover {
+        color: var(--white);
     }
 
-    .footer-links a:hover {
-        color: var(--white);
+    .footer-meta {
+        color: rgba(255, 255, 255, 0.46);
+        font-size: 11px;
+        margin-top: 26px;
     }
 
     @keyframes reveal-up {
@@ -1351,16 +1589,42 @@ import acornWordmark from './public/acorn-wordmark.png';
         }
     }
 
-    @keyframes chat-reveal {
-        from {
-            opacity: 0;
-            transform: translateY(14px) scale(0.98);
+    @keyframes node-settle {
+        0%, 100% {
+            transform: translateY(0);
         }
-        to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
+        50% {
+            transform: translateY(-2px);
         }
     }
+
+    @keyframes line-signal {
+        0%, 100% {
+            opacity: 0.36;
+        }
+        50% {
+            opacity: 0.86;
+        }
+    }
+
+    @keyframes slack-reveal {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes cta-pulse {
+        0%, 100% {
+            box-shadow: 0 12px 24px rgba(10, 61, 47, 0.18);
+            transform: translateY(0);
+        }
+        50% {
+            box-shadow: 0 20px 38px rgba(10, 61, 47, 0.26);
+            transform: translateY(-5px);
+        }
+    }
+
 
     @media (prefers-reduced-motion: reduce) {
         html {
@@ -1377,6 +1641,7 @@ import acornWordmark from './public/acorn-wordmark.png';
         }
 
         .hero-inner > *,
+        .founder-strip,
         .need-card,
         .map-copy,
         .map-card,
@@ -1385,8 +1650,7 @@ import acornWordmark from './public/acorn-wordmark.png';
         .slack-card,
         .sovereignty-inner > *,
         .trust-inner > *,
-        .vision-card,
-        .protocol-grid > *,
+        .deployment-inner > *,
         .waitlist-card {
             opacity: 1;
             transform: none;
@@ -1398,17 +1662,47 @@ import acornWordmark from './public/acorn-wordmark.png';
         .map-grid,
         .editorial-card,
         .meet-grid,
-        .trust-grid,
-        .protocol-grid,
+        .deployment-inner,
         .sovereignty-inner,
-        .security-claims {
+        .security-claims,
+        .footer-grid {
             grid-template-columns: 1fr;
         }
 
         .editorial-card,
-        .vision-card,
         .waitlist-card {
             padding: 34px;
+        }
+
+        .map-card,
+        .trust-progression {
+            grid-template-columns: 1fr;
+        }
+
+        .map-card {
+            gap: 20px;
+            padding: 34px;
+        }
+
+        .flow-arrow {
+            transform: rotate(90deg);
+        }
+
+        .orientation-steps {
+            grid-template-columns: 1fr;
+        }
+
+        .orientation-card {
+            min-height: 168px;
+        }
+
+        .orientation-card:not(:last-child)::after {
+            bottom: -26px;
+            content: "↓";
+            left: 50%;
+            right: auto;
+            top: auto;
+            transform: translateX(-50%);
         }
 
         .status-pill {
@@ -1430,9 +1724,13 @@ import acornWordmark from './public/acorn-wordmark.png';
             gap: 12px;
         }
 
+        .founder-strip {
+            grid-template-columns: 1fr;
+        }
+
         .nav-logo img,
         .footer-logo img {
-            width: 140px;
+            height: 40px;
         }
 
         .nav-btn {
@@ -1447,7 +1745,6 @@ import acornWordmark from './public/acorn-wordmark.png';
         }
 
         .hero-buttons,
-        .protocol-form,
         .waitlist-form {
             flex-direction: column;
         }
@@ -1457,8 +1754,12 @@ import acornWordmark from './public/acorn-wordmark.png';
             grid-template-columns: 1fr;
         }
 
+        .acorn-examples {
+            grid-template-columns: 1fr;
+        }
+
         .metric-strip div {
-            border-bottom: 1px solid rgba(92, 75, 67, 0.14);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             border-right: none;
         }
 
@@ -1466,20 +1767,18 @@ import acornWordmark from './public/acorn-wordmark.png';
             border-bottom: none;
         }
 
-        .source-list span::after,
-        .output-list span::before {
-            display: none;
-        }
-
         .map-core {
             height: 170px;
             width: 170px;
         }
 
+        .map-core strong {
+            font-size: 34px;
+        }
+
         .btn-primary,
         .btn-secondary,
-        .waitlist-form button,
-        .protocol-form button {
+        .waitlist-form button {
             width: 100%;
         }
 
@@ -1488,18 +1787,13 @@ import acornWordmark from './public/acorn-wordmark.png';
             padding: 30px;
         }
 
-        .ooda-grid {
-            grid-template-columns: 1fr;
-        }
-
         .user-bubble,
         .acorn-bubble {
             max-width: 100%;
         }
 
-        .footer-inner {
-            align-items: flex-start;
-            flex-direction: column;
+        .footer-grid {
+            gap: 28px;
         }
     }
 </style>
