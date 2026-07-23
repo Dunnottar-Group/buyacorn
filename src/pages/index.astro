@@ -215,24 +215,20 @@ import favicon from './public/favicon.jpeg';
                             <p>Acorn surfaces the risk.</p>
                         </div>
                     </div>
-                    <div class="slack-card" id="acorn-demo" aria-label="Acorn Slack-style conversation">
-                        <div class="slack-top">
-                            <span></span><span></span><span></span>
-                            <strong># founder-ops</strong>
+                    <div class="slackwin" id="acorn-demo" aria-label="An Acorn conversation in Slack">
+                        <div class="sw-head">
+                            <span class="sw-hash">#</span><span class="sw-chan">acorn</span>
+                            <span class="sw-meta">Brian Keith, Acorn</span>
                         </div>
-                        <div class="status-stack">
-                            <span>Reading #sales, #ops, and #finance</span>
-                            <span>Checking last week's calls and open invoices</span>
+                        <div class="sw-feed" id="sw-feed">
+                            <noscript>
+                                <div class="sw-msg in"><div class="sw-avatar" style="background:#3d6b8e">BK</div><div class="sw-body"><div class="sw-metaline"><span class="sw-user">Brian Keith</span><span class="sw-time">7:05 AM</span></div><div class="sw-text">What are the top 3 things I should do this week to help the team close more?</div></div></div>
+                                <div class="sw-msg in"><div class="sw-avatar" style="background:#0a3d2f">A</div><div class="sw-body"><div class="sw-metaline"><span class="sw-user">Acorn</span><span class="sw-app">App</span><span class="sw-time">7:06 AM</span></div><div class="sw-text">Three moves from the owner's seat:<ol><li><strong>Clear your closer's path.</strong> Two warm deals are waiting on a decision from you.</li><li><strong>Give your SDR a target number.</strong> A weekly goal keeps outreach pointed at revenue.</li><li><strong>Collect the open invoices</strong> before they age past 60 days.</li></ol></div></div></div>
+                            </noscript>
                         </div>
-                        <div class="chat-bubble user-bubble reveal-1">What are the top 3 things I should do this week to help the team close more?</div>
-                        <div class="chat-bubble acorn-bubble reveal-2">
-                            <p class="bubble-lead">Three moves from the owner's seat:</p>
-                            <ol class="acorn-list">
-                                <li><strong>Clear your closer's path.</strong> Two warm deals are waiting on a decision from you. A 15-minute call closes both.</li>
-                                <li><strong>Give your SDR a target number.</strong> She's building the call list now. A weekly goal keeps outreach pointed at revenue.</li>
-                                <li><strong>Collect the open invoices</strong> before they age past 60 days. One owner-to-owner email keeps the biggest one moving.</li>
-                            </ol>
-                            <p class="bubble-close">Everything else, content and pipeline, is already running. These three are where your weight moves revenue.</p>
+                        <div class="sw-typing" id="sw-typing"><span>Acorn is typing</span><span class="sw-dots"><span></span><span></span><span></span></span></div>
+                        <div class="sw-compose">
+                            <div class="sw-input"><span id="sw-input-text"></span><span class="sw-caret" id="sw-caret"></span><span class="sw-ph" id="sw-ph">Message #acorn</span></div>
                         </div>
                     </div>
                 </div>
@@ -379,6 +375,107 @@ import favicon from './public/favicon.jpeg';
                 });
             });
 
+        </script>
+
+        <script is:inline>
+            (function () {
+                var win = document.getElementById('acorn-demo');
+                if (!win) return;
+                var feed = win.querySelector('#sw-feed');
+                var typing = win.querySelector('#sw-typing');
+                var inputText = win.querySelector('#sw-input-text');
+                var ph = win.querySelector('#sw-ph');
+                var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+                var Q1 = 'What are the top 3 things I should do this week to help the team close more?';
+                var Q2 = 'Draft the follow-up to the overdue account for me.';
+                var A1 = "Three moves from the owner's seat:"
+                    + '<ol>'
+                    + "<li><strong>Clear your closer's path.</strong> Two warm deals are waiting on a decision from you. A 15-minute call closes both.</li>"
+                    + "<li><strong>Give your SDR a target number.</strong> She's building the call list now, so a weekly goal keeps outreach pointed at revenue.</li>"
+                    + '<li><strong>Collect the open invoices</strong> before they age past 60 days. One owner-to-owner email keeps the biggest one moving.</li>'
+                    + '</ol>'
+                    + '<div class="sw-close">Everything else is already running. These three are where your weight moves revenue.</div>';
+                var A2 = "Done. The draft's in the thread, ready for your review before anything sends.";
+
+                function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+                function row(kind, bodyHTML, time) {
+                    var av = kind === 'brian'
+                        ? '<div class="sw-avatar" style="background:#3d6b8e">BK</div>'
+                        : '<div class="sw-avatar" style="background:#0a3d2f">A</div>';
+                    var name = kind === 'brian'
+                        ? '<span class="sw-user">Brian Keith</span>'
+                        : '<span class="sw-user">Acorn</span><span class="sw-app">App</span>';
+                    var el = document.createElement('div');
+                    el.className = 'sw-msg';
+                    el.innerHTML = av + '<div class="sw-body"><div class="sw-metaline">' + name
+                        + '<span class="sw-time">' + time + '</span></div><div class="sw-text">' + bodyHTML + '</div></div>';
+                    feed.appendChild(el);
+                    requestAnimationFrame(function () { el.classList.add('in'); });
+                    feed.scrollTop = feed.scrollHeight;
+                    return el;
+                }
+
+                function setInput(t) {
+                    inputText.textContent = t;
+                    if (ph) ph.style.display = t ? 'none' : 'inline';
+                    feed.scrollTop = feed.scrollHeight;
+                }
+
+                function type(text, done) {
+                    var i = 0;
+                    (function step() {
+                        setInput(text.slice(0, i));
+                        if (i++ <= text.length) setTimeout(step, 32);
+                        else setTimeout(done, 450);
+                    })();
+                }
+
+                function showTyping(on) {
+                    typing.classList.toggle('show', on);
+                    feed.scrollTop = feed.scrollHeight;
+                }
+
+                function run() {
+                    if (reduce) {
+                        row('brian', esc(Q1), '7:05 AM');
+                        row('acorn', A1, '7:06 AM');
+                        row('brian', esc(Q2), '7:37 AM');
+                        row('acorn', esc(A2), '7:37 AM');
+                        return;
+                    }
+                    type(Q1, function () {
+                        row('brian', esc(Q1), '7:05 AM'); setInput('');
+                        setTimeout(function () {
+                            showTyping(true);
+                            setTimeout(function () {
+                                showTyping(false); row('acorn', A1, '7:06 AM');
+                                setTimeout(function () {
+                                    type(Q2, function () {
+                                        row('brian', esc(Q2), '7:37 AM'); setInput('');
+                                        setTimeout(function () {
+                                            showTyping(true);
+                                            setTimeout(function () {
+                                                showTyping(false); row('acorn', esc(A2), '7:37 AM');
+                                            }, 1200);
+                                        }, 550);
+                                    });
+                                }, 2200);
+                            }, 1600);
+                        }, 550);
+                    });
+                }
+
+                var started = false;
+                function start() { if (started) return; started = true; run(); }
+                if ('IntersectionObserver' in window) {
+                    var io = new IntersectionObserver(function (entries) {
+                        entries.forEach(function (e) { if (e.isIntersecting) { start(); io.disconnect(); } });
+                    }, { threshold: 0.3 });
+                    io.observe(win);
+                } else { start(); }
+            })();
         </script>
     </body>
 </html>
@@ -1347,6 +1444,146 @@ import favicon from './public/favicon.jpeg';
         margin-top: 8px;
         padding: 9px 12px;
         text-transform: uppercase;
+    }
+
+    /* Acorn-in-Slack demo: authentic Slack styling, deliberately not the page palette */
+    .slackwin {
+        background: #ffffff;
+        border: 1px solid rgba(0, 0, 0, 0.14);
+        border-radius: 10px;
+        box-shadow: 0 34px 100px rgba(0, 0, 0, 0.34);
+        color: #1d1c1d;
+        display: flex;
+        flex-direction: column;
+        font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        height: 560px;
+        overflow: hidden;
+    }
+
+    .sw-head {
+        align-items: center;
+        border-bottom: 1px solid #e8e8e8;
+        display: flex;
+        flex: 0 0 auto;
+        gap: 5px;
+        padding: 14px 18px;
+    }
+
+    .sw-hash { color: #616061; font-weight: 700; }
+    .sw-chan { color: #1d1c1d; font-size: 15px; font-weight: 800; }
+    .sw-meta { color: #616061; font-size: 13px; margin-left: 10px; }
+
+    .sw-feed {
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        gap: 18px;
+        overflow-y: auto;
+        padding: 18px;
+        scrollbar-width: none;
+    }
+
+    .sw-feed::-webkit-scrollbar { display: none; }
+
+    .sw-msg {
+        display: grid;
+        gap: 10px;
+        grid-template-columns: 36px 1fr;
+        opacity: 0;
+        transform: translateY(6px);
+        transition: opacity 240ms ease, transform 240ms ease;
+    }
+
+    .sw-msg.in { opacity: 1; transform: none; }
+
+    .sw-avatar {
+        align-items: center;
+        border-radius: 7px;
+        color: #ffffff;
+        display: flex;
+        flex: 0 0 auto;
+        font-size: 14px;
+        font-weight: 700;
+        height: 36px;
+        justify-content: center;
+        width: 36px;
+    }
+
+    .sw-metaline { align-items: baseline; display: flex; flex-wrap: wrap; gap: 8px; }
+    .sw-user { color: #1d1c1d; font-size: 15px; font-weight: 800; }
+
+    .sw-app {
+        background: #e8e8e8;
+        border-radius: 3px;
+        color: #616061;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 1px 5px;
+        text-transform: uppercase;
+    }
+
+    .sw-time { color: #616061; font-size: 12px; }
+    .sw-text { color: #1d1c1d; font-size: 15px; line-height: 1.46; margin-top: 2px; }
+    .sw-text ol { display: grid; gap: 7px; margin: 9px 0; padding-left: 20px; }
+    .sw-text li { color: #1d1c1d; font-size: 15px; line-height: 1.46; }
+    .sw-text strong { font-weight: 800; }
+    .sw-close { color: #454345; margin-top: 9px; }
+
+    .sw-typing {
+        align-items: center;
+        color: #616061;
+        display: none;
+        flex: 0 0 auto;
+        font-size: 13px;
+        font-style: italic;
+        gap: 7px;
+        padding: 0 18px 6px;
+    }
+
+    .sw-typing.show { display: flex; }
+
+    .sw-dots span {
+        animation: sw-blink 1200ms infinite both;
+        background: #9a9a9a;
+        border-radius: 50%;
+        display: inline-block;
+        height: 5px;
+        margin-left: 2px;
+        width: 5px;
+    }
+
+    .sw-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .sw-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+    .sw-compose { flex: 0 0 auto; padding: 8px 16px 16px; }
+
+    .sw-input {
+        align-items: center;
+        border: 1px solid #b7b7b7;
+        border-radius: 8px;
+        color: #1d1c1d;
+        display: flex;
+        font-size: 15px;
+        min-height: 44px;
+        padding: 10px 13px;
+    }
+
+    .sw-ph { color: #8d8d8d; }
+
+    .sw-caret {
+        animation: sw-caret 1s step-end infinite;
+        background: #1d1c1d;
+        display: inline-block;
+        height: 18px;
+        margin: 0 1px;
+        width: 2px;
+    }
+
+    @keyframes sw-blink { 0%, 80%, 100% { opacity: 0.3; } 40% { opacity: 1; } }
+    @keyframes sw-caret { 50% { opacity: 0; } }
+
+    @media (max-width: 640px) {
+        .slackwin { height: 520px; }
     }
 
     .sovereignty-band {
