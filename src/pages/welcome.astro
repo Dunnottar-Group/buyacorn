@@ -8,7 +8,7 @@ import favicon from './public/favicon.jpeg';
 <link rel="icon" type="image/jpeg" href={favicon.src} />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Talk to our founder - Acorn</title>
-<meta name="description" content="You're on the Acorn waitlist. Book a founder orientation call." />
+<meta name="description" content="You're on the Acorn waitlist. Book a call with our founder." />
 <meta name="robots" content="noindex" />
 <script is:inline>
   document.documentElement.classList.add('is-loaded');
@@ -21,17 +21,10 @@ import favicon from './public/favicon.jpeg';
 <style>
   :root {
     --rooted-green: #021F1C;
-    --green-quiet: #032B27;
-    --deepest-green: #021F1C;
     --signal-sage: #A9C3B1;
-    --paper-white: #F4F2EC;
-    --paper-deep: #D7DED8;
-    --ink: #1D2421;
     --muted: #B9C1BB;
     --line: rgba(190, 230, 200, 0.16);
-    --dark-line: rgba(190, 230, 200, 0.16);
     --glass: rgba(255, 255, 255, 0.045);
-    --glass-strong: rgba(255, 255, 255, 0.07);
     --white: #F4F2EC;
     --font-serif: 'EB Garamond', Georgia, serif;
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
@@ -62,27 +55,19 @@ import favicon from './public/favicon.jpeg';
     width: min(1120px, calc(100% - 48px));
   }
 
-  .narrow {
-    max-width: 650px;
+  h1 {
+    color: var(--white);
+    font-family: var(--font-serif);
+    font-size: clamp(56px, 7vw, 82px);
+    font-weight: 500;
+    line-height: 0.96;
+    margin-top: 18px;
   }
 
-  .section {
-    padding: 140px 0;
-  }
-
-  .section-divider {
-    border-top: none;
-  }
-
-  .label-sm {
-    color: var(--signal-sage);
-    display: block;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.16em;
-    line-height: 1.3;
-    text-transform: uppercase;
+  .lead {
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 19px;
+    margin: 20px auto 44px;
   }
 
   .status-badge {
@@ -95,48 +80,8 @@ import favicon from './public/favicon.jpeg';
     font-size: 10px;
     font-weight: 600;
     letter-spacing: 0.16em;
-    margin-bottom: 18px;
     padding: 8px 11px;
     text-transform: uppercase;
-  }
-
-  h1,
-  h2,
-  h3 {
-    font-family: var(--font-serif);
-    font-weight: 500;
-    letter-spacing: 0;
-  }
-
-  h1 {
-    color: var(--white);
-    font-size: clamp(56px, 7vw, 82px);
-    line-height: 0.96;
-    margin-top: 18px;
-  }
-
-  h2 {
-    color: var(--white);
-    font-size: clamp(38px, 4.6vw, 58px);
-    line-height: 1.02;
-  }
-
-  h3 {
-    color: var(--rooted-green);
-    font-size: 30px;
-    line-height: 1.1;
-  }
-
-  p {
-    color: rgba(255, 255, 255, 0.72);
-    line-height: 1.7;
-  }
-
-  .lead {
-    color: rgba(255, 255, 255, 0.78);
-    font-size: 19px;
-    margin-top: 28px;
-    max-width: 650px;
   }
 
   .topbar,
@@ -193,231 +138,13 @@ import favicon from './public/favicon.jpeg';
   }
 
   .hero {
-    padding: 150px 0 168px;
+    padding: 120px 0 140px;
   }
 
-  .hero-grid {
-    align-items: center;
-    display: grid;
-    gap: 84px;
-    grid-template-columns: minmax(0, 1fr) 330px;
-  }
-
-  .process-timeline {
-    background: var(--glass);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    display: grid;
-    gap: 38px;
-    padding: 30px 30px 30px 58px;
-  }
-
-  .process-step {
-    color: rgba(255, 255, 255, 0.42);
-    position: relative;
-    transition: color 180ms ease, transform 180ms ease;
-  }
-
-  .process-step::before {
-    background: var(--rooted-green);
-    border: 1px solid var(--line);
-    border-radius: 50%;
-    content: "";
-    height: 11px;
-    left: -34px;
-    position: absolute;
-    top: 9px;
-    width: 11px;
-  }
-
-  .process-step.complete {
-    color: rgba(255, 255, 255, 0.64);
-  }
-
-  .process-step.complete::before {
-    background: rgba(255, 255, 255, 0.88);
-    border-color: rgba(255, 255, 255, 0.88);
-  }
-
-  .process-step.active {
-    color: var(--white);
-  }
-
-  .process-step.active::before {
-    background: var(--signal-sage);
-    border-color: var(--signal-sage);
-    box-shadow: 0 0 0 7px rgba(169, 195, 177, 0.14);
-  }
-
-  .process-step:hover {
-    color: var(--white);
-    transform: translateX(4px);
-  }
-
-  .process-detail {
-    color: rgba(255, 255, 255, 0);
-    display: block;
-    font-size: 12px;
-    font-weight: 600;
-    margin-top: 5px;
-    transition: color 180ms ease;
-  }
-
-  .process-step:hover .process-detail,
-  .process-step.active .process-detail {
-    color: rgba(255, 255, 255, 0.58);
-  }
-
-  .process-number {
-    display: block;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-  }
-
-  .process-name {
-    display: block;
-    font-family: var(--font-mono);
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    margin-top: 4px;
-  }
-
-  .orientation-system {
-    text-align: center;
-  }
-
-  .orientation-system .label-sm {
-    color: rgba(255, 255, 255, 0.68);
-  }
-
-  .orientation-system h2 {
-    margin: 16px auto 0;
-    max-width: 760px;
-  }
-
-  .orientation-system p {
-    font-size: 18px;
-    margin: 22px auto 0;
-    max-width: 650px;
-  }
-
-  .orientation-copy {
+  .hero-inner {
     margin: 0 auto;
-    max-width: 760px;
-    position: relative;
-  }
-
-  .orientation-copy::before {
-    background: var(--line);
-    content: "";
-    height: 100%;
-    left: -28px;
-    position: absolute;
-    top: 0;
-    width: 1px;
-  }
-
-  .orientation-quote {
-    color: rgba(255, 255, 255, 0.86);
-    font-family: var(--font-serif);
-    font-size: clamp(28px, 3vw, 38px);
-    line-height: 1.16;
-    margin: 34px auto 0;
-    max-width: 620px;
-  }
-
-  .ooda-line {
-    align-items: center;
-    display: grid;
-    gap: 0;
-    grid-template-columns: repeat(4, 1fr);
-    isolation: isolate;
-    margin: 58px auto 0;
-    max-width: 760px;
-    position: relative;
-  }
-
-  .ooda-line::before {
-    background: var(--line);
-    content: "";
-    height: 1px;
-    left: 12%;
-    position: absolute;
-    right: 12%;
-    top: 50%;
-    z-index: 0;
-  }
-
-  .ooda-line::after {
-    animation: orient-line 2200ms ease-in-out infinite;
-    background: var(--signal-sage);
-    content: "";
-    height: 1px;
-    left: 12%;
-    position: absolute;
-    top: 50%;
-    width: 22%;
-    z-index: 0;
-  }
-
-  .ooda-step {
-    background: var(--green-quiet);
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    color: var(--white);
-    font-family: var(--font-mono);
-    font-size: 12px;
-    font-weight: 600;
-    justify-self: center;
-    letter-spacing: 0.08em;
-    padding: 10px 14px;
-    position: relative;
-    text-transform: uppercase;
-    z-index: 2;
-  }
-
-  .ooda-step.muted {
-    color: rgba(255, 255, 255, 0.46);
-  }
-
-  .ooda-step.active {
-    background: var(--signal-sage);
-    border-color: var(--signal-sage);
-    color: var(--rooted-green);
-  }
-
-  .booking-section {
-    padding: 140px 0;
-  }
-
-  .booking-card {
-    background: var(--glass);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    margin: 0 auto;
-    max-width: 800px;
-    padding: 48px;
+    max-width: 820px;
     text-align: center;
-    transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
-  }
-
-  .booking-card:hover {
-    border-color: rgba(199, 217, 205, 0.34);
-    box-shadow: 0 28px 70px rgba(0, 0, 0, 0.24);
-    transform: translateY(-5px);
-  }
-
-  .booking-card h2 {
-    margin-top: 14px;
-  }
-
-  .booking-copy {
-    color: rgba(255, 255, 255, 0.78);
-    font-size: 18px;
-    margin: 20px auto 34px;
   }
 
   .calendly-inline-widget {
@@ -427,123 +154,6 @@ import favicon from './public/favicon.jpeg';
     margin: 0 auto;
     max-width: 100%;
     overflow: hidden;
-  }
-
-  .briefing-card {
-    background: var(--glass);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    color: var(--white);
-    margin: 0 auto;
-    max-width: 920px;
-    overflow: hidden;
-  }
-
-  .briefing-header {
-    align-items: center;
-    background: var(--glass-strong);
-    border-bottom: 1px solid var(--line);
-    display: flex;
-    justify-content: space-between;
-    padding: 18px 28px;
-  }
-
-  .briefing-header span {
-    color: var(--signal-sage);
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-  }
-
-  .briefing-body {
-    align-items: start;
-    display: grid;
-    gap: 38px;
-    grid-template-columns: 0.78fr 1.22fr;
-    padding: 42px;
-  }
-
-  .briefing-copy {
-    align-self: center;
-  }
-
-  .briefing-body h2 {
-    color: var(--white);
-  }
-
-  .briefing-list {
-    display: grid;
-    gap: 12px;
-    list-style: none;
-  }
-
-  .briefing-list li {
-    background: var(--glass);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    color: var(--white);
-    display: grid;
-    gap: 6px;
-    padding: 18px;
-    transition: background 180ms ease, border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
-  }
-
-  .briefing-list li:hover {
-    background: var(--glass-strong);
-    border-color: rgba(199, 217, 205, 0.34);
-    box-shadow: 0 18px 34px rgba(0, 0, 0, 0.18);
-    transform: translateY(-4px);
-  }
-
-  .briefing-list strong {
-    color: var(--signal-sage);
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-
-  .founder-strip {
-    align-items: center;
-    border-bottom: 1px solid var(--line);
-    border-top: 1px solid var(--line);
-    display: flex;
-    gap: 28px;
-    justify-content: center;
-    margin: 0 auto;
-    max-width: 760px;
-    padding: 28px 0;
-  }
-
-  .founder-strip .label-sm {
-    color: rgba(255, 255, 255, 0.62);
-  }
-
-  .founder-links {
-    display: flex;
-    gap: 14px;
-  }
-
-  .founder-links a {
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    border-radius: 6px;
-    color: var(--white);
-    font-size: 13px;
-    font-weight: 800;
-    min-width: 112px;
-    padding: 11px 16px;
-    text-align: center;
-    text-decoration: none;
-    transition: background 180ms ease, border-color 180ms ease, transform 180ms ease;
-  }
-
-  .founder-links a:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.32);
-    transform: translateY(-2px);
   }
 
   .footer {
@@ -576,17 +186,6 @@ import favicon from './public/favicon.jpeg';
     transform: translateY(0);
   }
 
-  @keyframes orient-line {
-    0%, 100% {
-      left: 12%;
-      width: 10%;
-    }
-    50% {
-      left: 42%;
-      width: 32%;
-    }
-  }
-
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;
@@ -608,26 +207,8 @@ import favicon from './public/favicon.jpeg';
   }
 
   @media (max-width: 900px) {
-    .hero-grid,
-    .briefing-body {
-      grid-template-columns: 1fr;
-    }
-
     .hero {
-      padding: 96px 0 120px;
-    }
-
-    .section,
-    .booking-section {
-      padding: 110px 0;
-    }
-
-    .process-timeline {
-      max-width: 360px;
-    }
-
-    .briefing-body {
-      padding: 30px;
+      padding: 84px 0 104px;
     }
   }
 
@@ -637,8 +218,7 @@ import favicon from './public/favicon.jpeg';
     }
 
     .nav-inner,
-    .footer-inner,
-    .founder-strip {
+    .footer-inner {
       align-items: flex-start;
       flex-direction: column;
     }
@@ -646,25 +226,6 @@ import favicon from './public/favicon.jpeg';
     .nav-logo img,
     .footer-logo img {
       height: 40px;
-    }
-
-    .ooda-line {
-      gap: 12px;
-      grid-template-columns: 1fr;
-    }
-
-    .ooda-line::before,
-    .ooda-line::after {
-      display: none;
-    }
-
-    .ooda-step {
-      width: 100%;
-    }
-
-    .founder-links {
-      flex-direction: column;
-      width: 100%;
     }
   }
 </style>
@@ -682,114 +243,15 @@ import favicon from './public/favicon.jpeg';
 
 <main>
   <section class="hero">
-    <div class="shell hero-grid">
-      <div class="narrow" data-reveal>
-        <span class="status-badge">Waitlist Confirmed</span>
-        <span class="label-sm">Early Access Program</span>
-        <h1>Talk to our founder</h1>
-        <p class="lead">Book a call with our founder. We'll talk about how Acorn fits what you're building, how you operate, and the level of control your business requires.</p>
-      </div>
+    <div class="shell hero-inner" data-reveal>
+      <span class="status-badge">Waitlist Confirmed</span>
+      <h1>Talk to our founder</h1>
+      <p class="lead">30 minutes. No pitch. Just clarity.</p>
 
-      <div class="process-timeline" aria-label="Acorn early access process" data-reveal>
-        <div class="process-step complete">
-          <span class="process-number">✓</span>
-          <span class="process-name">Waitlist</span>
-          <span class="process-detail">Application received</span>
-        </div>
-        <div class="process-step active">
-          <span class="process-number">●</span>
-          <span class="process-name">Review</span>
-          <span class="process-detail">Founder review in progress</span>
-        </div>
-        <div class="process-step">
-          <span class="process-number">○</span>
-          <span class="process-name">Orientation</span>
-          <span class="process-detail">Call recommended</span>
-        </div>
-        <div class="process-step">
-          <span class="process-number">○</span>
-          <span class="process-name">Early Access</span>
-          <span class="process-detail">Limited release</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section section-divider orientation-system">
-    <div class="shell" data-reveal>
-      <div class="orientation-copy">
-        <span class="label-sm">Orientation Changes Everything</span>
-        <h2>Most AI systems execute before they understand.</h2>
-        <p>Acorn begins with orientation so execution stays connected to judgment.</p>
-        <div class="orientation-quote">The goal isn't more AI. The goal is better decisions.</div>
-      </div>
-      <div class="ooda-line" aria-label="OODA system">
-        <span class="ooda-step muted">Observe</span>
-        <span class="ooda-step active">Orient</span>
-        <span class="ooda-step muted">Decide</span>
-        <span class="ooda-step muted">Act</span>
-      </div>
-    </div>
-  </section>
-
-  <section class="booking-section section-divider">
-    <div class="shell">
-      <div class="booking-card" data-reveal>
-        <span class="label-sm">Choose a time to talk with our founder to help him understand how to make Acorn work for you</span>
-        <h2>Schedule Your Orientation</h2>
-        <p class="booking-copy">30 minutes.<br />No pitch.<br />Just clarity.</p>
-
-        <!-- Calendly inline widget begin -->
-        <div class="calendly-inline-widget" data-url="https://calendly.com/redbeardbrian/acorn-welcome?hide_event_type_details=1&hide_gdpr_banner=1&primary_color=0a3d2f" style="min-width:320px;height:720px;"></div>
-        <script is:inline type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
-        <!-- Calendly inline widget end -->
-      </div>
-    </div>
-  </section>
-
-  <section class="section section-divider">
-    <div class="shell" data-reveal>
-      <div class="briefing-card">
-        <div class="briefing-header">
-          <span>Operational Review</span>
-          <span>Founder Review</span>
-        </div>
-        <div class="briefing-body">
-          <div class="briefing-copy">
-            <h2>What to expect on the call.</h2>
-          </div>
-          <ul class="briefing-list">
-            <li>
-              <strong>Duration</strong>
-              <span>30 minutes with enough room to understand the actual operating context.</span>
-            </li>
-            <li>
-              <strong>Focus</strong>
-              <span>Your team size, current AI use, and what sovereignty means in your business.</span>
-            </li>
-            <li>
-              <strong>Outcome</strong>
-              <span>If Acorn is a fit, you'll know on the call. If it's not, we'll point you toward what would actually help.</span>
-            </li>
-            <li>
-              <strong>Preparation</strong>
-              <span>The booking form asks for your work email so I can do my homework before we talk.</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section section-divider">
-    <div class="shell" data-reveal>
-      <div class="founder-strip">
-        <span class="label-sm">Connect with Brian</span>
-        <div class="founder-links">
-          <a href="https://www.linkedin.com/in/briankeithal/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          <a href="https://x.com/briankeith" target="_blank" rel="noopener noreferrer">X</a>
-        </div>
-      </div>
+      <!-- Calendly inline widget begin -->
+      <div class="calendly-inline-widget" data-url="https://calendly.com/redbeardbrian/acorn-welcome?hide_event_type_details=1&hide_gdpr_banner=1&primary_color=0a3d2f" style="min-width:320px;height:720px;"></div>
+      <script is:inline type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+      <!-- Calendly inline widget end -->
     </div>
   </section>
 </main>
