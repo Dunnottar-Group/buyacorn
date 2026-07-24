@@ -223,8 +223,8 @@ import favicon from './public/favicon.jpeg';
                         <div class="sw-feed" id="sw-feed">
                             <div class="sw-divider"><span>Today</span></div>
                             <noscript>
-                                <div class="sw-msg in"><div class="sw-avatar" style="background:#3d6b8e">BK</div><div class="sw-body"><div class="sw-metaline"><span class="sw-user">Brian Keith</span><span class="sw-time">7:05 AM</span></div><div class="sw-text">What are the top 3 things I should do this week to help the team close more?</div></div></div>
-                                <div class="sw-msg in"><div class="sw-avatar" style="background:#0a3d2f">A</div><div class="sw-body"><div class="sw-metaline"><span class="sw-user">Acorn</span><span class="sw-app">App</span><span class="sw-time">7:06 AM</span></div><div class="sw-text">Three moves from the owner's seat:<ol><li><strong>Clear your closer's path.</strong> Two warm deals are waiting on a decision from you.</li><li><strong>Give your SDR a target number.</strong> A weekly goal keeps outreach pointed at revenue.</li><li><strong>Collect the open invoices</strong> before they age past 60 days.</li></ol></div></div></div>
+                                <div class="sw-msg in"><div class="sw-avatar" style="background:#3d6b8e">BK</div><div class="sw-body"><div class="sw-metaline"><span class="sw-user">Brian Keith</span><span class="sw-time">8:12 AM</span></div><div class="sw-text">What are the top 3 things I should do this week to help the team close more?</div></div></div>
+                                <div class="sw-msg in"><div class="sw-avatar sw-acorn"><svg viewBox="0 0 128 128" aria-hidden="true"><path d="M50.4 78.5a75.1 75.1 0 0 0-28.5 6.9l24.2-65.7c.7-2 1.9-3.2 3.4-3.2h29c1.5 0 2.7 1.2 3.4 3.2l24.2 65.7s-11.6-7-28.5-7L67 45.5c-.4-1.7-1.6-2.8-2.9-2.8-1.3 0-2.5 1.1-2.9 2.7L50.4 78.5Zm-1.1 28.2Zm-4.2-20.2c-2 6.6-.6 15.8 4.2 20.2a17.5 17.5 0 0 1 .2-.7 5.5 5.5 0 0 1 5.7-4.5c2.8.1 4.3 1.5 4.7 4.7.2 1.1.2 2.3.2 3.5v.4c0 2.7.7 5.2 2.2 7.4a13 13 0 0 0 5.7 4.9v-.3l-.2-.3c-1.8-5.6-.5-9.5 4.4-12.8l1.5-1a73 73 0 0 0 3.2-2.2 16 16 0 0 0 6.8-11.4c.3-2 .1-4-.6-6l-.8.6-1.6 1a37 37 0 0 1-22.4 2.7c-5-.7-9.7-2-13.2-6.2Z"/></svg></div><div class="sw-body"><div class="sw-metaline"><span class="sw-user">Acorn</span><span class="sw-app">App</span><span class="sw-time">8:12 AM</span></div><div class="sw-text">Three moves from the owner's seat:<ol><li><strong>Clear your closer's path.</strong> Two warm deals are waiting on a decision from you.</li><li><strong>Give your SDR a target number.</strong> A weekly goal keeps outreach pointed at revenue.</li><li><strong>Collect the open invoices</strong> before they age past 60 days.</li></ol></div></div></div>
                             </noscript>
                         </div>
                         <div class="sw-typing" id="sw-typing"><span>Acorn is typing</span><span class="sw-dots"><span></span><span></span><span></span></span></div>
@@ -399,8 +399,7 @@ import favicon from './public/favicon.jpeg';
                     + "<li><strong>Give your SDR a target number.</strong> She's building the call list now, so a weekly goal keeps outreach pointed at revenue.</li>"
                     + '<li><strong>Collect the open invoices</strong> before they age past 60 days. One owner-to-owner email keeps the biggest one moving.</li>'
                     + '</ol>'
-                    + '<div class="sw-close">Everything else is already running. These three are where your weight moves revenue.</div>'
-                    + '<div class="sw-reacts"><span class="sw-react">👍 3</span></div>';
+                    + '<div class="sw-close">Everything else is already running. These three are where your weight moves revenue.</div>';
                 var A2 = "Done. The draft's in the thread, ready for your review before anything sends.";
 
                 function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
@@ -408,7 +407,7 @@ import favicon from './public/favicon.jpeg';
                 function row(kind, bodyHTML, time) {
                     var av = kind === 'brian'
                         ? '<div class="sw-avatar" style="background:#3d6b8e">BK</div>'
-                        : '<div class="sw-avatar" style="background:#0a3d2f">A</div>';
+                        : '<div class="sw-avatar sw-acorn"><svg viewBox="0 0 128 128" aria-hidden="true"><path d="M50.4 78.5a75.1 75.1 0 0 0-28.5 6.9l24.2-65.7c.7-2 1.9-3.2 3.4-3.2h29c1.5 0 2.7 1.2 3.4 3.2l24.2 65.7s-11.6-7-28.5-7L67 45.5c-.4-1.7-1.6-2.8-2.9-2.8-1.3 0-2.5 1.1-2.9 2.7L50.4 78.5Zm-1.1 28.2Zm-4.2-20.2c-2 6.6-.6 15.8 4.2 20.2a17.5 17.5 0 0 1 .2-.7 5.5 5.5 0 0 1 5.7-4.5c2.8.1 4.3 1.5 4.7 4.7.2 1.1.2 2.3.2 3.5v.4c0 2.7.7 5.2 2.2 7.4a13 13 0 0 0 5.7 4.9v-.3l-.2-.3c-1.8-5.6-.5-9.5 4.4-12.8l1.5-1a73 73 0 0 0 3.2-2.2 16 16 0 0 0 6.8-11.4c.3-2 .1-4-.6-6l-.8.6-1.6 1a37 37 0 0 1-22.4 2.7c-5-.7-9.7-2-13.2-6.2Z"/></svg></div>';
                     var name = kind === 'brian'
                         ? '<span class="sw-user">Brian Keith</span>'
                         : '<span class="sw-user">Acorn</span><span class="sw-app">App</span>';
@@ -443,25 +442,25 @@ import favicon from './public/favicon.jpeg';
 
                 function run() {
                     if (reduce) {
-                        row('brian', esc(Q1), '7:05 AM');
-                        row('acorn', A1, '7:06 AM');
-                        row('brian', esc(Q2), '7:37 AM');
-                        row('acorn', esc(A2), '7:37 AM');
+                        row('brian', esc(Q1), '8:12 AM');
+                        row('acorn', A1, '8:12 AM');
+                        row('brian', esc(Q2), '8:12 AM');
+                        row('acorn', esc(A2), '8:12 AM');
                         return;
                     }
                     type(Q1, function () {
-                        row('brian', esc(Q1), '7:05 AM'); setInput('');
+                        row('brian', esc(Q1), '8:12 AM'); setInput('');
                         setTimeout(function () {
                             showTyping(true);
                             setTimeout(function () {
-                                showTyping(false); row('acorn', A1, '7:06 AM');
+                                showTyping(false); row('acorn', A1, '8:12 AM');
                                 setTimeout(function () {
                                     type(Q2, function () {
-                                        row('brian', esc(Q2), '7:37 AM'); setInput('');
+                                        row('brian', esc(Q2), '8:12 AM'); setInput('');
                                         setTimeout(function () {
                                             showTyping(true);
                                             setTimeout(function () {
-                                                showTyping(false); row('acorn', esc(A2), '7:37 AM');
+                                                showTyping(false); row('acorn', esc(A2), '8:12 AM');
                                             }, 1200);
                                         }, 550);
                                     });
@@ -2153,6 +2152,9 @@ import favicon from './public/favicon.jpeg';
         justify-content: center;
         width: 36px;
     }
+    .sw-acorn { background: #0a3d2f; }
+    .sw-avatar svg { display: block; height: 22px; width: 22px; }
+    .sw-avatar svg path { fill: #f4f2ec; }
     .sw-body { min-width: 0; }
     .sw-metaline { align-items: baseline; display: flex; flex-wrap: wrap; gap: 8px; line-height: 1.2; }
     .sw-user { color: #1d1c1d; font-size: 15px; font-weight: 900; }
