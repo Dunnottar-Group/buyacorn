@@ -1,0 +1,987 @@
+/*
+ * buyacorn.com brand tokens (verified from the live buyacorn.com CSS,
+ * founder direction 2026-07-20). These are the exact variable names and
+ * values buyacorn.com itself uses, pulled here so the launch-site bundle
+ * (site/) reads as one brand with the marketing site without importing
+ * its Astro build. --bg/--fg/--muted/--accent/--border stay as the
+ * layer every existing rule in this file already references; they now
+ * point at the buyacorn tokens instead of the old placeholder palette.
+ */
+:root {
+  --paper-white: #f4f2ec;
+  --ink-green: #021f1c;
+  --rooted-green: #032b27;
+  --rooted-green-hover: #083329;
+  --signal-sage: #a9c3b1;
+  --oak-brown: #5c4b43;
+  --tech-grey: #333333;
+  --muted: #b9c1bb;
+  --white: #fff;
+  --glass: #ffffff0b;
+  --glass-border: #bee6c829;
+
+  --bg: var(--paper-white);
+  --fg: var(--ink-green);
+  --accent: var(--rooted-green);
+  --border: #d8d4c6;
+  --max-width: 44rem;
+}
+
+* { box-sizing: border-box; }
+
+html { color-scheme: light; }
+
+body {
+  margin: 0;
+  background: var(--paper-white);
+  color: var(--tech-grey);
+  font-family: "Inter", ui-sans-serif, system-ui, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.55;
+}
+
+h1, h2, h3 {
+  font-family: "EB Garamond", ui-serif, Georgia, "Times New Roman", serif;
+  color: var(--ink-green);
+}
+
+.site-header, .site-footer {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1.25rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.85rem;
+}
+
+.site-header .wordmark {
+  color: var(--ink-green);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.site-header .wordmark-img {
+  height: 2rem;
+  width: auto;
+  display: block;
+}
+
+.site-header nav a, .site-footer a {
+  color: var(--ink-green);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* buyacorn.com primary button (issue: branding match 2026-07-20). Matches
+   buyacorn's own .btn-primary: rooted-green fill, paper-white text, and
+   a darker rooted-green on hover. Applied to every primary call to
+   action across the bundle (waitlist/alpha submits, status confirm
+   buttons, book-a-call links) so every page shares one button language. */
+.btn-primary {
+  display: inline-block;
+  background: var(--rooted-green);
+  color: var(--paper-white);
+  border: 1px solid var(--rooted-green);
+  padding: 0.65rem 1.25rem;
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 4px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.btn-primary:hover { background: var(--rooted-green-hover); border-color: var(--rooted-green-hover); }
+.btn-primary:disabled, .btn-primary[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+main {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1.25rem 4rem;
+}
+
+section { padding: 2.5rem 0; border-top: 1px solid var(--border); }
+section:first-of-type { border-top: none; padding-top: 1rem; }
+
+h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 1rem; }
+h2 { font-size: 1.25rem; margin: 0 0 0.75rem; }
+
+.lede { color: var(--muted); font-size: 1.1rem; }
+
+.cta {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.7rem 1.25rem;
+  background: var(--rooted-green);
+  border: 1px solid var(--rooted-green);
+  color: var(--paper-white);
+  text-decoration: none;
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-radius: 4px;
+}
+.cta:hover { background: var(--rooted-green-hover); border-color: var(--rooted-green-hover); }
+
+.scope-note, .attribution-note, .form-fallback-note, .optional {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.alpha-philosophy {
+  color: var(--fg);
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+blockquote {
+  font-style: italic;
+  border-left: 2px solid var(--accent);
+  padding-left: 1rem;
+  margin: 0;
+}
+.attrib { color: var(--muted); font-size: 0.9rem; margin-top: 0.35rem; }
+
+ul { padding-left: 1.25rem; }
+
+.waitlist-form {
+  display: grid;
+  gap: 0.9rem;
+  margin-top: 1.25rem;
+  max-width: 26rem;
+}
+.waitlist-form label {
+  display: grid;
+  gap: 0.3rem;
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.85rem;
+  color: var(--oak-brown);
+}
+.waitlist-form input {
+  font: inherit;
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-size: 1rem;
+  padding: 0.55rem 0.6rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--fg);
+}
+.waitlist-form button {
+  justify-self: start;
+  padding: 0.65rem 1.2rem;
+  background: var(--rooted-green);
+  color: var(--paper-white);
+  border: 1px solid var(--rooted-green);
+  border-radius: 4px;
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.waitlist-form button:hover { background: var(--rooted-green-hover); border-color: var(--rooted-green-hover); }
+
+.form-error {
+  color: #7a2e2e;
+  background: #f7e6e6;
+  border: 1px solid #d8b4b4;
+  border-radius: 4px;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.9rem;
+  margin: 0;
+}
+.form-error[hidden] { display: none; }
+
+.referred-by {
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.85rem;
+  color: var(--signal-sage);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.consent-check {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem;
+  align-items: start;
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.92rem;
+  color: var(--fg);
+}
+.consent-check input[type="checkbox"] {
+  margin-top: 0.2rem;
+}
+
+.alpha-agreement code {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.9em;
+  background: var(--border);
+  padding: 0.1em 0.3em;
+}
+
+/* buyacorn.com/status walkthrough (issue #227) */
+.status-philosophy {
+  color: var(--fg);
+  font-weight: 600;
+}
+.status-privacy { color: var(--muted); font-size: 0.95rem; }
+.status-note { color: var(--muted); }
+.status-progress { border-top: none; padding-top: 0; }
+.status-count { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.4rem; }
+.status-bar {
+  height: 8px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.status-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+.status-steps { border-top: none; padding-top: 0.5rem; }
+.status-step {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem 1.1rem;
+  margin: 0.6rem 0;
+}
+.status-step-current { border-color: var(--accent); }
+.status-step-done { opacity: 0.72; }
+.status-step-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.status-step-marker {
+  flex: 0 0 auto;
+  width: 1.7rem;
+  height: 1.7rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+.status-step-done .status-step-marker { border-color: var(--accent); color: var(--accent); }
+.status-step-current .status-step-marker { border-color: var(--accent); color: var(--accent); }
+.status-step-title { font-weight: 600; flex: 1 1 auto; }
+.status-step-badge {
+  flex: 0 0 auto;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+.status-step-current .status-step-badge { color: var(--accent); }
+.status-step-guide { margin: 0.7rem 0 0; color: var(--fg); font-size: 0.95rem; }
+.status-all-done { color: var(--accent); font-weight: 600; }
+
+/* buyacorn.com/status Slack setup section (issue #243) */
+.slack-setup details { border: 1px solid var(--border); border-radius: 6px; padding: 0.6rem 1.1rem; }
+.slack-setup summary { cursor: pointer; }
+.slack-setup summary h2 { display: inline; font-size: 1.15rem; }
+.slack-steps li { margin: 0.5rem 0; }
+.manifest-tools { margin: 0.3rem 0; }
+.copy-button {
+  font-size: 0.8rem;
+  padding: 0.25rem 0.7rem;
+  background: none;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  border-radius: 4px;
+  cursor: pointer;
+}
+.copy-button:hover { background: var(--accent); color: var(--bg); }
+.manifest-block {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.8rem 1rem;
+  overflow-x: auto;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+/* buyacorn.com/status infra-first walkthrough rework (founder direction
+   2026-07-20). Every step is server-rendered so the full ordered journey
+   is visible with no magic-link token; static/status.js only overlays
+   done-state on top of what is already here. */
+.status-phase {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.1rem 1.25rem;
+  margin: 0.9rem 0;
+  background: var(--white);
+}
+.status-phase-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+}
+.status-phase-marker {
+  flex: 0 0 auto;
+  width: 1.8rem;
+  height: 1.8rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  font-size: 0.9rem;
+  color: var(--oak-brown);
+}
+.status-phase-title { font-weight: 600; flex: 1 1 auto; font-size: 1.05rem; color: var(--ink-green); }
+.status-phase-guide { margin: 0 0 0.7rem; font-size: 0.95rem; }
+.status-phase-status {
+  flex: 0 0 auto;
+  font-size: 0.78rem;
+  color: var(--muted);
+  text-align: right;
+  max-width: 15rem;
+}
+
+/* Three distinct visual languages so a click never reads the same as
+   telemetry proof (founder rule: "a click is a claim, telemetry is
+   proof"). Applied by static/status.js as it learns per-user state:
+     .status-*-is-done          real green, box-verified telemetry only
+     .status-*-awaiting-verification   user clicked "I've done this";
+                                        the real green still depends on
+                                        the box confirming later
+     .status-*-user-confirmed-final    a step whose only completion
+                                        signal is the user's own
+                                        confirmation (e.g. the workspace
+                                        URL) -- final, but never styled
+                                        as box-verified proof */
+.status-phase-is-done .status-phase-marker,
+.status-step-is-done .status-step-marker {
+  border-color: var(--rooted-green);
+  background: var(--rooted-green);
+  color: var(--paper-white);
+}
+.status-phase-is-done .status-phase-status,
+.status-step-is-done .status-step-badge {
+  color: var(--rooted-green);
+}
+.status-phase-awaiting-verification .status-phase-marker,
+.status-step-awaiting-verification .status-step-marker {
+  border-color: var(--oak-brown);
+  color: var(--oak-brown);
+}
+.status-phase-awaiting-verification .status-phase-status,
+.status-step-awaiting-verification .status-step-badge {
+  color: var(--oak-brown);
+}
+/* User-confirmed final: an OUTLINED green check, distinct from the filled
+   box-verified green, so a click never reads the same as server proof. */
+.status-phase-user-confirmed-final .status-phase-marker,
+.status-step-user-confirmed-final .status-step-marker {
+  border-color: var(--rooted-green);
+  color: var(--rooted-green);
+  background: transparent;
+}
+.status-phase-user-confirmed-final .status-phase-status,
+.status-step-user-confirmed-final .status-step-badge {
+  color: var(--rooted-green);
+}
+/* Server-phase manual-advance fallback (live-alpha /status blocker,
+   2026-07-24): a self-attestation on an otherwise box-verified phase.
+   Same outlined-green language as user-confirmed-final above -- it must
+   never read as the filled box-verified green, since this is a click,
+   not telemetry proof. */
+.status-phase-server-manual-advance .status-phase-marker {
+  border-color: var(--rooted-green);
+  color: var(--rooted-green);
+  background: transparent;
+}
+.status-phase-server-manual-advance .status-phase-status {
+  color: var(--rooted-green);
+}
+
+.status-substeps { margin: 0.6rem 0 0; padding: 0; list-style: none; }
+.status-substep {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0;
+  border-top: 1px dashed var(--border);
+  font-size: 0.92rem;
+}
+.status-substep:first-child { border-top: none; }
+.status-substep-marker { flex: 0 0 auto; font-size: 0.85rem; color: var(--muted); }
+.status-substep-box-verified.status-substep-is-done .status-substep-marker { color: var(--rooted-green); }
+.status-substep-title { flex: 1 1 auto; }
+
+/* Keys-phase instruction guides (PR #259 review feedback, 2026-07-20):
+   the open-Secrets-Manager checkbox and the per-key "how do I get it" /
+   "where do I put it" links + copyable secret name. */
+.status-key-substep { align-items: flex-start; }
+.status-key-substep-body { flex: 1 1 auto; }
+.status-key-howto { margin: 0.4rem 0 0; padding-left: 1.2rem; font-size: 0.88rem; }
+.status-key-howto li { margin: 0.3rem 0; }
+.status-key-link { color: var(--accent); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+.status-key-howto code {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.85em;
+  background: var(--paper-white);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.1rem 0.35rem;
+}
+.status-key-copy { font-size: 0.72rem; padding: 0.15rem 0.5rem; margin-left: 0.2rem; }
+.status-key-howto-collapsed { display: none; }
+
+/* Deferred optional steps (ACR-496, fixes #496). Visually a sibling of
+   the phase cards, never one of them: it carries none of the numbered
+   marker, progress, or collapse chrome, so it reads as an offer sitting
+   after the finish line rather than a step still owed. The classes here
+   mirror .status-substep's shape on purpose (same rhythm on the page)
+   while staying a distinct selector, because .status-substep is exactly
+   what status.js's recomputeProgress() counts. */
+.status-optional-section { margin: 2rem 0 0; padding: 0; border-top: 1px dashed var(--border); }
+.status-optional-heading { margin: 1.5rem 0 0.3rem; font-size: 1.15rem; }
+.status-optional-intro { margin: 0 0 1rem; color: var(--muted); font-size: 0.92rem; }
+.status-optional-group {
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  background: var(--white);
+  padding: 1rem 1.25rem;
+}
+.status-optional-group-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.status-optional-group-badge {
+  flex: 0 0 auto;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--oak-brown);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.1rem 0.55rem;
+}
+.status-optional-group-title { flex: 1 1 auto; font-weight: 700; }
+.status-optional-group-guide { margin: 0.6rem 0 0; color: var(--muted); font-size: 0.92rem; }
+.status-optional-substeps { margin: 0.8rem 0 0; padding: 0; list-style: none; }
+.status-optional-substep {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.4rem 0;
+  border-top: 1px dashed var(--border);
+  font-size: 0.92rem;
+}
+.status-optional-substep:first-child { border-top: none; }
+.status-optional-substep-marker { flex: 0 0 auto; font-size: 0.85rem; color: var(--muted); }
+.status-optional-substep-is-done .status-optional-substep-marker { color: var(--rooted-green); }
+.status-optional-substep-title { font-weight: 600; }
+
+.status-open-sm-check {
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+  padding: 0.7rem 0.9rem;
+  margin: 0 0 0.7rem;
+}
+.status-open-sm-label { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; cursor: pointer; }
+.status-open-sm-guide { margin: 0.4rem 0 0; font-size: 0.85rem; color: var(--muted); }
+.status-open-sm-checked .status-open-sm-title { color: var(--rooted-green); }
+
+/* ACR-434: the DocumentDB wrong-turn guard and the AWS wizard-defaults
+   walk-through, both inside .status-open-sm-check above. */
+.status-open-sm-wrong-page {
+  margin: 0.6rem 0 0;
+  font-size: 0.85rem;
+  color: var(--oak-brown);
+  border-left: 3px solid var(--oak-brown);
+  padding-left: 0.6rem;
+}
+.status-open-sm-wizard { margin: 0.7rem 0 0; }
+.status-open-sm-wizard-lead { margin: 0.5rem 0 0.3rem; font-size: 0.88rem; }
+.status-open-sm-wizard-list { margin: 0.3rem 0 0; padding-left: 1.2rem; font-size: 0.85rem; color: var(--muted); }
+.status-open-sm-wizard-list li { margin: 0.25rem 0; }
+
+/* ACR-434: the keys-phase glossary (inline definitions on first use). */
+.status-keys-glossary { margin: 0.6rem 0 0.8rem; font-size: 0.88rem; }
+.status-keys-glossary dt { font-weight: 600; margin-top: 0.5rem; }
+.status-keys-glossary dd { margin: 0.15rem 0 0; color: var(--muted); }
+
+/* ACR-434's screenshot placeholders now share ACR-440's markup and CSS
+   (.status-screenshot-slot / .status-screenshot-placeholder, further
+   below) -- see site/lib/status_walkthrough.py's _screenshot_slot()
+   docstring for the #434/#440 rebase reconciliation. This rule used to
+   style ACR-434's own now-removed markup (a bare <figure> with a
+   .status-screenshot-pending <span>); keeping it here as well as 440's
+   block double-bordered and double-padded every slot. */
+
+/* ACR-434: the reference from a key step's how-to down to its own row on
+   the #status-verifications panel. */
+.status-key-verify-reference { margin: 0.5rem 0 0; font-size: 0.85rem; color: var(--muted); }
+.status-key-verify-reference a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+
+/* Server-phase manual-advance fallback (live-alpha /status blocker,
+   2026-07-24). Same dashed-box shape as .status-open-sm-check above. */
+.status-server-manual-advance {
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+  padding: 0.7rem 0.9rem;
+  margin: 0.7rem 0 0;
+}
+.status-server-manual-advance-label { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; cursor: pointer; }
+.status-server-manual-advance-note { margin: 0.4rem 0 0; font-size: 0.85rem; color: var(--muted); }
+
+.status-launch-placeholder {
+  border: 1px dashed var(--oak-brown);
+  border-radius: 6px;
+  padding: 0.8rem 1rem;
+  margin: 0.6rem 0;
+}
+.status-placeholder-label {
+  display: inline-block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--oak-brown);
+  margin-bottom: 0.4rem;
+}
+.status-placeholder-note { margin: 0.5rem 0 0; font-size: 0.85rem; color: var(--muted); }
+
+/* ACR-352: the real launch control, once launch_stack.json is filled in
+   and valid. Solid border (vs. the placeholder's dashed one) marks the
+   visual difference between "not wired yet" and "ready to click". */
+.status-launch-ready {
+  border: 1px solid var(--rooted-green);
+  border-radius: 6px;
+  padding: 0.8rem 1rem;
+  margin: 0.6rem 0;
+}
+.status-launch-howto { margin: 0.6rem 0 0; padding-left: 1.2rem; font-size: 0.88rem; }
+.status-launch-howto li { margin: 0.3rem 0; }
+
+.status-confirm-button {
+  margin: 0.6rem 0 0;
+}
+.status-confirm-button:disabled { opacity: 0.55; cursor: default; }
+
+.status-workspace-choice {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin: 0.6rem 0;
+}
+.status-workspace-choice label { display: flex; align-items: center; gap: 0.4rem; font-size: 0.92rem; }
+.status-workspace-branch { margin-top: 0.6rem; }
+.status-workspace-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+.status-workspace-form input {
+  font: inherit;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--border);
+  color: var(--fg);
+  min-width: 14rem;
+}
+
+.status-support {
+  margin: 0.6rem 0 0;
+  font-size: 0.85rem;
+}
+.status-support-link { color: var(--oak-brown); text-decoration: underline; text-underline-offset: 2px; }
+
+/* "Checks your server runs on its own" panel (issue #435's frontend
+   slice, founder ask 2026-07-24 night): distinguishes, visually and in
+   words, "checked and failed" from "no result has arrived yet" -- see
+   lib/status_verifications.py and lib/onboarding_status.
+   VERIFICATION_STATE_COPY for where the sentences and the honesty
+   guarantee live. Four states, one color/marker each; "stale" is a
+   client-side escalation of "unchecked" after a wait, never its own
+   server-reported state. */
+.status-verifications { margin: 2rem 0; }
+.status-verify-panel {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--white);
+  padding: 1rem 1.25rem;
+}
+.status-verify-intro { margin: 0 0 0.8rem; color: var(--muted); font-size: 0.9rem; }
+.status-verify-list { margin: 0; padding: 0; list-style: none; }
+.status-verify-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  border-top: 1px dashed var(--border);
+  font-size: 0.92rem;
+}
+.status-verify-row:first-child { border-top: none; }
+.status-verify-marker { flex: 0 0 auto; font-size: 0.85rem; color: var(--muted); }
+.status-verify-label { flex: 0 1 auto; font-weight: 600; }
+.status-verify-sentence { flex: 1 1 auto; color: var(--muted); }
+.status-verify-detail {
+  flex: 1 1 100%;
+  margin: 0.3rem 0 0;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  background: var(--parchment, #f6f1e7);
+  font-size: 0.88rem;
+}
+.status-verify-row[data-verify-state="done"] .status-verify-marker { color: var(--rooted-green); }
+.status-verify-row[data-verify-state="done"] .status-verify-sentence { color: var(--rooted-green); }
+.status-verify-row[data-verify-state="blocked"] .status-verify-marker { color: var(--oak-brown); }
+.status-verify-row[data-verify-state="blocked"] .status-verify-sentence { color: var(--oak-brown); }
+.status-verify-row[data-verify-state="stale"] .status-verify-sentence { color: var(--oak-brown); }
+/* "optional" (ACR-496, fixes #496): an absent Grok/Gemini key is a user
+   choice, never a defect, so this state deliberately declares NO color
+   rule of its own. It inherits the same muted marker/sentence every
+   neutral row already uses, and the oak-brown "found a problem"
+   treatment above is reachable only from data-verify-state="blocked" or
+   "stale", neither of which an optional row can ever hold (see
+   status.js's beginVerifyAwaitClocks / checkVerifyStaleTimers and
+   lib/onboarding_status.resolve_verification_state). The one visual
+   difference is the label's own "(optional)" suffix, which comes from
+   VERIFICATION_COPY, not from CSS. */
+.status-verify-support { margin: 0.9rem 0 0; font-size: 0.85rem; }
+.status-verify-support-link { color: var(--oak-brown); text-decoration: underline; text-underline-offset: 2px; }
+
+/* Request-help control (ACR-283 part 1): a prominent, always-visible
+   standing offer, distinct from the per-step support links above and
+   the chatbot stub below. See the WIDGET_SEAM comment beside the panel
+   markup in status_body.html.tmpl for where the live-chat widget lands. */
+.status-help {
+  margin: 2rem 0;
+  padding: 1.1rem 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--white);
+}
+.status-help h2 { margin: 0 0 0.5rem; color: var(--ink-green); font-size: 1.1rem; }
+
+/* Persistent support chatbot stub (Part C, founder direction 2026-07-20).
+   No live bot in this build -- see the CHATBOT_SEAM comment beside the
+   panel markup in status_body.html.tmpl and the stub wiring in
+   static/status.js.
+
+   #288 (founder-observed live bug, screenshot-confirmed): this used to
+   carry its OWN floating launcher bubble, fixed bottom-right, which
+   collided with the live Tawk widget's own bubble in the same corner.
+   FIX: the launcher bubble is gone. The panel opens only through the
+   setup chrome's "Ask the chat" button and a stuck block's "Ask the
+   chat" button, so at rest this wrapper renders nothing and the
+   bottom-right corner belongs to Tawk alone. When open, the panel sits
+   well clear of that corner (bottom offset below reserves >100px). */
+.status-chatbot {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 7rem;
+  z-index: 20;
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+.status-chatbot-panel {
+  width: 17rem;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 6px 24px rgba(2, 31, 28, 0.18);
+}
+.status-chatbot-title { font-weight: 600; margin: 0 0 0.4rem; color: var(--ink-green); }
+.status-chatbot-body { margin: 0 0 0.6rem; font-size: 0.88rem; color: var(--tech-grey); }
+.status-chatbot-stub-tag {
+  display: inline-block;
+  font-size: 0.68rem;
+  color: var(--oak-brown);
+  margin-bottom: 0.4rem;
+}
+.status-chatbot-close {
+  display: block;
+  margin-top: 0.6rem;
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--oak-brown);
+  font: inherit;
+  font-size: 0.85rem;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+/* buyacorn.com/status UX round 2 (issue #270). */
+
+/* Welcome + setup chrome. */
+.status-welcome-payoff { font-size: 1.05rem; color: var(--fg); }
+.status-welcome-sovereignty, .status-welcome-time { color: var(--muted); font-size: 0.95rem; }
+.status-philosophy { color: var(--fg); font-weight: 600; }
+.status-welcome-anchor { margin-left: 0.8rem; font-size: 0.9rem; }
+.status-chrome { border-top: none; padding-top: 0.5rem; }
+.status-chrome-line { font-weight: 600; color: var(--ink-green); margin: 0 0 0.2rem; }
+.status-chrome-minutes { color: var(--muted); font-size: 0.9rem; margin: 0 0 0.6rem; }
+.status-legend { color: var(--muted); font-size: 0.82rem; margin: 0.5rem 0 0.6rem; }
+/* Request-help control (ACR-283 part 1, relocated into the setup chrome's
+   own support pair under round 2): a prominent, always-visible standing
+   offer, distinct from the per-step support links and the chatbot stub. */
+.status-chrome-support { margin: 0.3rem 0 0; }
+.status-chrome-request-help-copy { margin: 0 0 0.4rem; font-size: 0.9rem; color: var(--fg); }
+.status-chrome-support-actions { display: flex; gap: 1rem; margin: 0; }
+.status-chrome-help {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--oak-brown);
+  font: inherit;
+  font-size: 0.9rem;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+.status-help {
+  margin: 2rem 0;
+  padding: 1.1rem 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--white);
+}
+.status-help-call { display: inline-block; margin-top: 0.2rem; }
+
+/* All-done health line. */
+.status-health { border-top: none; padding-top: 0.5rem; }
+.status-health-line {
+  font-family: "EB Garamond", ui-serif, Georgia, serif;
+  font-size: 1.25rem;
+  color: var(--rooted-green);
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Progressive disclosure: phase body collapses; the head stays visible. */
+.status-phase-body { margin-top: 0.2rem; }
+.status-phase-collapsed .status-phase-body { display: none; }
+.status-phase-head { cursor: pointer; }
+.status-phase-current { border-color: var(--accent); }
+.status-phase-locked { opacity: 0.7; }
+.status-phase-locked .status-phase-marker { border-color: var(--border); color: var(--muted); }
+.status-phase-done { background: var(--paper-white); }
+.status-phase-done .status-phase-marker {
+  border-color: var(--rooted-green);
+}
+
+/* Slim silent-check rows. */
+.status-phase-slim { padding: 0.7rem 1.25rem; }
+.status-phase-slim .status-phase-marker { width: 1.4rem; height: 1.4rem; font-size: 0.8rem; }
+.status-silent-row { margin: 0.3rem 0 0; font-size: 0.9rem; color: var(--muted); }
+
+/* AWS-account phase. */
+.status-aws-branch { margin-top: 0.6rem; }
+.status-aws-howto { padding-left: 1.2rem; font-size: 0.9rem; }
+.status-aws-howto li { margin: 0.3rem 0; }
+.status-aws-verify-note, .status-aws-card-note { font-size: 0.88rem; color: var(--muted); margin: 0.5rem 0 0; }
+.status-aws-check { margin-top: 0.7rem; }
+.status-aws-label { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; cursor: pointer; }
+
+/* Key-step "I did this" user-claim intermediate. */
+.status-key-claim-row { margin: 0.4rem 0 0; display: flex; align-items: center; gap: 0.6rem; }
+.status-claim-button {
+  font-size: 0.78rem;
+  padding: 0.2rem 0.7rem;
+  background: none;
+  border: 1px solid var(--oak-brown);
+  color: var(--oak-brown);
+  border-radius: 4px;
+  cursor: pointer;
+}
+.status-key-claim-note { font-size: 0.82rem; color: var(--oak-brown); display: none; }
+.status-substep-awaiting .status-key-claim-note { display: inline; }
+.status-substep-awaiting .status-substep-marker { color: var(--oak-brown); }
+
+/* Inline Slack app clicks. */
+.status-app-clicks { padding-left: 1.2rem; font-size: 0.9rem; margin: 0.4rem 0; }
+.status-app-clicks li { margin: 0.3rem 0; }
+
+/* ACR-440: two-column App A / App B separation for the Slack-app phases,
+   the four-token overview above them, wrong-page guards, token
+   destination cards, self-checks, and screenshot slots. Anna Leigh's
+   #440 friction was losing track of which token went with which app --
+   every rule below exists to make that visually impossible. */
+.status-slack-apps-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin: 0.9rem 0;
+}
+@media (min-width: 56rem) {
+  .status-slack-apps-grid { grid-template-columns: 1fr 1fr; }
+  .status-slack-apps-overview { grid-column: 1 / -1; }
+}
+.status-slack-app-col { min-width: 0; }
+.status-slack-app-col .status-phase { margin: 0; height: 100%; }
+.status-slack-app-col[data-app-column="A"] .status-phase { border-left: 4px solid var(--accent); }
+.status-slack-app-col[data-app-column="B"] .status-phase { border-left: 4px solid var(--oak-brown); }
+.status-slack-apps-overview {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.9rem 1.1rem;
+  background: var(--white);
+}
+.status-slack-apps-why { margin: 0 0 0.6rem; font-size: 0.92rem; }
+.status-token-map { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.status-token-map th, .status-token-map td { text-align: left; padding: 0.35rem 0.5rem; border-bottom: 1px solid var(--border); }
+.status-token-map-app { font-weight: 600; color: var(--accent); }
+.status-app-column-badge {
+  display: inline-block;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  margin-bottom: 0.5rem;
+}
+.status-app-column-badge-a { background: var(--signal-sage); color: var(--ink-green); }
+.status-app-column-badge-b { background: var(--paper-white); color: var(--oak-brown); border: 1px solid var(--oak-brown); }
+.status-slack-app-col .status-substeps > li { margin: 1rem 0; }
+.status-app-substep-body { display: block; }
+.status-wrong-page-guard {
+  border-left: 3px solid var(--oak-brown);
+  background: var(--paper-white);
+  padding: 0.45rem 0.7rem;
+  margin: 0.4rem 0;
+  font-size: 0.85rem;
+  color: var(--oak-brown);
+  border-radius: 0 4px 4px 0;
+}
+.status-critical-callout {
+  border: 1px solid var(--oak-brown);
+  background: var(--paper-white);
+  padding: 0.5rem 0.7rem;
+  margin: 0.5rem 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--oak-brown);
+  border-radius: 4px;
+}
+.status-token-card {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.6rem 0.8rem;
+  margin: 0.5rem 0;
+  font-size: 0.88rem;
+}
+.status-token-card-label { font-weight: 600; margin: 0 0 0.2rem; }
+.status-token-card-from, .status-token-card-to { margin: 0.15rem 0; }
+.status-self-check { font-size: 0.85rem; color: var(--muted); margin: 0.4rem 0; }
+.status-screenshot-slot { margin: 0.5rem 0; }
+.status-screenshot-placeholder {
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+  padding: 1.2rem;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.82rem;
+  background: var(--paper-white);
+}
+.status-screenshot-slot figcaption { font-size: 0.78rem; color: var(--muted); margin-top: 0.25rem; }
+
+/* Admin fork on the two Slack-app phases (#275). */
+.status-admin-fork {
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+  padding: 0.7rem 0.9rem;
+  margin: 0 0 0.8rem;
+}
+.status-admin-fork-question { font-weight: 600; margin: 0 0 0.4rem; }
+.status-admin-fork-not-admin { margin-top: 0.6rem; }
+.status-admin-fork-collapsed { display: none; }
+.status-admin-fork-lead { margin: 0 0 0.4rem; font-size: 0.9rem; }
+.status-admin-fork-message { margin-bottom: 0.5rem; }
+.status-admin-fork-waiting-note { font-size: 0.85rem; color: var(--oak-brown); margin-top: 0.4rem; }
+.status-phase-it-notified .status-phase-marker { color: var(--oak-brown); }
+
+/* Stuck / return attention state. */
+.status-stuck {
+  border: 1px solid var(--oak-brown);
+  border-radius: 6px;
+  padding: 0.8rem 1rem;
+  margin: 0.7rem 0 0;
+  background: var(--paper-white);
+}
+.status-stuck-head { font-weight: 600; color: var(--oak-brown); margin: 0 0 0.3rem; }
+.status-stuck-lead { margin: 0.3rem 0 0.2rem; font-size: 0.9rem; }
+.status-stuck-list { margin: 0.2rem 0 0.5rem; font-size: 0.9rem; }
+.status-stuck-affordances { display: flex; align-items: center; gap: 0.8rem; margin: 0.4rem 0 0; }
+.status-stuck-chat {
+  background: none;
+  border: 1px solid var(--oak-brown);
+  color: var(--oak-brown);
+  border-radius: 4px;
+  padding: 0.4rem 0.9rem;
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+/* Finale "Open #acorn" deep link (#292). The inactive state reuses the
+   existing .btn-primary[aria-disabled="true"] rule above for its dimmed
+   look; only the container spacing and fallback copy need their own
+   rules here. */
+.status-open-acorn { margin: 0.6rem 0 0.8rem; }
+.status-open-acorn-fallback { margin: 0 0 0.5rem; font-size: 0.85rem; color: var(--muted); }
+.status-open-acorn-button { display: inline-block; }
+
+/* Celebration block on the final phase. */
+.status-celebration {
+  border: 1px solid var(--rooted-green);
+  border-radius: 8px;
+  padding: 1rem 1.1rem;
+  margin: 0.6rem 0 0;
+  background: var(--paper-white);
+}
+.status-celebration-head {
+  font-family: "EB Garamond", ui-serif, Georgia, serif;
+  font-size: 1.3rem;
+  color: var(--rooted-green);
+  font-weight: 600;
+  margin: 0 0 0.4rem;
+}
+.status-celebration-body { margin: 0 0 0.7rem; font-size: 0.95rem; }
+
+/* Per-step help panel FAQ buttons. */
+.status-chatbot-faqs { margin: 0.2rem 0 0.6rem; }
+.status-faq-item { margin: 0.3rem 0; }
+.status-faq-q {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.4rem 0.6rem;
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--ink-green);
+  cursor: pointer;
+}
+.status-faq-q-open { border-color: var(--accent); font-weight: 600; }
+.status-faq-a { margin: 0.3rem 0 0.2rem; font-size: 0.85rem; color: var(--tech-grey); }
+
+/* "Talk to a human" leads the chatbot/FAQ panel (ACR-283 part 2). */
+.status-chatbot-talk-human {
+  display: block;
+  margin-bottom: 0.7rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--border);
+  font-weight: 600;
+  color: var(--ink-green);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}

@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Acorn Alpha: interim agreement</title>
+  <meta name="description" content="Interim Acorn Alpha Program agreement, pending professional legal review.">
+  <link rel="canonical" href="https://buyacorn.com/alpha/agreement">
+  <link rel="icon" href="/static/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="/">
+      <img src="/static/acorn-wordmark.png" alt="Acorn Rooted Intelligence" class="wordmark-img">
+    </a>
+    <nav>
+      <a href="/#waitlist">Join the waitlist</a>
+    </nav>
+  </header>
+  <main>
+    <section class="legal-placeholder alpha-agreement">
+      <h1>Acorn Alpha Program: Interim Agreement and End User License</h1>
+
+      <blockquote>
+        <strong>Interim draft, not attorney work product.</strong> This agreement was drafted by
+        the Acorn founder as a good-faith placeholder so the alpha program can begin. It has not
+        been reviewed by a licensed attorney. A counsel-drafted version, expected around late
+        July 2026, will supersede this document in full upon issuance, and each alpha member will
+        be asked to accept that version when it arrives. Have counsel review before relying on
+        this for anything consequential.
+      </blockquote>
+
+      <blockquote>
+        <strong>Founder fill-ins pending before this agreement is offered for signature:</strong>
+        <code>[ENTITY]</code> (Red Beard Consulting LLC once formed, or "Brian Keith d/b/a Red
+        Beard Consulting" in the interim, pending confirmation of current legal status),
+        <code>[GOVERNING-STATE]</code>, <code>[EFFECTIVE-DATE]</code>, <code>[CONTACT-EMAIL]</code>.
+      </blockquote>
+
+      <p>
+        This Interim Agreement (the "Agreement") is between <code>[ENTITY]</code> ("Provider,"
+        "we," "us") and the individual or company accepting it ("Member," "you"), effective on
+        acceptance (<code>[EFFECTIVE-DATE]</code>).
+      </p>
+
+      <h2>1. What Acorn is</h2>
+      <p>
+        Acorn is pre-release software: a sovereign AI chief of staff that runs on infrastructure
+        you own and control, your cloud server, your team chat workspace, your AI-provider
+        accounts. You are joining the Alpha Program to help test and improve it.
+      </p>
+
+      <h2>2. The alpha grant: Acorn, free for life</h2>
+      <p>
+        As thanks for your testing participation, Provider grants you a perpetual, royalty-free,
+        non-transferable license to run one instance of Acorn for your own business use, at no
+        Acorn subscription fee, for as long as you wish. This grant is personal to you (or your
+        company) and may not be resold, sublicensed, or assigned without our written consent. It
+        covers the Acorn software and updates. It does not cover the third-party infrastructure
+        and services you run it on (Section 4).
+      </p>
+
+      <h2>3. Alpha status: provided "as is"</h2>
+      <p>
+        Acorn is pre-release, evolving software provided "as is" and "as available." To the
+        fullest extent permitted by law, Provider disclaims all warranties, express or implied,
+        including merchantability, fitness for a particular purpose, and non-infringement. Alpha
+        software may contain defects, may change or break between updates, and should not be
+        relied upon as the sole system of record for any critical business decision. You use it
+        at your own risk and are responsible for your own backups and verification of anything
+        that matters.
+      </p>
+
+      <h2>4. Sovereignty: your infrastructure, your keys, your data</h2>
+      <p>This is the core of Acorn and a non-negotiable design line.</p>
+      <ul>
+        <li>
+          You provision and pay for your own infrastructure: your cloud compute (for example an
+          AWS EC2 instance), your team-chat workspace, and your own AI-provider API keys
+          (Anthropic, xAI/Grok, Google, and similar). These are billed to you directly by those
+          providers. Onboarding walks you through this.
+        </li>
+        <li>
+          Provider never holds, stores, or has standing access to your provider API keys or your
+          business data. Your keys live in your own secrets store (for example AWS Secrets
+          Manager) in your own account. We cannot read them and do not want to.
+        </li>
+        <li>You own your data. Everything Acorn captures, writes, or reasons over on your instance is yours.</li>
+        <li>
+          Provisioning may report step-completion status back to us (for example, secrets
+          configured: yes or no) so we can help you finish setup. This is a completion signal
+          only and never includes the underlying secret values or your business data (Section 6).
+        </li>
+      </ul>
+
+      <h2>5. Updates and the self-improving loop: your consents</h2>
+      <p>By accepting, and again confirmed during onboarding, you consent to:</p>
+      <ul>
+        <li>
+          Automatic updates (AUTO_UPDATE, on by default, disclosed): your instance will fetch and
+          apply improvements. You may opt out.
+        </li>
+        <li>
+          The self-improving loop (data-sharing tier 3, on by default): your instance shares
+          distilled learnings that help every Acorn improve. You may reduce this to health and
+          telemetry only (tier 2 or below) at any time with a single command. What crosses the
+          wire is defined by a strict schema. Your business content is end-to-end encrypted to us
+          and never transits in readable form, and health signals carry no business content. See
+          the data-share tiers disclosed at onboarding.
+        </li>
+      </ul>
+      <p>You will give these consents on the record during onboarding. Nothing here waives that step.</p>
+
+      <h2>6. Status reporting without data access</h2>
+      <p>
+        So we can support your onboarding and operation, your instance may transmit completion
+        and health signals only, for example which setup steps are done, software version,
+        whether services are healthy, error counts. These signals are structured booleans and
+        counters. They never include your API keys, secrets, message content, files, or any
+        business data, and Provider has no mechanism to retrieve those through this channel.
+      </p>
+
+      <h2>7. Feedback</h2>
+      <p>
+        The alpha is about learning from real use. Sharing feedback, and joining periodic
+        check-in calls, is encouraged and invited but not required; there is no obligation to
+        participate on any schedule. If you do give feedback, you grant Provider a perpetual,
+        royalty-free license to use it to improve Acorn, with no obligation to compensate you.
+        Being named as a reference or providing a testimonial is entirely optional and only with
+        your consent.
+      </p>
+
+      <h2>8. Confidentiality</h2>
+      <p>
+        As a pre-release participant you may see unreleased features, roadmaps, and pricing.
+        Please keep non-public information about Acorn's internals confidential during the alpha.
+        This does not restrict your right to publicly describe your own experience using Acorn.
+      </p>
+
+      <h2>9. Intellectual property</h2>
+      <p>
+        Acorn, its software, and all improvements remain Provider's property. This Agreement
+        grants a license to use, not any ownership of, the software. Your data and your own
+        materials remain yours.
+      </p>
+
+      <h2>10. No paid obligation; conversion is optional and manual</h2>
+      <p>
+        You will not be charged as an alpha member, and the alpha does not automatically convert
+        to any paid plan. If you and Provider later choose a paid Founding Member relationship,
+        that is a separate, mutually agreed, manually initiated step, never automatic.
+      </p>
+
+      <h2>11. Limitation of liability</h2>
+      <p>
+        To the fullest extent permitted by law, Provider's total liability arising out of or
+        relating to this Agreement or Acorn will not exceed USD $100, and Provider will not be
+        liable for indirect, incidental, consequential, special, or punitive damages, or for lost
+        profits or data. Because the alpha is provided free of charge, you acknowledge this
+        allocation of risk is reasonable.
+      </p>
+
+      <h2>12. Term and termination</h2>
+      <p>
+        Either party may end participation at any time on written notice. Your perpetual license
+        under Section 2 survives termination of the program unless you breach this Agreement (for
+        example, resale, or misuse of confidential information), in which case the license may be
+        revoked. Sections 3, 7, 8, 9, and 11 survive.
+      </p>
+
+      <h2>13. Interim nature; supersession</h2>
+      <p>
+        This is an interim, founder-drafted agreement. A counsel-prepared version will replace it
+        in full when issued, and you will be asked to accept that version. Where this document is
+        silent or unclear, the parties will act in good faith pending the counsel version.
+      </p>
+
+      <h2>14. Governing law</h2>
+      <p>This Agreement is governed by the laws of <code>[GOVERNING-STATE]</code>, without regard to conflict-of-laws rules.</p>
+
+      <hr>
+
+      <p>
+        <strong>Acceptance.</strong> By checking "I agree" at buyacorn.com/alpha (or by written
+        confirmation), you acknowledge you have read and accept this Interim Agreement, and that a
+        counsel-drafted version will supersede it.
+      </p>
+
+      <p><a href="/alpha">Back to the alpha application</a></p>
+    </section>
+
+  </main>
+  <footer class="site-footer">
+    <p>Humans orient. Agents execute. Trust is earned.</p>
+    <p><a href="/legal/eula">Terms</a></p>
+  </footer>
+</body>
+</html>
