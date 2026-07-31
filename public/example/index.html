@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Acorn: Example Founder's invitation</title>
+  <meta name="description" content="Example Founder invited you to Acorn. Join the Founding Member waitlist.">
+  <link rel="canonical" href="https://buyacorn.com/example">
+  <link rel="icon" href="/static/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="/">
+      <img src="/static/acorn-wordmark.png" alt="Acorn Rooted Intelligence" class="wordmark-img">
+    </a>
+    <nav>
+      <a href="/#waitlist">Join the waitlist</a>
+    </nav>
+  </header>
+  <main>
+    <section class="hero member-hero">
+      <p class="referred-by">You were sent here by Example Founder of Example Co.</p>
+      <h1>You need AI that works for you.</h1>
+      <p class="lede">
+        With Acorn, you own the strategy and orientation. Acorn owns coordination and execution.
+        You keep control of your data the whole way through.
+      </p>
+      <a class="cta btn-primary" href="#waitlist">Join the Founding Member waitlist</a>
+    </section>
+
+    <section class="member-quote">
+      <blockquote>&ldquo;Replace this fixture with a real Founding Member quote once they opt in.&rdquo;</blockquote>
+      <p class="attrib">Example Founder</p>
+    </section>
+
+    <section class="offer">
+      <h2>The Founding Member offer</h2>
+      <p>
+        Acorn is $5,000/mo at retail. Founding Members lock in
+        $2,500/mo, half of retail, for life, as long as the
+        membership stays in good standing.
+      </p>
+      <p><a href="/#waitlist">See the full offer and refund guarantee</a>.</p>
+    </section>
+
+    <section class="waitlist" id="waitlist">
+      <h2>Join the waitlist</h2>
+      <p>Twenty-five Founding seats. Once they fill, they stay closed.</p>
+      <p class="attribution-note">
+        Applying from this page credits Example Founder for the referral.
+      </p>
+      <form id="waitlist-form" class="waitlist-form" method="POST" action="mailto:waitlist@buyacorn.com" novalidate>
+        <label for="name">Name
+          <input id="name" name="name" type="text" required autocomplete="name">
+        </label>
+        <label for="email">Email
+          <input id="email" name="email" type="email" required autocomplete="email">
+        </label>
+        <label for="company">Company
+          <input id="company" name="company" type="text" required autocomplete="organization">
+        </label>
+        <input type="hidden" name="source_slug" value="example">
+        <button type="submit">Request an invitation</button>
+      </form>
+      <p class="form-fallback-note">
+        If the form above does not submit, it opens an email instead. Either way reaches the waitlist,
+        and either way credits Example Founder.
+      </p>
+      <script src="/static/waitlist-submit.js" defer></script>
+    </section>
+
+  </main>
+  <footer class="site-footer">
+    <p>Humans orient. Agents execute. Trust is earned.</p>
+    <p><a href="/legal/eula">Terms</a></p>
+  </footer>
+</body>
+</html>
