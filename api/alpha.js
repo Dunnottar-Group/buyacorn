@@ -67,32 +67,65 @@ function isFormEncoded(req) {
   return ct.split(';')[0].trim().toLowerCase() === 'application/x-www-form-urlencoded';
 }
 
-// A checked HTML checkbox posts its value ("on" by default); an UNCHECKED one
-// is absent from the body entirely. validate() requires a literal `true`, and
-// that must not change -- the JSON path depends on it and consent is legally
+// A checked HTML checkbox posts its value ("on" when the input declares none,
+// which is the case in every one of our templates); an UNCHECKED one is absent
+// from the body entirely. validate() requires a literal `true`, and that must
+// not change -- the JSON path depends on it and consent is legally
 // load-bearing. So the mapping happens HERE, in the decoder, where an encoding
-// detail belongs. An explicit negative is honoured as a negative rather than
-// read as "a non-empty string, therefore yes".
+// detail belongs.
+//
+// ALLOWLIST, not a denylist. The first version of this code accepted anything
+// present that was not one of a few English negatives, which meant
+// `eula_accepted=I+do+not+agree` and `eula_accepted=nope` both recorded consent
+// as GIVEN. Caught by the adversarial critic pass on this PR, and it is exactly
+// the wrong polarity for a field that has to hold up as a record of what
+// somebody agreed to. Anything that is not a recognised affirmative is a
+// refusal, so an unrecognised value fails CLOSED and the applicant is told
+// which consent is missing.
 const CONSENT_FIELDS = ['eula_accepted', 'auto_update_ack', 'data_share_tier3_ack'];
-const EXPLICIT_NEGATIVES = new Set(['', 'false', '0', 'off', 'no']);
+const AFFIRMATIVE_VALUES = new Set(['on', 'true', '1', 'yes', 'checked']);
 
 async function readFormBody(req) {
   let params;
   if (req.body !== undefined && req.body !== null && typeof req.body === 'object') {
-    // Vercel's Node runtime already parsed it.
+    // Vercel's Node runtime already parsed it. A repeated key can arrive as an
+    // ARRAY; append each element so the last-wins rule below is the same one
+    // URLSearchParams would have applied to the raw body. Without this,
+    // `['false','on']` stringified to "false,on" and was read as a value in
+    // its own right.
     params = new URLSearchParams();
-    for (const [k, v] of Object.entries(req.body)) params.append(k, v);
+    for (const [k, v] of Object.entries(req.body)) {
+      if (Array.isArray(v)) for (const item of v) params.append(k, item);
+      else params.append(k, v);
+    }
   } else {
     const raw = typeof req.body === 'string' ? req.body : await readRawBody(req);
     params = new URLSearchParams(raw);
   }
   const out = {};
-  for (const [k, v] of params) out[k] = v;
+  for (const [k, v] of params) out[k] = v; // last wins, as URLSearchParams reads it
   for (const f of CONSENT_FIELDS) {
     out[f] = Object.prototype.hasOwnProperty.call(out, f)
-      && !EXPLICIT_NEGATIVES.has(String(out[f]).trim().toLowerCase());
+      && AFFIRMATIVE_VALUES.has(String(out[f]).trim().toLowerCase());
   }
   return out;
+}
+
+// CRITIC DEFECT 2: the error page used to hard-code a link back to /alpha, so a
+// no-JS applicant who came from /tre and mistyped their email was sent to the
+// generic page, whose hidden source_slug is empty. The retry then lost the
+// referral credit -- attribution destroyed on the failure path, by new surface
+// this PR introduced.
+//
+// The slug is applicant-supplied, so it is not interpolated on trust: only a
+// strict lowercase slug is accepted, it can contain no slash, dot, colon or
+// scheme, and it is emitted through htmlEscape. That makes the link
+// same-origin by construction.
+const SAFE_SLUG_RE = /^[a-z0-9](?:[a-z0-9-]{0,62}[a-z0-9])?$/;
+
+function backLinkFor(slug, fallback) {
+  const s = (slug || '').toString().trim().toLowerCase();
+  return SAFE_SLUG_RE.test(s) ? `/${s}#apply` : fallback;
 }
 
 function htmlEscape(v) {
@@ -106,7 +139,7 @@ function htmlEscape(v) {
 // A human pressed a button; they get a page, not raw JSON. The message is the
 // REAL error state, escaped, never an invented reason and never anything the
 // applicant typed echoed back into a document.
-function respondFormError(res, status, message) {
+function respondFormError(res, status, message, backHref = '/alpha#apply') {
   const page = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -116,7 +149,7 @@ function respondFormError(res, status, message) {
 <h1>Your application was not sent</h1>
 <p>Nothing was saved. Here is exactly what went wrong:</p>
 <p><strong>${htmlEscape(message)}</strong></p>
-<p><a href="/alpha#apply">Go back and try again</a>, or email
+<p><a href="${htmlEscape(backHref)}">Go back and try again</a>, or email
 <a href="mailto:alpha@buyacorn.com">alpha@buyacorn.com</a> with the same details
 and we will add you by hand.</p>
 </body></html>
@@ -196,9 +229,13 @@ export default async function handler(req, res) {
     return res.status(400).json({ ok: false, error: 'request body was not valid JSON' });
   }
 
+  // The page this applicant actually submitted from, so a retry keeps its
+  // referral credit. Derived from the form's own hidden field, validated.
+  const backHref = backLinkFor(body && body.source_slug, '/alpha#apply');
+
   const v = validate(body);
   if (v.errors.length > 0) {
-    if (asForm) return respondFormError(res, 400, v.errors.join('; '));
+    if (asForm) return respondFormError(res, 400, v.errors.join('; '), backHref);
     return res.status(400).json({ ok: false, error: v.errors.join('; ') });
   }
 
@@ -207,7 +244,7 @@ export default async function handler(req, res) {
     process.env.ALPHA_SLACK_CHANNEL || process.env.CONTACT_SLACK_CHANNEL || 'C0ATRTVMCH1'; // HQ #acorn
   if (!token) {
     if (asForm) {
-      return respondFormError(res, 503, 'delivery channel is not configured on the server');
+      return respondFormError(res, 503, 'delivery channel is not configured on the server', backHref);
     }
     return res.status(503).json({
       ok: false,
@@ -250,13 +287,13 @@ export default async function handler(req, res) {
     slack = await resp.json();
   } catch (err) {
     const detail = `delivery request failed: ${err && err.name === 'AbortError' ? 'timed out' : 'network error'}`;
-    if (asForm) return respondFormError(res, 502, detail);
+    if (asForm) return respondFormError(res, 502, detail, backHref);
     return res.status(502).json({ ok: false, error: detail });
   }
 
   if (!slack || slack.ok !== true) {
     const detail = `delivery was not confirmed (${(slack && slack.error) || 'no response detail'})`;
-    if (asForm) return respondFormError(res, 502, detail);
+    if (asForm) return respondFormError(res, 502, detail, backHref);
     return res.status(502).json({ ok: false, error: detail });
   }
 

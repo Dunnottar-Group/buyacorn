@@ -157,11 +157,75 @@ r = await call(alphaHandler, formReq(
 ), TOKEN_ENV);
 ok('eula_accepted=false is honoured as a NO', r.statusCode === 400 && r.raw.includes('the EULA must be accepted'), r.raw);
 
-// The error page must never become an injection surface.
+// CRITIC FINDING 1 (adversarial pass on this PR): the consent decoder was a
+// DENYLIST -- anything present that was not one of a few English negatives
+// recorded consent as GIVEN. These are the exact inputs the critic supplied.
+for (const forged of ['I+do+not+agree', 'nope', 'null', 'undefined', 'x']) {
+  r = await call(alphaHandler, formReq(
+    `name=A&email=a%40b.com&company=C&eula_accepted=${forged}` +
+    '&auto_update_ack=on&data_share_tier3_ack=on'
+  ), TOKEN_ENV);
+  ok(`eula_accepted=${forged} is NOT consent (allowlist, not denylist)`,
+    r.statusCode === 400 && r.raw.includes('the EULA must be accepted'), `got ${r.statusCode}`);
+}
+// A repeated key arriving pre-parsed as an ARRAY used to stringify to
+// "false,on" and be read as a value in its own right.
+r = await call(alphaHandler, {
+  method: 'POST',
+  headers: { 'content-type': 'application/x-www-form-urlencoded' },
+  body: { name: 'A', email: 'a@b.com', company: 'C',
+          eula_accepted: ['false', 'on'], auto_update_ack: 'on', data_share_tier3_ack: 'on' },
+}, TOKEN_ENV);
+ok('a pre-parsed ARRAY consent value applies last-wins, not string concatenation',
+  r.statusCode === 303, `got ${r.statusCode}`);
+r = await call(alphaHandler, {
+  method: 'POST',
+  headers: { 'content-type': 'application/x-www-form-urlencoded' },
+  body: { name: 'A', email: 'a@b.com', company: 'C',
+          eula_accepted: ['on', 'false'], auto_update_ack: 'on', data_share_tier3_ack: 'on' },
+}, TOKEN_ENV);
+ok('an array ending in a negative is a refusal (fails CLOSED)',
+  r.statusCode === 400 && r.raw.includes('the EULA must be accepted'), `got ${r.statusCode}`);
+
+// CRITIC FINDING 2: the error page hard-coded /alpha#apply, so a no-JS
+// applicant from /tre who mistyped their email retried on a page whose hidden
+// source_slug is empty and lost the referral credit.
+r = await call(alphaHandler, formReq(
+  'name=A&email=not-an-email&company=C&source_slug=tre' +
+  '&eula_accepted=on&auto_update_ack=on&data_share_tier3_ack=on'
+), TOKEN_ENV);
+ok('the retry link keeps the referral page (/tre), not the generic /alpha',
+  r.raw.includes('href="/tre#apply"'), r.raw);
+// ...but a slug is applicant-supplied, so it must never build a hostile link.
+for (const [hostile, why] of [
+  ['https%3A%2F%2Fevil.example', 'absolute URL'],
+  ['%2F%2Fevil.example', 'protocol-relative URL'],
+  ['..%2F..%2Fetc', 'traversal'],
+  ['a%22%3E%3Cscript%3E', 'markup injection'],
+]) {
+  r = await call(alphaHandler, formReq(
+    `name=A&email=not-an-email&company=C&source_slug=${hostile}` +
+    '&eula_accepted=on&auto_update_ack=on&data_share_tier3_ack=on'
+  ), TOKEN_ENV);
+  ok(`a hostile source_slug (${why}) falls back to /alpha#apply`,
+    r.raw.includes('href="/alpha#apply"') && !r.raw.includes('evil.example'), r.raw);
+}
+
+// CRITIC FINDING 4: the previous escape assertion was VACUOUS. validate() only
+// ever emits fixed strings, so no attacker byte reached the message slot and
+// the assertion stayed green whether htmlEscape worked or was deleted. This is
+// the reachable path where NON-fixed text does reach it: Slack's own error
+// field, echoed into the 502 page.
+global.fetch = async () => ({ json: async () => ({ ok: false, error: '<img src=x onerror=alert(1)>' }) });
+r = await call(alphaHandler, formReq(ALPHA_FORM_BODY), TOKEN_ENV);
+ok('an upstream error containing markup is ESCAPED, not rendered',
+  r.statusCode === 502
+  && r.raw.includes('&lt;img src=x onerror=alert(1)&gt;')
+  && !r.raw.includes('<img src=x'), r.raw);
+global.fetch = fetchOk;
+
 r = await call(alphaHandler, formReq('name=&email=&company=&eula_accepted=on&auto_update_ack=on&data_share_tier3_ack=on'), TOKEN_ENV);
 ok('a validation failure answers 400 HTML', r.statusCode === 400 && r.raw.includes('name is required'));
-ok('the error page escapes markup (no raw < > in the message slot)',
-  !/<strong>[^<]*<[a-z]/i.test(r.raw));
 
 // Real failure states must reach the human as themselves.
 r = await call(alphaHandler, formReq(ALPHA_FORM_BODY), {});
@@ -267,6 +331,23 @@ ok('failure page offers a route back', r.raw.includes('/#waitlist'));
 r = await call(waitlistHandler, formReq(WAITLIST_FORM_BODY), {});
 ok('no token -> 503 HTML naming the real cause',
   r.statusCode === 503 && r.raw.includes('delivery channel is not configured'), r.raw);
+
+// CRITIC FINDING 2, waitlist side.
+r = await call(waitlistHandler, formReq('name=A&email=not-an-email&company=C&source_slug=example'), TOKEN_ENV);
+ok('the retry link keeps the member page (/example), not the generic homepage',
+  r.raw.includes('href="/example#waitlist"'), r.raw);
+r = await call(waitlistHandler, formReq('name=A&email=not-an-email&company=C&source_slug=%2F%2Fevil.example'), TOKEN_ENV);
+ok('a hostile source_slug falls back to /#waitlist',
+  r.raw.includes('href="/#waitlist"') && !r.raw.includes('evil.example'), r.raw);
+
+// CRITIC FINDING 4, waitlist side: the reachable non-fixed message path.
+global.fetch = async () => ({ json: async () => ({ ok: false, error: '<script>alert(1)</script>' }) });
+r = await call(waitlistHandler, formReq(WAITLIST_FORM_BODY), TOKEN_ENV);
+ok('an upstream error containing markup is ESCAPED, not rendered',
+  r.statusCode === 502
+  && r.raw.includes('&lt;script&gt;alert(1)&lt;/script&gt;')
+  && !r.raw.includes('<script>alert(1)'), r.raw);
+global.fetch = fetchOk;
 
 console.log('\napi/waitlist.js -- JSON path MUST BE UNCHANGED');
 const WAITLIST_JSON = {

@@ -83,16 +83,37 @@ function isFormEncoded(req) {
 async function readFormBody(req) {
   let params;
   if (req.body !== undefined && req.body !== null && typeof req.body === 'object') {
-    // Vercel's Node runtime already parsed it.
+    // Vercel's Node runtime already parsed it. A repeated key can arrive as an
+    // ARRAY; append each element so the last-wins rule below is the same one
+    // URLSearchParams would have applied to the raw body.
     params = new URLSearchParams();
-    for (const [k, v] of Object.entries(req.body)) params.append(k, v);
+    for (const [k, v] of Object.entries(req.body)) {
+      if (Array.isArray(v)) for (const item of v) params.append(k, item);
+      else params.append(k, v);
+    }
   } else {
     const raw = typeof req.body === 'string' ? req.body : await readRawBody(req);
     params = new URLSearchParams(raw);
   }
   const out = {};
-  for (const [k, v] of params) out[k] = v;
+  for (const [k, v] of params) out[k] = v; // last wins, as URLSearchParams reads it
   return out;
+}
+
+// CRITIC DEFECT 2: the error page used to hard-code a link back to /#waitlist,
+// so a no-JS visitor who came from a member page such as /example and mistyped
+// their email was sent to the generic homepage, whose hidden source_slug is
+// empty. The retry then lost the referral credit -- attribution destroyed on
+// the failure path, by new surface this PR introduced.
+//
+// The slug is visitor-supplied, so it is not interpolated on trust: only a
+// strict lowercase slug is accepted, it can contain no slash, dot, colon or
+// scheme, and it is emitted through htmlEscape. Same-origin by construction.
+const SAFE_SLUG_RE = /^[a-z0-9](?:[a-z0-9-]{0,62}[a-z0-9])?$/;
+
+function backLinkFor(slug, fallback) {
+  const s = (slug || '').toString().trim().toLowerCase();
+  return SAFE_SLUG_RE.test(s) ? `/${s}#waitlist` : fallback;
 }
 
 function htmlEscape(v) {
@@ -106,7 +127,7 @@ function htmlEscape(v) {
 // A human pressed a button; they get a page, not raw JSON. The message is the
 // REAL error state, escaped, never an invented reason and never anything the
 // visitor typed echoed back into a document.
-function respondFormError(res, status, message) {
+function respondFormError(res, status, message, backHref = '/#waitlist') {
   const page = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -116,7 +137,7 @@ function respondFormError(res, status, message) {
 <h1>Your details were not sent</h1>
 <p>Nothing was saved. Here is exactly what went wrong:</p>
 <p><strong>${htmlEscape(message)}</strong></p>
-<p><a href="/#waitlist">Go back and try again</a>, or email
+<p><a href="${htmlEscape(backHref)}">Go back and try again</a>, or email
 <a href="mailto:waitlist@buyacorn.com">waitlist@buyacorn.com</a> with your name
 and company and we will add you by hand.</p>
 </body></html>
@@ -199,9 +220,13 @@ export default async function handler(req, res) {
     return res.status(200).json({ ok: true, ref: 'received' });
   }
 
+  // The page this visitor actually submitted from, so a retry keeps its
+  // referral credit. Derived from the form's own hidden field, validated.
+  const backHref = backLinkFor(body && body.source_slug, '/#waitlist');
+
   const v = validate(body);
   if (v.errors.length > 0) {
-    if (asForm) return respondFormError(res, 400, v.errors.join('; '));
+    if (asForm) return respondFormError(res, 400, v.errors.join('; '), backHref);
     return res.status(400).json({ ok: false, error: v.errors.join('; ') });
   }
 
@@ -210,7 +235,7 @@ export default async function handler(req, res) {
     process.env.WAITLIST_SLACK_CHANNEL || process.env.CONTACT_SLACK_CHANNEL || 'C0ATRTVMCH1'; // HQ #acorn
   if (!token) {
     if (asForm) {
-      return respondFormError(res, 503, 'delivery channel is not configured on the server');
+      return respondFormError(res, 503, 'delivery channel is not configured on the server', backHref);
     }
     return res.status(503).json({
       ok: false,
@@ -251,13 +276,13 @@ export default async function handler(req, res) {
     slack = await resp.json();
   } catch (err) {
     const detail = `delivery request failed: ${err && err.name === 'AbortError' ? 'timed out' : 'network error'}`;
-    if (asForm) return respondFormError(res, 502, detail);
+    if (asForm) return respondFormError(res, 502, detail, backHref);
     return res.status(502).json({ ok: false, error: detail });
   }
 
   if (!slack || slack.ok !== true) {
     const detail = `delivery was not confirmed (${(slack && slack.error) || 'no response detail'})`;
-    if (asForm) return respondFormError(res, 502, detail);
+    if (asForm) return respondFormError(res, 502, detail, backHref);
     return res.status(502).json({ ok: false, error: detail });
   }
 
