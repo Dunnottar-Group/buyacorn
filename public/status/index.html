@@ -96,16 +96,22 @@
 <section id="status-link" class="status-link" hidden>
   <h2>Get your link</h2>
   <p>
-    Enter the email you signed up with and we will send you a private link to
-    your own setup page. The link opens only your setup and no one else's.
+    Your private setup link comes from a person on our team, by email.
+    The button below asks your device to open your email app with a
+    pre-filled request to hello@buyacorn.com. Send that email, and we
+    reply with your link. The link opens only your setup and no one
+    else's.
   </p>
   <form id="status-link-form" method="post" action="mailto:hello@buyacorn.com?subject=Send%20my%20Acorn%20setup%20link">
     <label for="status-email">Email</label>
     <input id="status-email" name="email" type="email" required autocomplete="email">
-    <button type="submit">Send my link</button>
+    <button type="submit">Email us for my link</button>
   </form>
-  <p id="status-link-sent" class="status-note" hidden>
-    If that email is on file, your link is on its way. Check your inbox.
+  <p id="status-link-requested" class="status-note" hidden>
+    Sending that pre-filled email is the request; this page sends nothing
+    on its own. A person on our team replies from hello@buyacorn.com with
+    your link. If your email app did not open, write to hello@buyacorn.com
+    from the email you signed up with and ask for your setup link.
   </p>
 </section>
 
