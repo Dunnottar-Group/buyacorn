@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Acorn: reserve a Founding Member seat</title>
+  <meta name="description" content="Reserve one of the 25 Founding Member seats. Half price for life, $2,500 a month. No payment is taken today.">
+  <link rel="canonical" href="https://buyacorn.com/reserve">
+  <link rel="icon" href="/static/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="/static/styles.css">
+  <style>
+    /* Scoped to this page so no shared stylesheet is touched.
+       Selectors are qualified with .waitlist-form deliberately: the shared
+       rule `.waitlist-form label` has specificity 0,1,1 and sets display:grid,
+       so a bare `.plan-option` (0,1,0) would lose to it and the radio rows
+       would render stacked instead of inline. Same reason for the radio reset:
+       `.waitlist-form input` paints every input with a text-field border and
+       padding, which a radio button must not inherit. */
+    .waitlist-form .plan-choice { display: grid; gap: 0.75rem; margin: 1rem 0 0.5rem;
+      border: 0; padding: 0; }
+    .waitlist-form .plan-choice legend { padding: 0; font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+      font-size: 0.85rem; color: var(--oak-brown); }
+    .waitlist-form .plan-option { display: flex; gap: 0.75rem; align-items: flex-start;
+      border: 1px solid var(--border); border-radius: 8px; padding: 0.9rem 1rem; cursor: pointer; }
+    .waitlist-form .plan-option:hover { border-color: var(--rooted-green); }
+    .waitlist-form .plan-option input[type="radio"] { margin: 0.25rem 0 0 0; flex: none;
+      padding: 0; border: 0; background: none; width: auto; }
+    .plan-option-body { display: block; }
+    .plan-option-title { font-weight: 600; display: block; }
+    .plan-option-detail { display: block; font-size: 0.92rem; opacity: 0.8; margin-top: 0.15rem; }
+    .terms-table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; }
+    .terms-table th, .terms-table td { text-align: left; padding: 0.5rem 0.6rem 0.5rem 0;
+      border-bottom: 1px solid rgba(0,0,0,0.1); vertical-align: top; }
+    .terms-table th { font-weight: 600; white-space: nowrap; padding-right: 1.25rem; }
+    .money-note { border-left: 3px solid var(--rooted-green, #3c6e47); padding: 0.6rem 0 0.6rem 1rem;
+      margin: 1.25rem 0; }
+    .money-note strong { display: block; margin-bottom: 0.25rem; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="/">
+      <img src="/static/acorn-wordmark.png" alt="Acorn Rooted Intelligence" class="wordmark-img">
+    </a>
+    <nav>
+      <a href="/#waitlist">Join the waitlist</a>
+    </nav>
+  </header>
+  <main>
+    <section class="hero">
+      <p class="referred-by">Founding Members</p>
+      <h1>Reserve a Founding Member seat.</h1>
+      <p class="lede">
+        Twenty five companies get Acorn at half price for life. Reserving holds a seat
+        in your name. No payment is taken on this page.
+      </p>
+    </section>
+
+    <section>
+      <h2>The terms</h2>
+      <table class="terms-table">
+        <tr>
+          <th>Founding Member</th>
+          <td>$2,500 a month, for as long as you stay a member. Retail is $5,000 a month.
+            The half price is yours for life.</td>
+        </tr>
+        <tr>
+          <th>Annual option</th>
+          <td>$25,000 a year, which is ten months paid and two months free.</td>
+        </tr>
+        <tr>
+          <th>Seats</th>
+          <td>A seat covers your whole company, whether that is one person or a hundred.
+            There is no per person charge, ever.</td>
+        </tr>
+        <tr>
+          <th>Deposit</th>
+          <td>$2,500 secures your seat and covers your first month. It is refundable up
+            until your second payment.</td>
+        </tr>
+        <tr>
+          <th>Refund guarantee</th>
+          <td>As a Founding Member you can refund your most recent monthly payment at any
+            point in the cycle, for life. You are never more than one month exposed.</td>
+        </tr>
+        <tr>
+          <th>What you run</th>
+          <td>Acorn lives on your own server, in your own workspace, on your own AI provider
+            keys. You pay those providers directly. The membership above is Acorn itself.</td>
+        </tr>
+        <tr>
+          <th>Referrals</th>
+          <td>Members earn 20% of what anyone they refer pays, for the life of that
+            membership. It lands as credit against your own bill, and anything above your
+            bill is paid to you in cash.</td>
+        </tr>
+      </table>
+    </section>
+
+    <div class="money-note">
+      <strong>No payment is taken today.</strong>
+      Our card processing is not open yet. Reserving costs you nothing now and commits you
+      to nothing. Brian contacts you to confirm the seat, and the deposit link comes when
+      the payment rail opens. Your seat is held for you in the meantime.
+    </div>
+
+    <section class="waitlist" id="reserve">
+      <h2>Reserve your seat</h2>
+      <form id="reserve-form" class="waitlist-form" novalidate>
+        <label for="name">Name
+          <input id="name" name="name" type="text" required autocomplete="name">
+        </label>
+        <label for="email">Email
+          <input id="email" name="email" type="email" required autocomplete="email">
+        </label>
+        <label for="company">Company
+          <input id="company" name="company" type="text" required autocomplete="organization">
+        </label>
+
+        <fieldset class="plan-choice">
+          <legend>Which suits you?</legend>
+          <label class="plan-option">
+            <input type="radio" name="plan" value="monthly" required>
+            <span class="plan-option-body">
+              <span class="plan-option-title">$2,500 a month</span>
+              <span class="plan-option-detail">Half of retail, held for life.</span>
+            </span>
+          </label>
+          <label class="plan-option">
+            <input type="radio" name="plan" value="annual">
+            <span class="plan-option-body">
+              <span class="plan-option-title">$25,000 a year</span>
+              <span class="plan-option-detail">Ten months paid, two months free.</span>
+            </span>
+          </label>
+          <label class="plan-option">
+            <input type="radio" name="plan" value="undecided">
+            <span class="plan-option-body">
+              <span class="plan-option-title">Hold a seat, decide later</span>
+              <span class="plan-option-detail">You want in. The plan can wait for a conversation.</span>
+            </span>
+          </label>
+        </fieldset>
+
+        <label for="notes" class="optional">Anything you want Brian to know? (optional)
+          <input id="notes" name="notes" type="text">
+        </label>
+        <input type="hidden" name="source_slug" value="">
+
+        <label class="consent-check">
+          <input id="terms_ack" name="terms_ack" type="checkbox" required>
+          I have read the Founding Member terms above, including the $2,500 deposit and the
+          refund guarantee.
+        </label>
+        <label class="consent-check">
+          <input id="no_charge_ack" name="no_charge_ack" type="checkbox" required>
+          I understand no payment is being taken now and that reserving commits me to nothing.
+        </label>
+        <p class="scope-note">
+          These terms are interim, and a lawyer written membership agreement replaces them
+          before any deposit is taken. You will see it before you pay anything.
+        </p>
+
+        <p id="reserve-form-error" class="form-error" role="alert" hidden></p>
+        <button type="submit">Reserve my seat</button>
+      </form>
+      <p class="form-fallback-note">
+        This form needs JavaScript to submit. If it does not work, email
+        hello@buyacorn.com with your name, company, and the plan you want.
+      </p>
+      <script src="/static/reserve-submit.js" defer></script>
+    </section>
+
+<!--Start of Tawk.to Script (ACR-283 part 2, live chat widget)-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/6a5eece1642ea11d490f160b/1ju1cqksd';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+
+  </main>
+  <footer class="site-footer">
+    <p>Humans orient. Agents execute. Trust is earned.</p>
+    <p><a href="/legal/eula">Terms</a></p>
+  </footer>
+</body>
+</html>
