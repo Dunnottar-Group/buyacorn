@@ -30,7 +30,45 @@
 // works with the token /contact and /alpha already use. Never in client code
 // or this repo.
 
-import { PLANS, readJsonBody, validateBuyer as validate, slackEscape, FOUNDER_ID } from './_reserve-lib.js';
+import {
+  PLANS, readJsonBody, readFormBody, isFormEncoded, validateBuyer as validate,
+  slackEscape, FOUNDER_ID,
+} from './_reserve-lib.js';
+
+// ACR-829: where a no-JS buyer lands after a successful native POST. The same
+// page static/reserve-submit.js sends the JS buyer to.
+const THANKS_PATH = '/reserve/thanks';
+
+// A human pressed a button, so they get a page rather than raw JSON. The
+// message is the REAL error state, never an invented reason, and the buyer's
+// own values are NOT echoed back into the document: doing that would
+// reintroduce the leak this fix exists to close.
+function respondFormError(res, status, message) {
+  res.status(status);
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  return res.end(`<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Your reservation was not sent</title></head>
+<body>
+<h1>Your reservation was not sent</h1>
+<p>Nothing was saved and nothing was charged. Here is exactly what went wrong:</p>
+<p><strong>${slackEscape(message)}</strong></p>
+<p><a href="/reserve#reserve">Go back and try again</a>, or email
+<a href="mailto:hello@buyacorn.com">hello@buyacorn.com</a> with your name, company
+and the plan you want, and we will hold the seat by hand.</p>
+</body></html>
+`);
+}
+
+// 303 See Other, not 302: it tells the browser to follow up with a GET, so a
+// refresh on the thanks page cannot re-POST the reservation.
+function respondFormSuccess(res) {
+  res.status(303);
+  res.setHeader('Location', THANKS_PATH);
+  return res.end();
+}
 
 // ACR-833: MAX_*, readJsonBody, validate, slackEscape and the PLANS table moved
 // to api/_reserve-lib.js so /api/checkout validates the identical form the
@@ -45,15 +83,23 @@ export default async function handler(req, res) {
     return res.status(405).json({ ok: false, error: 'method not allowed' });
   }
 
+  // ACR-829: the encoding decides how this buyer is answered. A native no-JS
+  // submit arrives form-encoded and gets HTML plus a redirect; the JS path
+  // arrives as JSON and keeps its exact existing contract, because
+  // static/reserve-submit.js reads response.ok. Nothing below the decode differs.
+  const asForm = isFormEncoded(req);
+
   let body;
   try {
-    body = await readJsonBody(req);
+    body = asForm ? await readFormBody(req) : await readJsonBody(req);
   } catch {
+    if (asForm) return respondFormError(res, 400, 'the form data could not be read');
     return res.status(400).json({ ok: false, error: 'request body was not valid JSON' });
   }
 
   const v = validate(body);
   if (v.errors.length > 0) {
+    if (asForm) return respondFormError(res, 400, v.errors.join('; '));
     return res.status(400).json({ ok: false, error: v.errors.join('; ') });
   }
 
@@ -61,6 +107,7 @@ export default async function handler(req, res) {
   const channel =
     process.env.RESERVE_SLACK_CHANNEL || process.env.CONTACT_SLACK_CHANNEL || 'C0ATRTVMCH1'; // HQ #acorn
   if (!token) {
+    if (asForm) return respondFormError(res, 503, 'delivery channel is not configured on the server');
     return res.status(503).json({
       ok: false,
       error: 'delivery channel is not configured on the server',
@@ -125,18 +172,18 @@ export default async function handler(req, res) {
     clearTimeout(timer);
     slack = await resp.json();
   } catch (err) {
-    return res.status(502).json({
-      ok: false,
-      error: `delivery request failed: ${err && err.name === 'AbortError' ? 'timed out' : 'network error'}`,
-    });
+    const detail = `delivery request failed: ${err && err.name === 'AbortError' ? 'timed out' : 'network error'}`;
+    if (asForm) return respondFormError(res, 502, detail);
+    return res.status(502).json({ ok: false, error: detail });
   }
 
   if (!slack || slack.ok !== true) {
-    return res.status(502).json({
-      ok: false,
-      error: `delivery was not confirmed (${(slack && slack.error) || 'no response detail'})`,
-    });
+    const detail = `delivery was not confirmed (${(slack && slack.error) || 'no response detail'})`;
+    if (asForm) return respondFormError(res, 502, detail);
+    return res.status(502).json({ ok: false, error: detail });
   }
+
+  if (asForm) return respondFormSuccess(res);
 
   return res.status(200).json({ ok: true, ref: slack.ts });
 }

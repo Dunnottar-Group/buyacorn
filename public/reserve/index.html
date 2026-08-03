@@ -114,7 +114,7 @@
 
     <section class="waitlist" id="reserve">
       <h2>Reserve your seat</h2>
-      <form id="reserve-form" class="waitlist-form" novalidate>
+      <form id="reserve-form" class="waitlist-form" method="POST" action="/api/reserve" novalidate>
         <label for="name">Name
           <input id="name" name="name" type="text" required autocomplete="name">
         </label>
@@ -173,8 +173,8 @@
         <button type="submit">Reserve my seat</button>
       </form>
       <p class="form-fallback-note">
-        This form needs JavaScript to submit. If it does not work, email
-        hello@buyacorn.com with your name, company, and the plan you want.
+        If this form does not go through, email hello@buyacorn.com with your name,
+        company, and the plan you want.
       </p>
       <script src="/static/reserve-submit.js" defer></script>
     </section>

@@ -9,6 +9,9 @@ function mockRes() {
     setHeader(k, v) { this.headers[k] = v; },
     status(c) { this.statusCode = c; return this; },
     json(o) { this.body = o; return this; },
+    // ACR-829: the no-JS path answers with HTML and a redirect, not JSON.
+    send(o) { this.body = o; this.sentHtml = true; return this; },
+    end(o) { if (o !== undefined) { this.body = o; this.sentHtml = true; } this.ended = true; return this; },
   };
 }
 async function call(req, env = {}) {
@@ -173,6 +176,71 @@ ok('network timeout -> 502 named as a timeout', r.statusCode === 502 && /timed o
 global.fetch = async () => { throw new Error('boom'); };
 r = await call({ method: 'POST', body: VALID }, TOKEN);
 ok('network error -> 502, no false success', r.statusCode === 502 && /network error/.test(r.body.error));
+
+// ---------------------------------------------------------------------------
+// ACR-829: the no-JS native submit path. /reserve's form carried no action and
+// no method, which defaults to GET against the page's own URL, so an
+// unintercepted submit put the buyer's name, email, company and both
+// acknowledgements in the query string.
+// ---------------------------------------------------------------------------
+// The network-failure tests above deliberately leave global.fetch throwing.
+// Restore a working transport first, or every assertion below fails for a
+// reason unrelated to what it tests. The suite caught exactly that on the
+// first run of this block.
+slackReply = { ok: true, ts: '1785.0829' };
+global.fetch = async (url, opts) => { lastPost = JSON.parse(opts.body); return { json: async () => slackReply }; };
+
+function formReq(bodyStr, asObject) {
+  return {
+    method: 'POST',
+    headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    body: asObject !== undefined ? asObject : bodyStr,
+  };
+}
+const FORM_OK = 'name=Dana+Buyer&email=dana%40example.com&company=Chang+Robotics&plan=monthly&terms_ack=on&no_charge_ack=on';
+
+lastPost = null;
+r = await call(formReq(FORM_OK), TOKEN);
+ok('form-encoded submit -> 303 redirect (not JSON)', r.statusCode === 303 && r.ended === true, JSON.stringify(r.body));
+ok('redirect goes to the thanks page with NOTHING in the URL',
+  r.headers.Location === '/reserve/thanks' && !/[?&]/.test(r.headers.Location), r.headers.Location);
+ok('form-encoded submission is actually DELIVERED, not just accepted',
+  lastPost && /Dana Buyer/.test(lastPost.text) && /Chang Robotics/.test(lastPost.text));
+ok('checkbox "on" is read as real consent', lastPost && /Founding Member terms: yes/.test(lastPost.text));
+
+r = await call(formReq('name=D&email=d%40e.com&company=C&plan=monthly&terms_ack=on'), TOKEN);
+ok('missing acknowledgement -> 400 as an HTML PAGE, not JSON',
+  r.statusCode === 400 && r.sentHtml === true && /<!doctype html>/i.test(r.body));
+ok('the error page names the missing acknowledgement', /no payment is taken today/.test(r.body));
+ok('the error page states nothing was charged', /nothing was charged/i.test(r.body));
+
+for (const bad of ['nope', 'I+do+not+agree', 'false', 'off']) {
+  r = await call(formReq(`name=D&email=d%40e.com&company=C&plan=monthly&terms_ack=${bad}&no_charge_ack=on`), TOKEN);
+  ok(`consent value "${decodeURIComponent(bad)}" is NOT consent`, r.statusCode === 400 && r.sentHtml === true);
+}
+for (const good of ['on', 'true', '1', 'yes', 'checked']) {
+  r = await call(formReq(`name=D&email=d%40e.com&company=C&plan=monthly&terms_ack=${good}&no_charge_ack=${good}`), TOKEN);
+  ok(`consent value "${good}" IS consent`, r.statusCode === 303);
+}
+
+r = await call(formReq('name=Jane+Doe&email=jane%40secret.com&company=Doe+LLC&plan=monthly&terms_ack=on'), TOKEN);
+ok('error page does NOT echo the buyer PII it just received',
+  r.statusCode === 400 && !/Jane Doe/.test(r.body) && !/jane@secret.com/.test(r.body) && !/Doe LLC/.test(r.body));
+
+r = await call(formReq(null, { name: 'D', email: 'd@e.com', company: 'C', plan: 'monthly', terms_ack: ['false', 'on'], no_charge_ack: 'on' }), TOKEN);
+ok('pre-parsed body with a repeated key applies last-wins', r.statusCode === 303, JSON.stringify(r.body));
+
+// Delivery failure on the native path must be a page, not a JSON blob.
+slackReply = { ok: false, error: 'channel_not_found' };
+r = await call(formReq(FORM_OK), TOKEN);
+ok('native-path delivery failure -> HTML 502, quoting the real reason',
+  r.statusCode === 502 && r.sentHtml === true && /channel_not_found/.test(r.body));
+slackReply = { ok: true, ts: '1785.0829' };
+
+// The JSON contract must be untouched: reserve-submit.js reads response.ok.
+lastPost = null;
+r = await call({ method: 'POST', body: VALID }, TOKEN);
+ok('JSON path still returns 200 + ref, contract unchanged', r.statusCode === 200 && r.body.ok === true && !!r.body.ref);
 
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail === 0 ? 0 : 1);
