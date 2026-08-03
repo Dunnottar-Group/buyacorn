@@ -405,6 +405,53 @@ ul { padding-left: 1.25rem; }
   color: var(--rooted-green);
 }
 
+/* ACR-615: tenant_pending -- the third completion model, for a fact
+   nothing on this page can check yet (the Teams relay round trip). Must
+   read as an intentional, expected waiting state, not a broken or blank
+   one, and must never share either the box-verified green or the
+   user-confirmed outlined-green language above (this is neither: nobody
+   confirmed anything, and the server has not checked anything -- it is
+   simply not reachable yet). Reuses --oak-brown, the same color this
+   page already uses for "in progress, not stuck, not done" (the stuck
+   block, the awaiting-verification state), so a visitor who has learned
+   that color elsewhere on this page reads it correctly here too. */
+.status-phase-tenant-pending {
+  border-color: var(--oak-brown);
+}
+.status-phase-tenant-pending .status-phase-marker {
+  border-color: var(--oak-brown);
+  color: var(--oak-brown);
+}
+.status-phase-tenant-pending .status-phase-status {
+  color: var(--oak-brown);
+}
+.status-tenant-pending-note {
+  font-size: 0.9rem;
+  color: var(--oak-brown);
+  margin: 0.4rem 0 0;
+}
+/* ACR-615 critic round 2: refreshDisclosure() (static/status.js) never
+   lets a tenant_pending phase become "current" (it can never become
+   "done", so it would otherwise freeze the walkthrough's spotlight on it
+   forever the moment every other phase finishes) -- it always ends up
+   .status-phase-locked instead. .status-phase-locked's own rules
+   (defined later in this file) dim the card to 70% opacity and gray the
+   marker, which would undo the "intentional, not broken" treatment
+   above the moment JavaScript runs. These three-class-selector
+   overrides win on specificity (0,3,0 / 0,2,0 beats .status-phase-
+   locked's 0,2,0 / 0,1,0) regardless of source order, so they do not
+   depend on staying physically after .status-phase-locked in this file. */
+.status-phase-tenant-pending.status-phase-locked {
+  opacity: 1;
+}
+.status-phase-tenant-pending.status-phase-locked .status-phase-marker {
+  border-color: var(--oak-brown);
+  color: var(--oak-brown);
+}
+.status-phase-tenant-pending.status-phase-locked .status-phase-status {
+  color: var(--oak-brown);
+}
+
 .status-substeps { margin: 0.6rem 0 0; padding: 0; list-style: none; }
 .status-substep {
   display: flex;
