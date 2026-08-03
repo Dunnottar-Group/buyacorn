@@ -757,21 +757,20 @@
     if (section) section.hidden = false;
     var form = byId("status-link-form");
     if (!form) return;
-    form.addEventListener("submit", function (event) {
-      var email = form.elements["email"] ? form.elements["email"].value : "";
-      event.preventDefault();
-      fetch("/api/status/request-link", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email }),
-      })
-        .then(function () {
-          byId("status-link-sent").hidden = false;
-          form.hidden = true;
-        })
-        .catch(function () {
-          form.submit();
-        });
+    form.addEventListener("submit", function () {
+      // ACR-778 (fixes #778): let the native submit run. The form's
+      // mailto: action is the only transport this page has, so the
+      // browser opening a pre-filled email IS everything that happens
+      // here, and the note unhidden below says exactly that and nothing
+      // more. The old handler preventDefault()ed, POSTed to a magic-link
+      // endpoint the deployed site does not serve (fetch() resolves on
+      // the 404), and then unhid a panel telling the visitor their link
+      // was already headed for their inbox -- a confirmation of a send
+      // that never happened, the #441 false-confirmation class. No
+      // sent-style claim may return here unless a real, founder-wired
+      // delivery response is the thing that unhides it.
+      var note = byId("status-link-requested");
+      if (note) note.hidden = false;
     });
   }
 
