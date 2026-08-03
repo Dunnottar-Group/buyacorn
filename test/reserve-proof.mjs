@@ -22,9 +22,22 @@ async function call(req, env = {}) {
   }
   Object.assign(process.env, env);
   const res = mockRes();
-  await handler(req, res);
-  for (const [k, val] of Object.entries(saved)) {
-    if (val === undefined) delete process.env[k]; else process.env[k] = val;
+  // A handler that THROWS must not abort the suite and must not skip the env
+  // restore below. Both happened: removing checkout's plan guard produced a
+  // TypeError that killed the run with 20 assertions never executed, and left
+  // the injected env vars set for whatever ran next. A throw is now recorded as
+  // a 500 so the assertion that cares fails precisely and everything after it
+  // still runs.
+  try {
+    await handler(req, res);
+  } catch (err) {
+    res.statusCode = 500;
+    res.body = { ok: false, error: `handler threw: ${err && err.message}` };
+    res.threw = err;
+  } finally {
+    for (const [k, val] of Object.entries(saved)) {
+      if (val === undefined) delete process.env[k]; else process.env[k] = val;
+    }
   }
   return res;
 }

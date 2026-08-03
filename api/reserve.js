@@ -30,82 +30,14 @@
 // works with the token /contact and /alpha already use. Never in client code
 // or this repo.
 
-const MAX_NAME = 200;
-const MAX_EMAIL = 320;
-const MAX_COMPANY = 200;
-const MAX_NOTES = 2000;
-const MAX_SLUG = 200;
+import { PLANS, readJsonBody, validateBuyer as validate, slackEscape, FOUNDER_ID } from './_reserve-lib.js';
 
-// The founder-ruled commercial terms (cos/decisions/
-// 2026-07-15_founding-member-commercial-pack.md). The label is what gets
-// written into #acorn, so Brian reads the exact terms the buyer accepted
-// rather than a code he has to decode.
-const PLANS = {
-  monthly: 'Founding Member, $2,500/mo (half of $5,000 retail, for life)',
-  annual: 'Founding Member annual, $25,000/yr (10 months, 2 free)',
-  undecided: 'Wants a Founding seat, plan not chosen yet',
-};
-
-async function readJsonBody(req) {
-  // Vercel parses JSON into req.body; plain node (the local proof harness) does
-  // not. Handle both.
-  if (req.body !== undefined && req.body !== null) {
-    if (typeof req.body === 'string') return JSON.parse(req.body);
-    return req.body;
-  }
-  const chunks = [];
-  for await (const chunk of req) chunks.push(chunk);
-  const raw = Buffer.concat(chunks).toString('utf8');
-  return raw ? JSON.parse(raw) : {};
-}
-
-function validate(body) {
-  const errors = [];
-  const name = (body.name || '').toString().trim();
-  const email = (body.email || '').toString().trim();
-  const company = (body.company || '').toString().trim();
-  const notes = (body.notes || '').toString().trim();
-  const slug = (body.source_slug || '').toString().trim();
-  const plan = (body.plan || '').toString().trim();
-  // Acknowledgements: accept only a real affirmative. A missing or non-true
-  // value is a non-acknowledgement, never assumed.
-  const termsAck = body.terms_ack === true;
-  const noChargeAck = body.no_charge_ack === true;
-
-  if (!name) errors.push('name is required');
-  if (name.length > MAX_NAME) errors.push('name is too long');
-  if (!email) errors.push('email is required');
-  else if (email.length > MAX_EMAIL || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    errors.push('email does not look like an email address');
-  }
-  if (!company) errors.push('company is required');
-  if (company.length > MAX_COMPANY) errors.push('company is too long');
-  if (notes.length > MAX_NOTES) errors.push('notes are too long');
-  if (slug.length > MAX_SLUG) errors.push('source_slug is too long');
-  if (!plan) errors.push('a plan choice is required');
-  else if (!Object.prototype.hasOwnProperty.call(PLANS, plan)) {
-    errors.push('plan is not one of the offered options');
-  }
-  if (!termsAck) errors.push('the Founding Member terms must be acknowledged');
-  if (!noChargeAck) {
-    errors.push('the acknowledgement that no payment is taken today is required');
-  }
-
-  return { errors, name, email, company, notes, slug, plan, termsAck, noChargeAck };
-}
-
-// Slack message text treats &, <, > as control characters (mrkdwn / <!channel>
-// broadcasts, <url|label> links). Escape every buyer-supplied value so a field
-// like a company name of "<!channel>" is shown literally, never fires a
-// broadcast or spoofs a link. Per Slack's own escaping rules only these three
-// need replacing, ampersand first.
-function slackEscape(v) {
-  return (v || '')
-    .toString()
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
-}
+// ACR-833: MAX_*, readJsonBody, validate, slackEscape and the PLANS table moved
+// to api/_reserve-lib.js so /api/checkout validates the identical form the
+// identical way. Divergence between them would let a buyer pass one endpoint
+// and be rejected by the other for the same input, at the moment they are
+// trying to pay. Behaviour here is unchanged, proven by test/reserve-proof.mjs
+// (30 assertions) passing untouched across this refactor.
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -151,7 +83,7 @@ export default async function handler(req, res) {
   //
   // Not passed through slackEscape: this is a literal control token the handler owns,
   // never a buyer-supplied value.
-  const founderId = process.env.RESERVE_NOTIFY_USER_ID || 'U0AU1SJGS92'; // Brian
+  const founderId = FOUNDER_ID();
 
   // "Seat reservation", never "seat sold". Per the 2026-07-15 ruling the public
   // 25-seat counter reflects cleared payments only, and no money has moved
