@@ -55,7 +55,7 @@
       <p class="attribution-note">
         Applying from this page credits Example Founder for the referral.
       </p>
-      <form id="waitlist-form" class="waitlist-form" method="POST" action="mailto:waitlist@buyacorn.com" novalidate>
+      <form id="waitlist-form" class="waitlist-form" novalidate>
         <label for="name">Name
           <input id="name" name="name" type="text" required autocomplete="name">
         </label>
@@ -66,11 +66,17 @@
           <input id="company" name="company" type="text" required autocomplete="organization">
         </label>
         <input type="hidden" name="source_slug" value="example">
+        <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">
+          <label for="website">Website</label>
+          <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+        </div>
+        <p id="waitlist-form-error" class="form-error" role="alert" hidden></p>
         <button type="submit">Request an invitation</button>
       </form>
       <p class="form-fallback-note">
-        If the form above does not submit, it opens an email instead. Either way reaches the waitlist,
-        and either way credits Example Founder.
+        This form needs JavaScript to submit. If it does not work, email
+        waitlist@buyacorn.com with your name and company, and say Example Founder
+        sent you so the referral is credited.
       </p>
       <script src="/static/waitlist-submit.js" defer></script>
     </section>
