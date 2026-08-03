@@ -182,7 +182,25 @@
     return phaseEl.getAttribute("data-completion") === "box_verified";
   }
 
+  // ACR-615: the third completion model (site/lib/status_walkthrough.py's
+  // "tenant_pending") for a fact nothing on this page can check yet (the
+  // Teams relay round trip) -- never the box-verified green, never a red
+  // error, never a user claim. No wiring anywhere in this file ever adds
+  // a done-class for it, so it was already functionally correct (falls
+  // into phaseIsDone()'s final `return false`-shaped branch below) even
+  // before this helper existed -- this makes that intentional, not an
+  // accident of the fallthrough, and gives the CSS/JS below one place to
+  // key off instead of re-deriving the attribute check.
+  function isTenantPending(phaseEl) {
+    return phaseEl.getAttribute("data-completion") === "tenant_pending";
+  }
+
   function phaseIsDone(phaseEl) {
+    if (isTenantPending(phaseEl)) {
+      // Intentionally, permanently not-done until a mechanism this page
+      // does not have yet (relay activation, #579/D2) exists to flip it.
+      return false;
+    }
     if (isBoxVerified(phaseEl)) {
       // status-phase-server-manual-advance is the LIVE ALPHA BLOCKER
       // fallback (see wireServerManualAdvance() below): a user
@@ -343,7 +361,16 @@
     var phases = allPhases();
     var currentIndex = -1;
     Array.prototype.forEach.call(phases, function (phaseEl, i) {
-      if (currentIndex === -1 && !phaseIsDone(phaseEl)) currentIndex = i;
+      // ACR-615 critic round 2: a tenant_pending phase can never become
+      // done (see isTenantPending()/phaseIsDone() above), so if it were
+      // allowed to become "current" here it would stay the walkthrough's
+      // permanent spotlight the moment every other required phase
+      // finishes -- a dead end nothing the customer does can move past.
+      // Skipped from the "first not-done phase" scan entirely: once every
+      // phase BEFORE and AFTER it (that the customer can act on) is done,
+      // progressive disclosure simply has no "current" phase left, rather
+      // than freezing on a row with no action for the customer to take.
+      if (currentIndex === -1 && !phaseIsDone(phaseEl) && !isTenantPending(phaseEl)) currentIndex = i;
     });
 
     Array.prototype.forEach.call(phases, function (phaseEl, i) {
@@ -359,8 +386,17 @@
       // notified is its own distinct pending sentence too (#275): once a
       // visitor has sent the forwardable message to their IT team, this
       // disclosure pass must not stomp "Waiting on your IT team" back to
-      // the generic "Waiting on your server."
-      if (!done && !phaseEl.classList.contains("status-phase-awaiting-verification") &&
+      // the generic "Waiting on your server." ACR-615 critic round 2:
+      // isTenantPending() is the same guard for the same reason -- its
+      // honest static "Waiting on activation." (rendered server-side,
+      // status_walkthrough.py's _pending_status_sentence()) must never be
+      // stomped to "Waiting for you to confirm.", which is FALSE for this
+      // row: there is no claim button, the customer confirms nothing, it
+      // waits on relay activation, not on them. Rendering the wrong
+      // sentence here would be exactly the #441 no-false-confirmation
+      // rule violated in the JS layer instead of the HTML.
+      if (!done && !isTenantPending(phaseEl) &&
+          !phaseEl.classList.contains("status-phase-awaiting-verification") &&
           !phaseEl.classList.contains("status-phase-user-confirmed-final") &&
           !phaseEl.classList.contains("status-phase-it-notified")) {
         setStatusSentence(
