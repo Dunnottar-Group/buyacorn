@@ -81,7 +81,7 @@
           "Your details were NOT sent: " +
             (err && err.message ? err.message : "the request could not reach us") +
             ". Nothing was saved and no email was opened. Please press the button " +
-            "again in a moment, or write to waitlist@buyacorn.com and we will add " +
+            "again in a moment, or write to brian@buyacorn.com and we will add " +
             "you by hand."
         );
       });
