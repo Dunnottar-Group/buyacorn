@@ -185,7 +185,13 @@ for (const page of ['../public/index.html', '../public/example/index.html']) {
   const html = await readFile(new URL(page, import.meta.url), enc);
   const form = /<form[^>]*id="waitlist-form"[^>]*>/.exec(html);
   ok(`${page}: waitlist form found`, !!form);
-  ok(`${page}: form has no action attribute at all`, form && !/action=/.test(form[0]));
+  // ACR-829 INVERTED THIS CHECK: no action at all meant a GET submit to the
+  // page's own URL with the visitor's fields in the query string (#829). The
+  // rule now is a real POST to a real same-origin endpoint.
+  ok(`${page}: form declares method="POST"`, form && /\bmethod="POST"/i.test(form[0]), form && form[0]);
+  ok(`${page}: form posts to /api/waitlist`, form && /\baction="\/api\/waitlist"/.test(form[0]), form && form[0]);
+  ok(`${page}: form action carries no URL scheme`,
+    form && !/\baction="[a-zA-Z][a-zA-Z0-9+.-]*:/.test(form[0]), form && form[0]);
   ok(`${page}: no mailto: URL anywhere on the page`, !/mailto:/i.test(html));
   ok(`${page}: error box present for the honest failure path`, /id="waitlist-form-error"/.test(html));
   ok(`${page}: honeypot field present`, /name="website"/.test(html));

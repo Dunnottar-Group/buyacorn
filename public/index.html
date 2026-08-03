@@ -88,7 +88,7 @@
     <section class="waitlist" id="waitlist">
       <h2>Join the waitlist</h2>
       <p>Twenty-five Founding seats. Once they fill, they stay closed.</p>
-      <form id="waitlist-form" class="waitlist-form" novalidate>
+      <form id="waitlist-form" class="waitlist-form" method="POST" action="/api/waitlist" novalidate>
         <label for="name">Name
           <input id="name" name="name" type="text" required autocomplete="name">
         </label>
@@ -110,8 +110,8 @@
         <button type="submit">Request an invitation</button>
       </form>
       <p class="form-fallback-note">
-        This form needs JavaScript to submit. If it does not work, email
-        waitlist@buyacorn.com with your name and company.
+        If this form does not go through, email waitlist@buyacorn.com with your
+        name and company.
       </p>
       <script src="/static/waitlist-submit.js" defer></script>
     </section>

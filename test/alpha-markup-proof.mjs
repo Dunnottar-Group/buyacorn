@@ -93,24 +93,33 @@ function checkTree(label, root) {
     const mailtos = html.match(/mailto:[^"'\s<>]*/g) || [];
     ok(`${rel}: no mailto: anywhere`, mailtos.length === 0, JSON.stringify(mailtos));
 
-    // 2. The form tag itself carries no action and no method. `action` is
-    //    the leak; `method` goes with it because a POST form with no action
-    //    re-posts to the page's own URL, which is not a transport this
-    //    static site has. static/alpha-submit.js calls preventDefault() and
-    //    owns the submit outright.
+    // 2. ACR-829 INVERTED THIS CHECK. It used to require that the form tag
+    //    carried NO action and NO method. That was right about the mailto
+    //    and wrong about the remedy: absent `method` means GET and absent
+    //    `action` means the document's own URL, so the no-JS submit this
+    //    guarded simply moved the same PII into
+    //    https://buyacorn.com/alpha?name=...&email=... Reproduced in a real
+    //    browser on production 2026-08-03 (issue #829). The rule now is a
+    //    REAL POST to a REAL same-origin endpoint.
     const tags = html.match(/<form[^>]*\bid="alpha-form"[^>]*>/g) || [];
     ok(`${rel}: exactly one alpha form`, tags.length === 1, `got ${tags.length}`);
     if (tags.length === 1) {
-      ok(`${rel}: form has no action=`, !tags[0].includes('action='), tags[0]);
-      ok(`${rel}: form has no method=`, !tags[0].includes('method='), tags[0]);
+      const tag = tags[0];
+      ok(`${rel}: form declares method="POST"`, /\bmethod="POST"/i.test(tag), tag);
+      ok(`${rel}: form posts to /api/alpha`, /\baction="\/api\/alpha"/.test(tag), tag);
+      ok(`${rel}: form action carries no URL scheme`,
+        !/\baction="[a-zA-Z][a-zA-Z0-9+.-]*:/.test(tag), tag);
     }
 
-    // 3. The no-JS applicant is not stranded. Removing the action without
-    //    leaving a route would be its own defect.
-    ok(`${rel}: keeps a plain-text no-JS route`,
+    // 3. The no-JS applicant is not stranded. A plain address stays on the
+    //    page as a human route. ACR-829 dropped the `JavaScript` assertion:
+    //    it pinned the sentence "This form needs JavaScript to submit",
+    //    which stopped being TRUE once the form got a real POST action.
+    ok(`${rel}: keeps a plain-text human route`,
       html.includes('class="form-fallback-note"') &&
-      html.includes('alpha@buyacorn.com') &&
-      html.includes('JavaScript'));
+      html.includes('alpha@buyacorn.com'));
+    ok(`${rel}: no longer claims the form needs JavaScript`,
+      !html.includes('needs JavaScript'));
   }
 }
 
