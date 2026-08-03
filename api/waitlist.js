@@ -138,7 +138,7 @@ function respondFormError(res, status, message, backHref = '/#waitlist') {
 <p>Nothing was saved. Here is exactly what went wrong:</p>
 <p><strong>${htmlEscape(message)}</strong></p>
 <p><a href="${htmlEscape(backHref)}">Go back and try again</a>, or email
-<a href="mailto:waitlist@buyacorn.com">waitlist@buyacorn.com</a> with your name
+<a href="mailto:brian@buyacorn.com">brian@buyacorn.com</a> with your name
 and company and we will add you by hand.</p>
 </body></html>
 `;
