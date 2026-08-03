@@ -38,6 +38,21 @@ const MAX_COMPANY = 200;
 const MAX_REFERRAL = 2000;
 const MAX_SLUG = 200;
 
+// ACR-829: where the no-JS visitor goes after a successful native POST. The
+// same page static/waitlist-submit.js sends the JS visitor to.
+//
+// Deliberately WITHOUT the `?ref=` query the JS path appends. That reference is
+// rendered by static/waitlist-thanks.js, which a no-JS visitor is not running,
+// so the query would be noise in the URL of the very visitor this fix exists to
+// keep data out of the URL for.
+const THANKS_PATH = '/waitlist/thanks';
+
+async function readRawBody(req) {
+  const chunks = [];
+  for await (const chunk of req) chunks.push(chunk);
+  return Buffer.concat(chunks).toString('utf8');
+}
+
 async function readJsonBody(req) {
   // Vercel parses JSON into req.body; plain node (the local proof harness) does
   // not. Handle both.
@@ -45,10 +60,78 @@ async function readJsonBody(req) {
     if (typeof req.body === 'string') return JSON.parse(req.body);
     return req.body;
   }
-  const chunks = [];
-  for await (const chunk of req) chunks.push(chunk);
-  const raw = Buffer.concat(chunks).toString('utf8');
+  const raw = await readRawBody(req);
   return raw ? JSON.parse(raw) : {};
+}
+
+// ACR-829 (#829). The form now carries method="POST" action="/api/waitlist", so
+// a visitor with JavaScript disabled (or whose /static/waitlist-submit.js
+// failed to load) submits NATIVELY, and a native submit is
+// `application/x-www-form-urlencoded`, not JSON. Before this, that submit was a
+// GET to the page's own URL with name, email and company in the QUERY STRING --
+// browser history, our access logs, and the Referer header on the next click.
+//
+// Accepting only the leak-free markup would have been half a fix: the visitor
+// would stop leaking AND stop being recorded. So this endpoint speaks both
+// encodings. Everything downstream of the decode -- honeypot, validation, Slack
+// delivery, error handling -- is the SAME code on both paths.
+function isFormEncoded(req) {
+  const ct = ((req.headers && req.headers['content-type']) || '').toString();
+  return ct.split(';')[0].trim().toLowerCase() === 'application/x-www-form-urlencoded';
+}
+
+async function readFormBody(req) {
+  let params;
+  if (req.body !== undefined && req.body !== null && typeof req.body === 'object') {
+    // Vercel's Node runtime already parsed it.
+    params = new URLSearchParams();
+    for (const [k, v] of Object.entries(req.body)) params.append(k, v);
+  } else {
+    const raw = typeof req.body === 'string' ? req.body : await readRawBody(req);
+    params = new URLSearchParams(raw);
+  }
+  const out = {};
+  for (const [k, v] of params) out[k] = v;
+  return out;
+}
+
+function htmlEscape(v) {
+  return (v === undefined || v === null ? '' : String(v))
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+// A human pressed a button; they get a page, not raw JSON. The message is the
+// REAL error state, escaped, never an invented reason and never anything the
+// visitor typed echoed back into a document.
+function respondFormError(res, status, message) {
+  const page = `<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Your details were not sent</title></head>
+<body>
+<h1>Your details were not sent</h1>
+<p>Nothing was saved. Here is exactly what went wrong:</p>
+<p><strong>${htmlEscape(message)}</strong></p>
+<p><a href="/#waitlist">Go back and try again</a>, or email
+<a href="mailto:waitlist@buyacorn.com">waitlist@buyacorn.com</a> with your name
+and company and we will add you by hand.</p>
+</body></html>
+`;
+  res.status(status);
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  return res.end(page);
+}
+
+// 303 See Other, not 302: it tells the browser to follow up with a GET, so a
+// refresh on the thanks page cannot re-POST the request.
+function respondFormSuccess(res) {
+  res.status(303);
+  res.setHeader('Location', THANKS_PATH);
+  return res.end();
 }
 
 function validate(body) {
@@ -94,21 +177,31 @@ export default async function handler(req, res) {
     return res.status(405).json({ ok: false, error: 'method not allowed' });
   }
 
+  // ACR-829: the ONE branch. Everything below it is shared. A request that does
+  // not explicitly declare the form encoding takes the JSON path exactly as it
+  // always did, so the fetch path's behaviour is unchanged byte for byte.
+  const asForm = isFormEncoded(req);
+
   let body;
   try {
-    body = await readJsonBody(req);
+    body = asForm ? await readFormBody(req) : await readJsonBody(req);
   } catch {
+    if (asForm) return respondFormError(res, 400, 'the form data could not be read');
     return res.status(400).json({ ok: false, error: 'request body was not valid JSON' });
   }
 
   // Honeypot, checked before validation so a bot cannot tell the two apart
-  // from the response.
+  // from the response. A form-encoded honeypot hit gets the ordinary success
+  // redirect for the same reason the JSON path gets an ordinary success body:
+  // the bot must learn nothing from the difference.
   if ((body.website || '').toString().trim() !== '') {
+    if (asForm) return respondFormSuccess(res);
     return res.status(200).json({ ok: true, ref: 'received' });
   }
 
   const v = validate(body);
   if (v.errors.length > 0) {
+    if (asForm) return respondFormError(res, 400, v.errors.join('; '));
     return res.status(400).json({ ok: false, error: v.errors.join('; ') });
   }
 
@@ -116,6 +209,9 @@ export default async function handler(req, res) {
   const channel =
     process.env.WAITLIST_SLACK_CHANNEL || process.env.CONTACT_SLACK_CHANNEL || 'C0ATRTVMCH1'; // HQ #acorn
   if (!token) {
+    if (asForm) {
+      return respondFormError(res, 503, 'delivery channel is not configured on the server');
+    }
     return res.status(503).json({
       ok: false,
       error: 'delivery channel is not configured on the server',
@@ -154,19 +250,20 @@ export default async function handler(req, res) {
     clearTimeout(timer);
     slack = await resp.json();
   } catch (err) {
-    return res.status(502).json({
-      ok: false,
-      error: `delivery request failed: ${err && err.name === 'AbortError' ? 'timed out' : 'network error'}`,
-    });
+    const detail = `delivery request failed: ${err && err.name === 'AbortError' ? 'timed out' : 'network error'}`;
+    if (asForm) return respondFormError(res, 502, detail);
+    return res.status(502).json({ ok: false, error: detail });
   }
 
   if (!slack || slack.ok !== true) {
-    return res.status(502).json({
-      ok: false,
-      error: `delivery was not confirmed (${(slack && slack.error) || 'no response detail'})`,
-    });
+    const detail = `delivery was not confirmed (${(slack && slack.error) || 'no response detail'})`;
+    if (asForm) return respondFormError(res, 502, detail);
+    return res.status(502).json({ ok: false, error: detail });
   }
 
-  // Confirmed at the destination: Slack returned ok:true with a message ts.
+  // Confirmed at the destination: Slack returned ok:true with a message ts. The
+  // no-JS visitor gets the same thanks page the JS visitor gets, by redirect;
+  // the fetch path gets the same JSON it always got.
+  if (asForm) return respondFormSuccess(res);
   return res.status(200).json({ ok: true, ref: slack.ts });
 }
