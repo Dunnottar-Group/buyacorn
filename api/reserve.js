@@ -135,12 +135,30 @@ export default async function handler(req, res) {
     });
   }
 
+  // ACR-815: tag the founder. /reserve/thanks promises every buyer in writing that
+  // "Brian reaches out to you personally", and without a mention this lands as an
+  // ordinary channel message that can scroll past unseen. That is the #786 class: a
+  // page states a commitment the mechanism behind it does not deliver, and here the
+  // cost is a company committing to $2,500/mo.
+  //
+  // The id DEFAULTS in code on purpose. An env var that has to be set on Vercel would
+  // fail silently in exactly the case that matters, and this must work with zero
+  // configuration. The override exists so the destination can move without a deploy.
+  //
+  // Deliberately NOT applied to api/alpha.js: alpha applications are higher volume and
+  // sit in Anna Leigh's follow-up lane. bin/loop_sentinel.py tags on NEW breaches only
+  // for the same reason, to keep the mention meaningful. This is the same discipline.
+  //
+  // Not passed through slackEscape: this is a literal control token the handler owns,
+  // never a buyer-supplied value.
+  const founderId = process.env.RESERVE_NOTIFY_USER_ID || 'U0AU1SJGS92'; // Brian
+
   // "Seat reservation", never "seat sold". Per the 2026-07-15 ruling the public
   // 25-seat counter reflects cleared payments only, and no money has moved
   // here. The message says so on its own line so a reservation can never be
   // miscounted as revenue by whoever reads it next.
   const lines = [
-    ':handshake: *Founding Member seat reservation* (buyacorn.com /reserve)',
+    `:handshake: <@${founderId}> *Founding Member seat reservation* (buyacorn.com /reserve)`,
     `*Name:* ${slackEscape(v.name)}`,
     `*Email:* ${slackEscape(v.email)}`,
     `*Company:* ${slackEscape(v.company)}`,

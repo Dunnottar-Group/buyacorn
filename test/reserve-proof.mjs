@@ -13,7 +13,11 @@ function mockRes() {
 }
 async function call(req, env = {}) {
   const saved = {};
-  for (const k of ['RESERVE_SLACK_BOT_TOKEN', 'CONTACT_SLACK_BOT_TOKEN', 'RESERVE_SLACK_CHANNEL', 'CONTACT_SLACK_CHANNEL']) {
+  // Every env var the handler reads must be listed here. A missing name does not
+  // fail loudly: it leaks the previous test's value into the next one, so the suite
+  // stays green while silently testing the wrong configuration. RESERVE_NOTIFY_USER_ID
+  // was missing when it was added and the override leaked forward exactly that way.
+  for (const k of ['RESERVE_SLACK_BOT_TOKEN', 'CONTACT_SLACK_BOT_TOKEN', 'RESERVE_SLACK_CHANNEL', 'CONTACT_SLACK_CHANNEL', 'RESERVE_NOTIFY_USER_ID']) {
     saved[k] = process.env[k]; delete process.env[k];
   }
   Object.assign(process.env, env);
@@ -102,6 +106,23 @@ ok('name, email, company, source and notes all delivered',
   lastPost && /Dana Buyer/.test(lastPost.text) && /dana@example\.com/.test(lastPost.text)
   && /Chang Robotics/.test(lastPost.text) && /johnrobb/.test(lastPost.text)
   && /Met Brian at JVC/.test(lastPost.text));
+
+// ACR-815: the founder must be tagged, or /reserve/thanks promises a personal
+// follow-up that nobody is told to make.
+ok('founder is tagged on the reservation', lastPost && /<@U0AU1SJGS92>/.test(lastPost.text), lastPost && lastPost.text);
+ok('the tag is on the first line, where it is seen', lastPost && /^:handshake: <@U0AU1SJGS92>/.test(lastPost.text));
+
+lastPost = null;
+r = await call({ method: 'POST', body: VALID }, { ...TOKEN, RESERVE_NOTIFY_USER_ID: 'U0OVERRIDE' });
+ok('notify target overridable without a deploy', r.statusCode === 200 && /<@U0OVERRIDE>/.test(lastPost.text));
+
+// A buyer must never be able to forge a mention through a form field: slackEscape
+// turns their angle brackets into entities, so only the handler's own tag is live.
+lastPost = null;
+r = await call({ method: 'POST', body: { ...VALID, name: '<@U0AU1SJGS92> <!here>' } }, TOKEN);
+ok('buyer cannot forge a second mention or an @here',
+  r.statusCode === 200 && (lastPost.text.match(/<@/g) || []).length === 1 && !/<!here>/.test(lastPost.text),
+  lastPost && lastPost.text);
 
 // Slack control characters in buyer input must be neutralised.
 lastPost = null;
