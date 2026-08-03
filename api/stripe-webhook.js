@@ -128,7 +128,7 @@ export default async function handler(req, res) {
   const paid = session.payment_status === 'paid';
 
   const head = paid
-    ? `:tada: <@${FOUNDER_ID()}> *FOUNDING MEMBER SEAT PAID*`
+    ? `:tada: <@${FOUNDER_ID()}> *FOUNDING MEMBER DEPOSIT PAID - ACTION REQUIRED*`
     : `:hourglass: <@${FOUNDER_ID()}> *Founding Member checkout completed, payment NOT yet settled*`;
 
   const lines = [
@@ -143,11 +143,26 @@ export default async function handler(req, res) {
   ];
   if (md.source_slug) lines.push(`*Source:* ${slackEscape(md.source_slug)}`);
   if (md.notes) lines.push(`*Notes:* ${slackEscape(md.notes)}`);
-  lines.push(
-    paid
-      ? 'This one COUNTS toward the 25 seats. Money has moved, verified by Stripe signature.'
-      : 'Does NOT count yet. Stripe has not settled this payment.',
-  );
+
+  // ACR-907: the deposit does NOT start a subscription. A human does, after
+  // onboarding. That makes this message the only thing standing between a paid
+  // buyer and being silently forgotten, so it states the outstanding action
+  // plainly and carries the Stripe customer id needed to act on it. Announcing
+  // a payment without naming the work it creates is how a $2,500 buyer ends up
+  // waiting on nobody.
+  if (paid) {
+    lines.push(
+      `*Stripe customer:* ${slackEscape(session.customer || 'not created')}`,
+      `*Subscription:* NOT STARTED. This deposit covers month 1 only.`,
+      `*Their plan when you start it:* ${slackEscape(md.plan_label || md.plan || 'not recorded')}`,
+      'ACTION: after onboarding, start their subscription in Stripe against the customer above, '
+        + 'and anchor the first billing one period out so month 1 is not charged twice. '
+        + 'Their card is already saved, so you do not need to ask them for it again.',
+      'This one COUNTS toward the 25 seats. Money has moved, verified by Stripe signature.',
+    );
+  } else {
+    lines.push('Does NOT count yet. Stripe has not settled this payment.');
+  }
 
   const delivered = await postToSlack(lines.join('\n'));
 
