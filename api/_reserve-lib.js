@@ -25,6 +25,12 @@ export const MAX_COMPANY = 200;
 export const MAX_NOTES = 2000;
 export const MAX_SLUG = 200;
 
+export async function readRawBody(req) {
+  const chunks = [];
+  for await (const chunk of req) chunks.push(chunk);
+  return Buffer.concat(chunks).toString('utf8');
+}
+
 export async function readJsonBody(req) {
   // Vercel parses JSON into req.body; plain node (the local proof harness) does
   // not. Handle both.
@@ -32,10 +38,67 @@ export async function readJsonBody(req) {
     if (typeof req.body === 'string') return JSON.parse(req.body);
     return req.body;
   }
-  const chunks = [];
-  for await (const chunk of req) chunks.push(chunk);
-  const raw = Buffer.concat(chunks).toString('utf8');
+  const raw = await readRawBody(req);
   return raw ? JSON.parse(raw) : {};
+}
+
+// ACR-829 (#829). /reserve's form carried no `action` and no `method`. That
+// removed the mailto: leak, and I verified the missing `action` and recorded the
+// page clean. That was wrong: a <form> with no method defaults to GET and with
+// no action defaults to the page's own URL, so a submit JavaScript does not
+// intercept navigates to
+//   /reserve?name=Jane+Doe&email=jane%40example.com&company=Doe+LLC&terms_ack=on
+// putting the buyer's name, email, company and both acknowledgements into
+// browser history, our access logs, and the Referer header on the next click.
+// #829 swept the six pages rendered out of acorn-os; /reserve is authored
+// directly in this repo, so buyacorn PR #20 does not touch it.
+//
+// The form now carries method="POST" action="/api/reserve", and a native submit
+// is `application/x-www-form-urlencoded`, not JSON. Accepting only the
+// leak-free markup would be half a fix: the buyer would stop leaking AND stop
+// being recorded. So /api/reserve speaks both encodings, and everything
+// downstream of the decode is the same code on both paths.
+export function isFormEncoded(req) {
+  const ct = ((req.headers && req.headers['content-type']) || '').toString();
+  return ct.split(';')[0].trim().toLowerCase() === 'application/x-www-form-urlencoded';
+}
+
+// A checked HTML checkbox posts "on" when the input declares no value, which is
+// the case on /reserve; an UNCHECKED one is absent from the body entirely.
+// validateBuyer requires a literal `true` and that does not change, because the
+// JSON path depends on it and these acknowledgements are the record of what a
+// buyer agreed to before money moves. So the mapping happens HERE, in the
+// decoder, where an encoding detail belongs.
+//
+// ALLOWLIST, not a denylist, matching the polarity ACR-829's critic pass forced
+// on the alpha form: anything not a recognised affirmative is a refusal, so an
+// unrecognised value fails CLOSED and the buyer is told which acknowledgement is
+// missing rather than having consent invented for them.
+export const CONSENT_FIELDS = ['terms_ack', 'no_charge_ack'];
+export const AFFIRMATIVE_VALUES = new Set(['on', 'true', '1', 'yes', 'checked']);
+
+export async function readFormBody(req) {
+  let params;
+  if (req.body !== undefined && req.body !== null && typeof req.body === 'object') {
+    // Vercel's Node runtime may already have parsed it. A repeated key can
+    // arrive as an ARRAY; append each element so the last-wins rule below is
+    // the one URLSearchParams would have applied to the raw body.
+    params = new URLSearchParams();
+    for (const [k, v] of Object.entries(req.body)) {
+      if (Array.isArray(v)) for (const item of v) params.append(k, item);
+      else params.append(k, v);
+    }
+  } else {
+    const raw = typeof req.body === 'string' ? req.body : await readRawBody(req);
+    params = new URLSearchParams(raw);
+  }
+  const out = {};
+  for (const [k, v] of params) out[k] = v; // last wins, as URLSearchParams reads it
+  for (const f of CONSENT_FIELDS) {
+    out[f] = Object.prototype.hasOwnProperty.call(out, f)
+      && AFFIRMATIVE_VALUES.has(String(out[f]).trim().toLowerCase());
+  }
+  return out;
 }
 
 export function validateBuyer(body) {
