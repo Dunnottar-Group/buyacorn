@@ -79,8 +79,21 @@ ok('encoder drops null/undefined rather than sending "null"',
   !toStripeForm({ a: null, b: undefined, c: 'x' }).has('a') && !toStripeForm({ a: null, b: undefined, c: 'x' }).has('b'));
 
 // --- the ruled prices ---
-ok('monthly price is the ruled $2,500/month', CHECKOUT_PLANS.monthly.unit_amount === 250000 && CHECKOUT_PLANS.monthly.interval === 'month');
-ok('annual price is the ruled $25,000/year', CHECKOUT_PLANS.annual.unit_amount === 2500000 && CHECKOUT_PLANS.annual.interval === 'year');
+// ACR-907: `unit_amount` is now the DEPOSIT charged today (one number for every
+// paid plan). `subscription_amount` + `interval` describe the subscription a
+// human starts later and are deliberately never sent to Checkout.
+ok('monthly deposit is $2,500 today, subscription is $2,500/month later',
+  CHECKOUT_PLANS.monthly.unit_amount === 250000
+  && CHECKOUT_PLANS.monthly.subscription_amount === 250000
+  && CHECKOUT_PLANS.monthly.interval === 'month');
+ok('annual deposit is ALSO $2,500 today, subscription is $25,000/year later',
+  CHECKOUT_PLANS.annual.unit_amount === 250000
+  && CHECKOUT_PLANS.annual.subscription_amount === 2500000
+  && CHECKOUT_PLANS.annual.interval === 'year');
+ok('every paid plan charges the SAME deposit today',
+  new Set(Object.values(CHECKOUT_PLANS).map((p) => p.unit_amount)).size === 1);
+ok('the ruled subscription prices survive unchanged for whoever starts them',
+  CHECKOUT_PLANS.monthly.subscription_amount === 250000 && CHECKOUT_PLANS.annual.subscription_amount === 2500000);
 ok('there is no priced "undecided" plan', !('undecided' in CHECKOUT_PLANS));
 
 // --- method + body ---
@@ -113,8 +126,27 @@ stripeCall = null; slackCall = null;
 r = await call({ method: 'POST', body: VALID }, KEY);
 ok('valid monthly -> 200 with the Stripe checkout url', r.statusCode === 200 && r.body.ok === true && /checkout.stripe.com/.test(r.body.url));
 const b = new URLSearchParams(stripeCall.body);
-ok('subscription mode, per the ruled "2nd subscription payment"', b.get('mode') === 'subscription');
-ok('charges the ruled $2,500 monthly', b.get('line_items[0][price_data][unit_amount]') === '250000' && b.get('line_items[0][price_data][recurring][interval]') === 'month');
+// ACR-907: one charge, no subscription. The founder ruled the deposit must not
+// start the billing clock; a human does that after onboarding.
+ok('payment mode, NOT subscription (ACR-907: deposit must not start the clock)', b.get('mode') === 'payment');
+ok('charges the ruled $2,500 deposit', b.get('line_items[0][price_data][unit_amount]') === '250000');
+// The single most important negative in this file. A `recurring` key anywhere
+// turns the deposit back into a subscription and starts billing on the spot,
+// which is precisely what ACR-907 exists to prevent. Asserted over the WHOLE
+// encoded body, not one known key, so a rename or a nested reintroduction
+// cannot slip past.
+ok('NO recurring key anywhere in the Stripe payload', ![...b.keys()].some((k) => /recurring/.test(k)));
+ok('NO subscription_data anywhere in the Stripe payload', ![...b.keys()].some((k) => /subscription_data/.test(k)));
+// Without a Customer the deposit is an orphan charge and there is nobody to
+// attach next month's subscription to.
+ok('a Stripe Customer is always created (a human needs someone to bill later)', b.get('customer_creation') === 'always');
+// Without the saved card, activating a membership means going back to a buyer
+// who already paid and asking for their card a second time.
+ok('card saved off_session so a human can start the sub without re-asking',
+  b.get('payment_intent_data[setup_future_usage]') === 'off_session');
+ok('metadata flags the subscription as NOT started', b.get('metadata[subscription_started]') === 'no');
+ok('metadata carries the intended monthly subscription amount for whoever starts it',
+  b.get('metadata[intended_subscription_amount]') === '250000' && b.get('metadata[intended_interval]') === 'month');
 ok('currency is usd', b.get('line_items[0][price_data][currency]') === 'usd');
 ok('terms-of-service consent REQUIRED (the page promises the agreement first)', b.get('consent_collection[terms_of_service]') === 'required');
 ok('buyer email prefilled', b.get('customer_email') === 'dana@example.com');
@@ -133,7 +165,15 @@ ok('checkout-started notice does NOT claim a sale', slackCall && /NOT A SALE YET
 stripeCall = null;
 r = await call({ method: 'POST', body: { ...VALID, plan: 'annual' } }, KEY);
 const ab = new URLSearchParams(stripeCall.body);
-ok('annual charges the ruled $25,000/year', r.statusCode === 200 && ab.get('line_items[0][price_data][unit_amount]') === '2500000' && ab.get('line_items[0][price_data][recurring][interval]') === 'year');
+// ACR-907 ASSUMPTION, flagged on the issue and the PR rather than buried: the
+// founder said "$2500 payment" with no annual carve-out, so an annual buyer
+// also pays $2,500 today and the $25,000 is billed when a human starts their
+// subscription. If that is wrong, THIS assertion is the one that changes.
+ok('annual ALSO charges the $2,500 deposit today, not $25,000',
+  r.statusCode === 200 && ab.get('line_items[0][price_data][unit_amount]') === '250000');
+ok('annual carries the $25,000/year intent for whoever starts the subscription',
+  ab.get('metadata[intended_subscription_amount]') === '2500000' && ab.get('metadata[intended_interval]') === 'year');
+ok('annual has no recurring key either', ![...ab.keys()].some((k) => /recurring/.test(k)));
 
 // --- origin override ---
 stripeCall = null;
