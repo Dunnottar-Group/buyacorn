@@ -150,7 +150,7 @@ function respondFormError(res, status, message, backHref = '/alpha#apply') {
 <p>Nothing was saved. Here is exactly what went wrong:</p>
 <p><strong>${htmlEscape(message)}</strong></p>
 <p><a href="${htmlEscape(backHref)}">Go back and try again</a>, or email
-<a href="mailto:alpha@buyacorn.com">alpha@buyacorn.com</a> with the same details
+<a href="mailto:support@buyacorn.com">support@buyacorn.com</a> with the same details
 and we will add you by hand.</p>
 </body></html>
 `;

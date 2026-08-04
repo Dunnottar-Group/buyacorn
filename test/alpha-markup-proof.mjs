@@ -115,9 +115,24 @@ function checkTree(label, root) {
     //    page as a human route. ACR-829 dropped the `JavaScript` assertion:
     //    it pinned the sentence "This form needs JavaScript to submit",
     //    which stopped being TRUE once the form got a real POST action.
+    //
+    //    ACR-894 dropped the literal `alpha@buyacorn.com` for the same class
+    //    of reason. This check pinned one specific address, so the founder
+    //    ruling "use support@ instead of alpha@" turned a correct re-render
+    //    into 4 red assertions here -- verified by simulating that re-render
+    //    against this file before the pin was removed. The question this
+    //    proof is entitled to ask is whether a human route EXISTS in the
+    //    note; WHICH mailbox is legitimate is owned by
+    //    test/mailbox-allowlist-proof.mjs, which holds every discovered
+    //    address to a founder-ruled allowlist. Splitting them this way means
+    //    a re-render can never make this file lie or go stale.
+    const note = html.match(
+      /<p[^>]*class="form-fallback-note"[^>]*>([\s\S]*?)<\/p>/);
     ok(`${rel}: keeps a plain-text human route`,
-      html.includes('class="form-fallback-note"') &&
-      html.includes('alpha@buyacorn.com'));
+      Boolean(note) && /[A-Za-z0-9._%+-]+@buyacorn\.com/.test(note[1]),
+      note
+        ? `form-fallback-note names no @buyacorn.com address: ${JSON.stringify(note[1].trim())}`
+        : 'no element with class="form-fallback-note" on the page');
     ok(`${rel}: no longer claims the form needs JavaScript`,
       !html.includes('needs JavaScript'));
   }
