@@ -146,7 +146,11 @@ const TEXT_EXT = new Set(['.html', '.js', '.mjs', '.css', '.json', '.txt', '.xml
 // A floor, so a repo that stops shipping these cannot make this vacuously
 // green. Discovery is the real gate.
 const KNOWN_ADDRESS_BEARING_FILES = [
-  'public/index.html',
+  // ACR-991 moved the rendered offer page off the site root: at public/index.html
+  // it was shadowing Brian's src/pages/index.astro in the Astro build, so
+  // buyacorn.com/ served this page instead of the real homepage. Same file,
+  // same waitlist form, same brian@ fallback address, now at /offer.
+  'public/offer/index.html',
   'public/static/waitlist-submit.js',
   'api/waitlist.js',
   'api/alpha.js', // #894: the alpha failure path must never go addressless

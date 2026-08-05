@@ -181,7 +181,11 @@ ok('waitlist-submit.js contains no mailto: URL', !/mailto:/i.test(submitJs));
 ok('waitlist-submit.js sends the honeypot field', /website/.test(submitJs));
 ok('waitlist-submit.js says the details were NOT sent on failure', /NOT sent/.test(submitJs));
 
-for (const page of ['../public/index.html', '../public/example/index.html']) {
+// ACR-991: the offer page was at ../public/index.html until it was moved to
+// /offer. It had to move: Astro copies public/ over its own generated routes,
+// so this file was silently winning the / collision against
+// src/pages/index.astro and the hand-built homepage never shipped.
+for (const page of ['../public/offer/index.html', '../public/example/index.html']) {
   const html = await readFile(new URL(page, import.meta.url), enc);
   const form = /<form[^>]*id="waitlist-form"[^>]*>/.exec(html);
   ok(`${page}: waitlist form found`, !!form);
