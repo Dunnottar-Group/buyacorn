@@ -1121,9 +1121,9 @@ main {
 
 .site-header {
   z-index: 10;
-  background: rgba(2, 31, 28, 0.88);
-  border-bottom: 1px solid var(--glass-border);
-  backdrop-filter: blur(18px);
+  background: transparent;
+  border-bottom: 0;
+  backdrop-filter: none;
 }
 
 .site-header .wordmark-img {
