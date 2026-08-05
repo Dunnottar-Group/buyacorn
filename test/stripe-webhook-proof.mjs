@@ -115,14 +115,7 @@ ok('REPLAYED old event -> 400 and NOTHING posted', r.statusCode === 400 && slack
 slackCall = null;
 r = await call(req(PAID, sign(PAID)), ENV);
 ok('verified paid session -> 200 handled+paid', r.statusCode === 200 && r.body.handled === true && r.body.paid === true);
-ok('announces a PAID deposit and tags the founder', slackCall && /FOUNDING MEMBER DEPOSIT PAID/.test(slackCall.text) && /<@U0AU1SJGS92>/.test(slackCall.text));
-// ACR-907: the deposit does not start a subscription, so this message is the
-// only thing that turns a paid buyer into work someone will actually do. If it
-// stops saying so, a $2,500 customer waits on nobody.
-ok('says the subscription is NOT started', /NOT STARTED/.test(slackCall.text));
-ok('names the outstanding human action', /ACTION:/.test(slackCall.text) && /start their subscription/i.test(slackCall.text));
-ok('warns against double-charging month 1', /not charged twice/i.test(slackCall.text));
-ok('says the card is already saved, so nobody re-asks the buyer', /card is already saved/i.test(slackCall.text));
+ok('announces a PAID seat and tags the founder', slackCall && /FOUNDING MEMBER SEAT PAID/.test(slackCall.text) && /<@U0AU1SJGS92>/.test(slackCall.text));
 ok('states the amount in dollars, from Stripe not from us', /\$2,500\.00 USD/.test(slackCall.text), slackCall && slackCall.text);
 ok('carries buyer, company, plan, source', /Dana Buyer/.test(slackCall.text) && /Chang Robotics/.test(slackCall.text) && /\$2,500\/mo/.test(slackCall.text) && /johnrobb/.test(slackCall.text));
 ok('says this one COUNTS toward the 25 seats', /COUNTS toward the 25 seats/.test(slackCall.text));

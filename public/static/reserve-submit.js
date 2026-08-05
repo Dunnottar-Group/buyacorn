@@ -58,58 +58,18 @@
       no_charge_ack: form.elements["no_charge_ack"] ? form.elements["no_charge_ack"].checked : false,
     };
 
-    function reserveOnly() {
-      return fetch("/api/reserve", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      }).then(function (response) {
-        if (!response.ok) throw new Error("reserve endpoint returned " + response.status);
-        window.location.href = "/reserve/thanks";
-      });
-    }
-
-    // ACR-907: "hold a seat, decide later" is a reservation and must never
-    // reach a card form. That is the founder's ruling, enforced here AND
-    // server-side in checkout.js, which 400s the same case. Two gates, because
-    // this one lives in a file any buyer can edit in their own browser.
-    if (selectedPlan() === "undecided") {
-      reserveOnly().catch(function () {
-        showError(
-          "Something went wrong holding your seat. Please try again in a moment, or email hello@buyacorn.com and we will hold it by hand."
-        );
-      });
-      return;
-    }
-
-    // A paid plan goes to Stripe Checkout for the $2,500 deposit.
-    fetch("/api/checkout", {
+    fetch("/api/reserve", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     })
       .then(function (response) {
-        // 503 is checkout.js's designed answer when no STRIPE_SECRET_KEY is
-        // set. Falling back to a plain reservation means a key rotation, a
-        // failed deploy, or a deliberate switch-off degrades to "seat held, no
-        // money taken" instead of a dead button on a commercial page. The
-        // buyer still lands somewhere honest.
-        if (response.status === 503) return reserveOnly();
-
-        return response.json().then(function (body) {
-          if (!response.ok || !body || !body.url) {
-            // Never invent a reason. If Stripe refused and said why, the
-            // buyer is told exactly that; otherwise they are told nothing
-            // rather than a guess.
-            throw new Error((body && body.error) || "checkout returned " + response.status);
-          }
-          window.location.href = body.url;
-        });
+        if (!response.ok) throw new Error("reserve endpoint returned " + response.status);
+        window.location.href = "/reserve/thanks";
       })
-      .catch(function (err) {
+      .catch(function () {
         showError(
-          (err && err.message ? err.message + " " : "") +
-            "We could not open the payment page. Please try again in a moment, or email hello@buyacorn.com and we will hold your seat by hand."
+          "Something went wrong holding your seat. Please try again in a moment, or email hello@buyacorn.com and we will hold it by hand."
         );
       });
   });

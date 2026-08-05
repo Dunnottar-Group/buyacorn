@@ -38,48 +38,21 @@
 
 import { PLANS, validateBuyer, slackEscape, readJsonBody, postToSlack } from './_reserve-lib.js';
 
-// ACR-907: THE DEPOSIT IS ONE CHARGE, NOT A SUBSCRIPTION.
-//
-// Founder direction 2026-08-03: "someone needs to be able to reserve their
-// Founding Member seat today with a $2500 payment. but that should not start
-// the subscription until the subscription is manually started by a human."
-// Clarified in the same exchange: "the $2500 IS the first month payment."
-//
-// So the ECONOMICS of the 2026-07-15 ruling are unchanged - $2,500 secures the
-// seat and covers month one - and what changes is WHEN the Subscription object
-// comes into existence. Subscription mode cannot express this: it starts the
-// billing clock the instant the buyer pays. A one-time charge can, and the
-// human starts the subscription after onboarding with the billing cycle
-// anchored one period out so month one is never charged twice.
-//
-// DEPOSIT_AMOUNT IS ONE NUMBER FOR EVERY PAID PLAN. The founder said "$2500
-// payment" with no annual carve-out, so an annual buyer also pays $2,500 today
-// and the $25,000 annual rate is billed when a human starts their subscription.
-// That is an ASSUMPTION, flagged as such on issue #907 and on the PR rather
-// than buried here, because it is the one number a reader would otherwise
-// assume was ruled.
-export const DEPOSIT_AMOUNT = 250000;
-
-// The founder-ruled plans. Source: cos/decisions/
+// The founder-ruled prices, in cents. Source: cos/decisions/
 // 2026-07-15_founding-member-commercial-pack.md. Retail is $5,000/mo; Founding
 // is half of that for life while in good standing. Annual is 10 months paid.
-// `interval` and `subscription_amount` are what a human uses to build the
-// subscription later; they are deliberately NOT sent to Checkout, because
-// sending them is what would start the clock.
 export const CHECKOUT_PLANS = {
   monthly: {
-    unit_amount: DEPOSIT_AMOUNT,
+    unit_amount: 250000,
     interval: 'month',
-    subscription_amount: 250000,
-    product_name: 'Acorn Founding Member deposit',
-    description: 'Secures one of the 25 Founding Member seats and covers your first month at the Founding rate of $2,500 per month, half of $5,000 retail. Your membership begins when Acorn activates it, and monthly billing starts after your first month.',
+    product_name: 'Acorn Founding Member',
+    description: 'Founding Member rate, $2,500 per month. Half of $5,000 retail. Your first payment is the deposit that secures your seat and covers month one.',
   },
   annual: {
-    unit_amount: DEPOSIT_AMOUNT,
+    unit_amount: 2500000,
     interval: 'year',
-    subscription_amount: 2500000,
-    product_name: 'Acorn Founding Member deposit (annual plan)',
-    description: 'Secures one of the 25 Founding Member seats and covers your first month. You chose the annual Founding rate of $25,000 per year, ten months paid with two months free, which is billed when Acorn activates your membership.',
+    product_name: 'Acorn Founding Member (annual)',
+    description: 'Founding Member annual rate, $25,000 per year. Ten months paid, two months free.',
   },
 };
 
@@ -145,12 +118,7 @@ export default async function handler(req, res) {
   const origin = process.env.PUBLIC_SITE_ORIGIN || 'https://buyacorn.com';
 
   const payload = {
-    // ACR-907: one charge, no subscription. See DEPOSIT_AMOUNT above.
-    mode: 'payment',
-    // A Customer must exist for a human to attach the subscription to later.
-    // In payment mode Stripe does NOT create one unless asked, and without it
-    // the deposit is an orphan charge with no one to bill next month.
-    customer_creation: 'always',
+    mode: 'subscription',
     // Stripe appends the session id so the return page can identify the
     // session. The page still treats the webhook as the only proof of payment.
     success_url: `${origin}/reserve/paid?session_id={CHECKOUT_SESSION_ID}`,
@@ -166,9 +134,8 @@ export default async function handler(req, res) {
         quantity: 1,
         price_data: {
           currency: 'usd',
-          // No `recurring` key. Its presence is what makes this a subscription
-          // line item, and its absence is what keeps the billing clock stopped.
           unit_amount: plan.unit_amount,
+          recurring: { interval: plan.interval },
           product_data: { name: plan.product_name, description: plan.description },
         },
       },
@@ -183,32 +150,9 @@ export default async function handler(req, res) {
       plan_label: PLANS[v.plan],
       source_slug: v.slug || '',
       notes: v.notes || '',
-      // ACR-907: everything a human needs to start the right subscription
-      // later, carried on the payment itself so it survives without a lookup
-      // in some other system. `subscription_started` is the flag that makes an
-      // un-actioned paid deposit visible instead of silent.
-      subscription_started: 'no',
-      intended_interval: plan.interval,
-      intended_subscription_amount: String(plan.subscription_amount),
-      deposit_covers: 'month 1',
     },
-    // NO `subscription_data`. In payment mode it is meaningless, and leaving it
-    // here would read as if a subscription were being created.
-    //
-    // Saving the card is what makes "a human starts it later" humane. Without
-    // it, activating a membership means going back to a buyer who already paid
-    // and asking for card details a second time, which is the opposite of the
-    // white-glove promise. Stripe shows the buyer the mandate text for this at
-    // checkout, so it is disclosed, not silent.
-    payment_intent_data: {
-      setup_future_usage: 'off_session',
-      description: `Founding Member deposit (${PLANS[v.plan]}) - covers month 1, subscription started manually`,
-      metadata: {
-        buyer_name: v.name,
-        buyer_company: v.company,
-        plan: v.plan,
-        subscription_started: 'no',
-      },
+    subscription_data: {
+      metadata: { buyer_name: v.name, buyer_company: v.company, plan: v.plan },
     },
   };
 
