@@ -8,7 +8,7 @@
 // variable (server side only). It is never present in client code or in
 // this repository.
 
-const SLACK_CHANNEL = process.env.CONTACT_SLACK_CHANNEL || 'C0ATRTVMCH1'; // HQ #acorn
+const DEFAULT_SLACK_CHANNEL = 'C0ATRTVMCH1'; // HQ #acorn
 const MAX_NAME = 200;
 const MAX_EMAIL = 320;
 const MAX_MESSAGE = 5000;
@@ -42,6 +42,14 @@ function validate(body) {
   return { errors, name, email, message };
 }
 
+function slackEscape(v) {
+  return (v || '')
+    .toString()
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
@@ -68,6 +76,7 @@ export default async function handler(req, res) {
   }
 
   const token = process.env.CONTACT_SLACK_BOT_TOKEN;
+  const channel = process.env.CONTACT_SLACK_CHANNEL || DEFAULT_SLACK_CHANNEL;
   if (!token) {
     // Real state: the delivery channel is not configured on this deployment.
     return res.status(503).json({
@@ -78,10 +87,10 @@ export default async function handler(req, res) {
 
   const text = [
     ':inbox_tray: *Website report* (buyacorn.com /contact form)',
-    `*From:* ${name} <${email}>`,
+    `*From:* ${slackEscape(name)} &lt;${slackEscape(email)}&gt;`,
     `*Received:* ${new Date().toISOString()} (UTC)`,
     '*Message:*',
-    message,
+    slackEscape(message),
   ].join('\n');
 
   let slack;
@@ -95,7 +104,7 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json; charset=utf-8',
       },
       body: JSON.stringify({
-        channel: SLACK_CHANNEL,
+        channel,
         text,
         unfurl_links: false,
         unfurl_media: false,

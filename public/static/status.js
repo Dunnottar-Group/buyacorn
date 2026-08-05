@@ -136,7 +136,7 @@
       if (!stageId) return;
       var token = getToken();
       if (!token) return; // no magic-link token yet: nothing to attribute a stage to
-      var body = JSON.stringify({ token: token, stage_id: stageId, ts: new Date().toISOString() });
+      var body = JSON.stringify({ token: token, stage_id: stageId, ts: new Date().toISOString(), page: window.location.pathname });
 
       var queued = false;
       try {
@@ -155,6 +155,40 @@
       }
     } catch (e) {
       /* a beacon must never be able to break the page it is reporting on */
+    }
+  }
+
+  function sendJourneyEvent(eventType, extra) {
+    try {
+      if (!eventType) return;
+      var body = {
+        event_type: eventType,
+        ts: new Date().toISOString(),
+        page: window.location.pathname,
+        current_step: currentStepContext(),
+      };
+      var token = getToken();
+      if (token) body.token = token;
+      if (extra) {
+        for (var key in extra) {
+          if (Object.prototype.hasOwnProperty.call(extra, key)) body[key] = extra[key];
+        }
+      }
+      var raw = JSON.stringify(body);
+      var queued = false;
+      try {
+        if (navigator.sendBeacon) queued = navigator.sendBeacon("/api/journey", raw);
+      } catch (e) {
+        queued = false;
+      }
+      if (queued) return;
+      try {
+        fetch("/api/journey", { method: "POST", body: raw, keepalive: true }).catch(function () {});
+      } catch (e) {
+        /* drop the signal; customer flow wins */
+      }
+    } catch (e) {
+      /* journey events must never break setup */
     }
   }
 
@@ -794,6 +828,7 @@
     var form = byId("status-link-form");
     if (!form) return;
     form.addEventListener("submit", function () {
+      sendJourneyEvent("setup_link_requested");
       // ACR-778 (fixes #778): let the native submit run. The form's
       // mailto: action is the only transport this page has, so the
       // browser opening a pre-filled email IS everything that happens
@@ -1034,6 +1069,9 @@
     var links = document.querySelectorAll("[data-tawk-open]");
     Array.prototype.forEach.call(links, function (link) {
       link.addEventListener("click", function (event) {
+        sendJourneyEvent("support_requested", {
+          support_for: link.getAttribute("data-support-for") || link.getAttribute("data-tawk-open") || ""
+        });
         if (!window.Tawk_API || typeof window.Tawk_API.maximize !== "function") {
           // Widget not ready yet: let the link's own href (book-a-call)
           // fire as the fallback. Nothing to prevent, nothing to do.
