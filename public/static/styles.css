@@ -1675,6 +1675,45 @@ code,
     flex-direction: column;
   }
 
+  .status-steps,
+  .status-slack-apps-grid,
+  .status-slack-apps-overview,
+  .status-slack-app-col,
+  .status-slack-app-col .status-phase {
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .status-token-map {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .status-token-map th,
+  .status-token-map td {
+    min-width: 0;
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  .status-token-map code,
+  .status-token-card code,
+  .manifest-block code,
+  .status-key-howto code {
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .manifest-block {
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: pre-wrap;
+  }
+
   .status-phase-status {
     max-width: none;
     text-align: left;

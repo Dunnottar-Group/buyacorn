@@ -519,6 +519,7 @@ import favicon from './public/favicon.jpeg';
         background: var(--ink-green);
         color: var(--tech-grey);
         font-family: var(--font-sans);
+        overflow-x: hidden;
         -webkit-font-smoothing: antialiased;
     }
 
@@ -2047,6 +2048,10 @@ import favicon from './public/favicon.jpeg';
             gap: 12px;
         }
 
+        .site-header .nav-btn {
+            display: none;
+        }
+
         .founder-strip {
             grid-template-columns: 1fr;
         }
@@ -2065,11 +2070,34 @@ import favicon from './public/favicon.jpeg';
         .hero {
             min-height: auto;
             padding: 82px 0 112px;
+            text-align: left;
+        }
+
+        .hero-inner {
+            align-items: flex-start;
+        }
+
+        .hero-triad {
+            font-size: clamp(34px, 11vw, 42px);
+            line-height: 1.08;
+            max-width: 100%;
+        }
+
+        .hero-sub {
+            font-size: 18px;
+            line-height: 1.65;
+            text-align: left;
         }
 
         .hero-buttons,
         .waitlist-form {
+            align-items: stretch;
             flex-direction: column;
+            width: 100%;
+        }
+
+        .hero-note {
+            text-align: left;
         }
 
         .homepage-waitlist-form {
