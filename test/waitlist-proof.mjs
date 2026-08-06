@@ -13,6 +13,7 @@ import handler from '../api/waitlist.js';
 const HANDLER_ENV = [
   'WAITLIST_SLACK_BOT_TOKEN',
   'CONTACT_SLACK_BOT_TOKEN',
+  'SLACK_WAITLIST_CHANNEL',
   'WAITLIST_SLACK_CHANNEL',
   'CONTACT_SLACK_CHANNEL',
 ];
@@ -133,6 +134,10 @@ ok('delivered text carries name, email, company, referral',
 ok('posts to HQ #acorn by default', lastPost && lastPost.channel === 'C0ATRTVMCH1');
 ok('posts to chat.postMessage', lastPost && lastPost.__url === 'https://slack.com/api/chat.postMessage');
 ok('labelled as a waitlist request from buyacorn.com', lastPost && /Waitlist request/.test(lastPost.text));
+
+r = await call({ method: 'POST', body: VALID },
+  { CONTACT_SLACK_BOT_TOKEN: 'xoxb-shared', SLACK_WAITLIST_CHANNEL: 'C-LEADS-WAITLIST' });
+ok('SLACK_WAITLIST_CHANNEL honored', r.statusCode === 200 && lastPost.channel === 'C-LEADS-WAITLIST');
 
 r = await call({ method: 'POST', body: VALID },
   { WAITLIST_SLACK_BOT_TOKEN: 'xoxb-waitlist', WAITLIST_SLACK_CHANNEL: 'C-WAIT' });
