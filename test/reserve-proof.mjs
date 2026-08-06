@@ -20,7 +20,7 @@ async function call(req, env = {}) {
   // fail loudly: it leaks the previous test's value into the next one, so the suite
   // stays green while silently testing the wrong configuration. RESERVE_NOTIFY_USER_ID
   // was missing when it was added and the override leaked forward exactly that way.
-  for (const k of ['RESERVE_SLACK_BOT_TOKEN', 'CONTACT_SLACK_BOT_TOKEN', 'RESERVE_SLACK_CHANNEL', 'CONTACT_SLACK_CHANNEL', 'RESERVE_NOTIFY_USER_ID']) {
+  for (const k of ['RESERVE_SLACK_BOT_TOKEN', 'CONTACT_SLACK_BOT_TOKEN', 'SLACK_CHECKOUT_CHANNEL', 'RESERVE_NOTIFY_USER_ID']) {
     saved[k] = process.env[k]; delete process.env[k];
   }
   Object.assign(process.env, env);
@@ -55,7 +55,7 @@ const VALID = {
   plan: 'monthly', notes: 'Met Brian at JVC', source_slug: 'johnrobb',
   terms_ack: true, no_charge_ack: true,
 };
-const TOKEN = { RESERVE_SLACK_BOT_TOKEN: 'xoxb-test' };
+const TOKEN = { RESERVE_SLACK_BOT_TOKEN: 'xoxb-test', SLACK_CHECKOUT_CHANNEL: 'C-CHECKOUT' };
 
 // capture Slack payloads
 let lastPost = null;
@@ -107,13 +107,16 @@ ok('over-long notes -> 400', r.statusCode === 400 && /notes are too long/.test(r
 r = await call({ method: 'POST', body: VALID }); // no token in env
 ok('valid but no token -> 503, never a false success', r.statusCode === 503 && /not configured/.test(r.body.error));
 
+r = await call({ method: 'POST', body: VALID }, { RESERVE_SLACK_BOT_TOKEN: 'xoxb-test' });
+ok('valid token but no SLACK_CHECKOUT_CHANNEL -> 503', r.statusCode === 503 && /not configured/.test(r.body.error));
+
 // company is a REAL required field here (a seat is sold to a company), NOT a
 // honeypot: a filled company must SUCCEED.
 lastPost = null;
 r = await call({ method: 'POST', body: VALID }, TOKEN);
 ok('valid submission -> 200 with Slack ts as ref', r.statusCode === 200 && r.body.ok === true && r.body.ref === '1785.0001');
 ok('company is a real field, filling it does not reject', r.statusCode === 200);
-ok('delivered to HQ #acorn by default', lastPost && lastPost.channel === 'C0ATRTVMCH1');
+ok('delivered to SLACK_CHECKOUT_CHANNEL', lastPost && lastPost.channel === 'C-CHECKOUT');
 ok('message carries the ruled plan text, not a bare code',
   lastPost && /\$2,500\/mo \(half of \$5,000 retail, for life\)/.test(lastPost.text), lastPost && lastPost.text);
 ok('message states NO MONEY HAS MOVED', lastPost && /NO MONEY HAS MOVED/.test(lastPost.text));
@@ -149,11 +152,11 @@ ok('slack control characters escaped, no broadcast, no spoofed link',
 
 // Fallback token path: the shared /contact token works.
 lastPost = null;
-r = await call({ method: 'POST', body: VALID }, { CONTACT_SLACK_BOT_TOKEN: 'xoxb-shared' });
+r = await call({ method: 'POST', body: VALID }, { CONTACT_SLACK_BOT_TOKEN: 'xoxb-shared', SLACK_CHECKOUT_CHANNEL: 'C-CHECKOUT' });
 ok('CONTACT_SLACK_BOT_TOKEN fallback works', r.statusCode === 200);
 
-r = await call({ method: 'POST', body: VALID }, { ...TOKEN, RESERVE_SLACK_CHANNEL: 'C0OVERRIDE' });
-ok('channel override honoured', r.statusCode === 200 && lastPost.channel === 'C0OVERRIDE');
+r = await call({ method: 'POST', body: VALID }, { ...TOKEN, SLACK_CHECKOUT_CHANNEL: 'C-CHECKOUT-OVERRIDE' });
+ok('SLACK_CHECKOUT_CHANNEL honoured', r.statusCode === 200 && lastPost.channel === 'C-CHECKOUT-OVERRIDE');
 
 // Each plan value renders its own ruled label.
 for (const [plan, needle] of [['annual', '\\$25,000/yr'], ['undecided', 'plan not chosen yet']]) {

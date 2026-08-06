@@ -104,9 +104,8 @@ export default async function handler(req, res) {
   }
 
   const token = process.env.RESERVE_SLACK_BOT_TOKEN || process.env.CONTACT_SLACK_BOT_TOKEN;
-  const channel =
-    process.env.RESERVE_SLACK_CHANNEL || process.env.CONTACT_SLACK_CHANNEL || 'C0ATRTVMCH1'; // HQ #acorn
-  if (!token) {
+  const channel = process.env.SLACK_CHECKOUT_CHANNEL;
+  if (!token || !channel) {
     if (asForm) return respondFormError(res, 503, 'delivery channel is not configured on the server');
     return res.status(503).json({
       ok: false,

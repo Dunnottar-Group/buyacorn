@@ -159,15 +159,19 @@ export function slackToken() {
 }
 
 export function slackChannel() {
-  return process.env.RESERVE_SLACK_CHANNEL || process.env.CONTACT_SLACK_CHANNEL || 'C0ATRTVMCH1'; // HQ #acorn
+  return process.env.SLACK_CHECKOUT_CHANNEL;
 }
 
-// Post to #acorn and report honestly what happened. Returns
+// Post to the checkout leads channel configured by SLACK_CHECKOUT_CHANNEL and
+// report honestly what happened. Returns
 // {ok, ts} or {ok:false, error}. Callers decide their own status codes; this
 // never invents a reason for a failure it cannot see.
 export async function postToSlack(text) {
   const token = slackToken();
-  if (!token) return { ok: false, error: 'delivery channel is not configured on the server' };
+  const channel = slackChannel();
+  if (!token || !channel) {
+    return { ok: false, error: 'delivery channel is not configured on the server' };
+  }
   let slack;
   try {
     const controller = new AbortController();
@@ -179,7 +183,7 @@ export async function postToSlack(text) {
         'Content-Type': 'application/json; charset=utf-8',
       },
       body: JSON.stringify({
-        channel: slackChannel(),
+        channel,
         text,
         unfurl_links: false,
         unfurl_media: false,

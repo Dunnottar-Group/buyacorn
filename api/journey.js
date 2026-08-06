@@ -2,14 +2,13 @@
 //
 // public/static/status.js emits fire-and-forget beacons to /api/journey as a
 // visitor moves through setup. This endpoint makes those beacons real and posts
-// non-sensitive setup/support signals into HQ #acorn. It deliberately does not
-// forward setup tokens or email addresses to Slack.
+// non-sensitive setup/support signals into the alpha leads channel for now. It
+// deliberately does not forward setup tokens or email addresses to Slack.
 
 const MAX_STAGE = 120;
 const MAX_EVENT = 80;
 const MAX_URL = 500;
 const MAX_CONTEXT = 200;
-const DEFAULT_CHANNEL = 'C0ATRTVMCH1'; // HQ #acorn
 
 async function readRawBody(req) {
   if (typeof req.body === 'string') return req.body;
@@ -77,9 +76,8 @@ function messageFor(v) {
 
 async function postToSlack(text) {
   const token = process.env.JOURNEY_SLACK_BOT_TOKEN || process.env.CONTACT_SLACK_BOT_TOKEN;
-  const channel =
-    process.env.JOURNEY_SLACK_CHANNEL || process.env.CONTACT_SLACK_CHANNEL || DEFAULT_CHANNEL;
-  if (!token) return { ok: false, error: 'delivery channel is not configured on the server' };
+  const channel = process.env.SLACK_ALPHA_CHANNEL;
+  if (!token || !channel) return { ok: false, error: 'delivery channel is not configured on the server' };
 
   let slack;
   try {

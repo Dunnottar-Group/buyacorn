@@ -13,8 +13,7 @@ import handler from '../api/waitlist.js';
 const HANDLER_ENV = [
   'WAITLIST_SLACK_BOT_TOKEN',
   'CONTACT_SLACK_BOT_TOKEN',
-  'WAITLIST_SLACK_CHANNEL',
-  'CONTACT_SLACK_CHANNEL',
+  'SLACK_WAITLIST_CHANNEL',
 ];
 
 function mockRes() {
@@ -54,6 +53,7 @@ const VALID = {
   source_slug: '',
   website: null,
 };
+const TOKEN_ENV = { CONTACT_SLACK_BOT_TOKEN: 'xoxb-test', SLACK_WAITLIST_CHANNEL: 'C-WAITLIST' };
 
 let lastPost = null;
 const fetchOk = async (url, opts) => {
@@ -98,7 +98,7 @@ ok('whitespace-only company -> 400', r.statusCode === 400 && /company is require
 lastPost = null;
 r = await call(
   { method: 'POST', body: { name: 'N', email: 'n@e.com', company: 'C', referral_text: null, source_slug: 'example', website: null } },
-  { CONTACT_SLACK_BOT_TOKEN: 'xoxb-test' });
+  TOKEN_ENV);
 ok('/example shape (null optionals) -> 200', r.statusCode === 200 && r.body.ok === true);
 ok('null referral_text is omitted, never printed as "null"',
   lastPost && !/null/.test(lastPost.text) && !/Who sent them/.test(lastPost.text));
@@ -109,20 +109,23 @@ r = await call({ method: 'POST', body: VALID });
 ok('valid but no token -> 503 real state', r.statusCode === 503 && /not configured/.test(r.body.error));
 ok('503 is not a success', r.statusCode === 503 && r.body.ok === false && r.body.ref === undefined);
 
+r = await call({ method: 'POST', body: VALID }, { CONTACT_SLACK_BOT_TOKEN: 'xoxb-test' });
+ok('valid token but no SLACK_WAITLIST_CHANNEL -> 503', r.statusCode === 503 && /not configured/.test(r.body.error));
+
 // --- honeypot ------------------------------------------------------------
 lastPost = null;
 r = await call({ method: 'POST', body: { ...VALID, website: 'http://spam.example' } },
-  { CONTACT_SLACK_BOT_TOKEN: 'xoxb-test' });
+  TOKEN_ENV);
 ok('honeypot filled -> 200 acknowledged', r.statusCode === 200 && r.body.ok === true && r.body.ref === 'received');
 ok('honeypot filled -> nothing delivered to Slack', lastPost === null);
 
 lastPost = null;
-r = await call({ method: 'POST', body: { ...VALID, website: '' } }, { CONTACT_SLACK_BOT_TOKEN: 'xoxb-test' });
+r = await call({ method: 'POST', body: { ...VALID, website: '' } }, TOKEN_ENV);
 ok('empty honeypot (the real-visitor case) -> delivered', r.statusCode === 200 && lastPost !== null);
 
 // company is a REAL field here, NOT the contact.js honeypot: it must deliver.
 lastPost = null;
-r = await call({ method: 'POST', body: VALID }, { CONTACT_SLACK_BOT_TOKEN: 'xoxb-test' });
+r = await call({ method: 'POST', body: VALID }, TOKEN_ENV);
 ok('company (real field) NOT dropped as a honeypot', r.statusCode === 200 && lastPost !== null);
 
 // --- happy path ----------------------------------------------------------
@@ -130,42 +133,42 @@ ok('success returns the Slack ts as ref', r.body.ok === true && r.body.ref === '
 ok('delivered text carries name, email, company, referral',
   lastPost && /Tre Tester/.test(lastPost.text) && /tre@example.com/.test(lastPost.text)
   && /Acme Widgets/.test(lastPost.text) && /Brian/.test(lastPost.text));
-ok('posts to HQ #acorn by default', lastPost && lastPost.channel === 'C0ATRTVMCH1');
+ok('posts to SLACK_WAITLIST_CHANNEL', lastPost && lastPost.channel === 'C-WAITLIST');
 ok('posts to chat.postMessage', lastPost && lastPost.__url === 'https://slack.com/api/chat.postMessage');
 ok('labelled as a waitlist request from buyacorn.com', lastPost && /Waitlist request/.test(lastPost.text));
 
 r = await call({ method: 'POST', body: VALID },
-  { WAITLIST_SLACK_BOT_TOKEN: 'xoxb-waitlist', WAITLIST_SLACK_CHANNEL: 'C-WAIT' });
-ok('WAITLIST_SLACK_CHANNEL override honored', r.statusCode === 200 && lastPost.channel === 'C-WAIT');
+  { WAITLIST_SLACK_BOT_TOKEN: 'xoxb-waitlist', SLACK_WAITLIST_CHANNEL: 'C-WAIT-DEDICATED' });
+ok('WAITLIST token + SLACK_WAITLIST_CHANNEL honored', r.statusCode === 200 && lastPost.channel === 'C-WAIT-DEDICATED');
 
 // Leak check for the false-green class: the override above must not survive.
-r = await call({ method: 'POST', body: VALID }, { CONTACT_SLACK_BOT_TOKEN: 'xoxb-test' });
-ok('env from a previous test did NOT leak into this one', lastPost.channel === 'C0ATRTVMCH1');
+r = await call({ method: 'POST', body: VALID }, TOKEN_ENV);
+ok('env from a previous test did NOT leak into this one', lastPost.channel === 'C-WAITLIST');
 
 // --- delivery failures ---------------------------------------------------
 global.fetch = async () => ({ json: async () => ({ ok: false, error: 'channel_not_found' }) });
-r = await call({ method: 'POST', body: VALID }, { CONTACT_SLACK_BOT_TOKEN: 'xoxb-test' });
+r = await call({ method: 'POST', body: VALID }, TOKEN_ENV);
 ok('Slack not-ok -> 502 carrying the REAL error', r.statusCode === 502 && /channel_not_found/.test(r.body.error));
 ok('Slack not-ok is never reported as success', r.body.ok === false && r.body.ref === undefined);
 
 global.fetch = async () => { throw new Error('boom'); };
-r = await call({ method: 'POST', body: VALID }, { CONTACT_SLACK_BOT_TOKEN: 'xoxb-test' });
+r = await call({ method: 'POST', body: VALID }, TOKEN_ENV);
 ok('network error -> 502 network error', r.statusCode === 502 && /network error/.test(r.body.error));
 
 global.fetch = async () => { const e = new Error('aborted'); e.name = 'AbortError'; throw e; };
-r = await call({ method: 'POST', body: VALID }, { CONTACT_SLACK_BOT_TOKEN: 'xoxb-test' });
+r = await call({ method: 'POST', body: VALID }, TOKEN_ENV);
 ok('timeout -> 502 timed out', r.statusCode === 502 && /timed out/.test(r.body.error));
 
 // --- injection -----------------------------------------------------------
 global.fetch = fetchOk;
 r = await call({ method: 'POST', body: { ...VALID, company: '<!channel> Evil & Co <https://x|click>' } },
-  { CONTACT_SLACK_BOT_TOKEN: 'xoxb-test' });
+  TOKEN_ENV);
 ok('broadcast/link injection neutralized',
   r.statusCode === 200 && lastPost && !/<!channel>/.test(lastPost.text)
   && /&lt;!channel&gt;/.test(lastPost.text) && /Evil &amp; Co/.test(lastPost.text));
 
 // --- the bug itself: no mailto anywhere in the response path -------------
-r = await call({ method: 'POST', body: VALID }, { CONTACT_SLACK_BOT_TOKEN: 'xoxb-test' });
+r = await call({ method: 'POST', body: VALID }, TOKEN_ENV);
 ok('no mailto in any response body', !/mailto/i.test(JSON.stringify(r.body)));
 
 // --- the PII path is gone from the shipped front end ---------------------

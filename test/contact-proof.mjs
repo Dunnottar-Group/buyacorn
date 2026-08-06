@@ -12,7 +12,7 @@ function mockRes() {
 }
 
 async function call(req, env = {}) {
-  const keys = ['CONTACT_SLACK_BOT_TOKEN', 'CONTACT_SLACK_CHANNEL'];
+  const keys = ['CONTACT_SLACK_BOT_TOKEN', 'SLACK_CONTACT_CHANNEL'];
   const saved = {};
   for (const k of keys) {
     saved[k] = process.env[k];
@@ -75,22 +75,22 @@ r = await call({ method: 'POST', body: VALID });
 ok('valid but no token -> 503', r.statusCode === 503 && /not configured/.test(r.body.error));
 
 r = await call({ method: 'POST', body: VALID }, { CONTACT_SLACK_BOT_TOKEN: 'xoxb-test' });
+ok('valid token but no SLACK_CONTACT_CHANNEL -> 503', r.statusCode === 503 && /not configured/.test(r.body.error));
+
+r = await call({ method: 'POST', body: VALID }, { CONTACT_SLACK_BOT_TOKEN: 'xoxb-test', SLACK_CONTACT_CHANNEL: 'C-CONTACT' });
 ok('valid + token -> 200 ok', r.statusCode === 200 && r.body.ok === true && r.body.ref === '1785.751');
-ok('posts to HQ #acorn by default', lastPost && lastPost.channel === 'C0ATRTVMCH1');
+ok('posts to SLACK_CONTACT_CHANNEL', lastPost && lastPost.channel === 'C-CONTACT');
 ok('delivered text carries contact fields', /Website report/.test(lastPost.text) && /Tre Tester/.test(lastPost.text) && /tre@example.com/.test(lastPost.text) && /Can you help me/.test(lastPost.text));
 
-r = await call({ method: 'POST', body: VALID }, { CONTACT_SLACK_BOT_TOKEN: 'xoxb-test', CONTACT_SLACK_CHANNEL: 'C-CONTACT' });
-ok('CONTACT_SLACK_CHANNEL override honored', r.statusCode === 200 && lastPost.channel === 'C-CONTACT');
-
 global.fetch = async () => ({ json: async () => ({ ok: false, error: 'channel_not_found' }) });
-r = await call({ method: 'POST', body: VALID }, { CONTACT_SLACK_BOT_TOKEN: 'xoxb-test' });
+r = await call({ method: 'POST', body: VALID }, { CONTACT_SLACK_BOT_TOKEN: 'xoxb-test', SLACK_CONTACT_CHANNEL: 'C-CONTACT' });
 ok('Slack not-ok -> 502 with real error', r.statusCode === 502 && /channel_not_found/.test(r.body.error));
 
 global.fetch = async (url, opts) => {
   lastPost = JSON.parse(opts.body);
   return { json: async () => ({ ok: true, ts: 't' }) };
 };
-r = await call({ method: 'POST', body: { ...VALID, message: '<!channel> & <script>' } }, { CONTACT_SLACK_BOT_TOKEN: 'xoxb-test' });
+r = await call({ method: 'POST', body: { ...VALID, message: '<!channel> & <script>' } }, { CONTACT_SLACK_BOT_TOKEN: 'xoxb-test', SLACK_CONTACT_CHANNEL: 'C-CONTACT' });
 ok('Slack markup is escaped', !/<!channel>/.test(lastPost.text) && /&lt;!channel&gt; &amp; &lt;script&gt;/.test(lastPost.text));
 
 console.log(`\n${pass} passed, ${fail} failed`);

@@ -17,7 +17,7 @@ function mockRes() {
 // ACR-815's RESERVE_NOTIFY_USER_ID leak).
 const ENV_KEYS = [
   'STRIPE_SECRET_KEY', 'PUBLIC_SITE_ORIGIN', 'RESERVE_SLACK_BOT_TOKEN',
-  'CONTACT_SLACK_BOT_TOKEN', 'RESERVE_SLACK_CHANNEL', 'CONTACT_SLACK_CHANNEL',
+  'CONTACT_SLACK_BOT_TOKEN', 'SLACK_CHECKOUT_CHANNEL',
   'RESERVE_NOTIFY_USER_ID',
 ];
 async function call(req, env = {}) {
@@ -55,7 +55,11 @@ const VALID = {
   plan: 'monthly', notes: 'Met Brian at JVC', source_slug: 'johnrobb',
   terms_ack: true, no_charge_ack: true,
 };
-const KEY = { STRIPE_SECRET_KEY: 'sk_test_x', RESERVE_SLACK_BOT_TOKEN: 'xoxb-test' };
+const KEY = {
+  STRIPE_SECRET_KEY: 'sk_test_x',
+  RESERVE_SLACK_BOT_TOKEN: 'xoxb-test',
+  SLACK_CHECKOUT_CHANNEL: 'C-CHECKOUT',
+};
 
 let stripeCall = null, slackCall = null, stripeReply = { id: 'cs_test_1', url: 'https://checkout.stripe.com/c/pay/cs_test_1' };
 global.fetch = async (url, opts) => {
@@ -159,7 +163,8 @@ ok('promotion codes allowed (ruling permits comped seats as a 100% code)', b.get
 ok('secret key sent as bearer, never in the body', /^Bearer sk_test_x$/.test(stripeCall.headers.Authorization) && !/sk_test_x/.test(stripeCall.body));
 
 // --- the #acorn line must not claim a sale ---
-ok('checkout-started notice does NOT claim a sale', slackCall && /NOT A SALE YET/.test(slackCall.text) && !/PAID/.test(slackCall.text));
+ok('checkout-started notice posts to SLACK_CHECKOUT_CHANNEL and does NOT claim a sale',
+  slackCall && slackCall.channel === 'C-CHECKOUT' && /NOT A SALE YET/.test(slackCall.text) && !/PAID/.test(slackCall.text));
 
 // --- annual ---
 stripeCall = null;
