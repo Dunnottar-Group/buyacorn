@@ -324,15 +324,28 @@ import favicon from './public/favicon.jpeg';
                     <p class="eyebrow">FOUNDING ACCESS</p>
                     <h2>Join the waitlist to discover Acorn for yourself</h2>
                     <p class="capacity-note">Sign up below, and you'll hear from Brian and get invited when a space opens up.</p>
-                    <form accept-charset="UTF-8" action="https://redbeard.infusionsoft.com/app/form/process/8bce157b4a83074b0edda9c55e1ed0ba" class="infusion-form waitlist-form" id="inf_form_8bce157b4a83074b0edda9c55e1ed0ba" method="POST">
-                        <input name="inf_form_xid" type="hidden" value="8bce157b4a83074b0edda9c55e1ed0ba" />
-                        <input name="inf_thank_you" type="hidden" value="https://buyacorn.com/welcome" />
-                        <input name="inf_form_name" type="hidden" value="BuyAcorn.com Waitlist" />
-                        <input name="infusionsoft_version" type="hidden" value="1.70.0.942760" />
-                        <input id="inf_field_Email" name="inf_field_Email" placeholder="Enter your email" type="email" required />
-                        <button class="btn-primary infusion-recaptcha" id="recaptcha_8bce157b4a83074b0edda9c55e1ed0ba" type="submit">Join the waitlist</button>
-                        <input type="text" name="inf-sbt" style="display:none !important;" />
+                    <form id="waitlist-form" class="waitlist-form" method="POST" action="/api/waitlist" novalidate>
+                        <label for="name">Name
+                            <input id="name" name="name" type="text" required autocomplete="name" />
+                        </label>
+                        <label for="email">Email
+                            <input id="email" name="email" type="email" required autocomplete="email" />
+                        </label>
+                        <label for="company">Company
+                            <input id="company" name="company" type="text" required autocomplete="organization" />
+                        </label>
+                        <label for="referral_text">Who sent you? <span class="optional">(optional)</span>
+                            <input id="referral_text" name="referral_text" type="text" placeholder="A name, if someone pointed you here" />
+                        </label>
+                        <input type="hidden" name="source_slug" value="homepage" />
+                        <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">
+                            <label for="website">Website</label>
+                            <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
+                        </div>
+                        <p id="waitlist-form-error" class="form-error" role="alert" hidden></p>
+                        <button type="submit">Request an invitation</button>
                     </form>
+                    <script src="/static/waitlist-submit.js" defer></script>
                 </div>
             </section>
         </main>
@@ -361,12 +374,6 @@ import favicon from './public/favicon.jpeg';
             </div>
             <div class="shell footer-meta">&copy; 2026 Red Beard Consulting LLC.</div>
         </footer>
-        <script is:inline type="text/javascript" src="https://redbeard.infusionsoft.app/app/webTracking/getTrackingCode"></script>
-        <script is:inline type="text/javascript" src="https://redbeard.infusionsoft.com/resources/external/recaptcha/production/recaptcha.js?b=1.70.0.942760"></script>
-        <script is:inline type="text/javascript" src="https://redbeard.infusionsoft.com/resources/external/recaptcha/production/enterpriseRecaptcha.js?b=1.70.0.942760"></script>
-        <script is:inline type="text/javascript" src="https://redbeard.infusionsoft.com/app/timezone/timezoneInputJs?xid=8bce157b4a83074b0edda9c55e1ed0ba"></script>
-        <script is:inline type="text/javascript" src="https://redbeard.infusionsoft.com/js/jquery/jquery-3.3.1.js"></script>
-        <script is:inline type="text/javascript" src="https://redbeard.infusionsoft.app/app/webform/overwriteRefererJs"></script>
         <script is:inline>
             document.querySelectorAll('form').forEach((form) => {
                 form.addEventListener('submit', () => {
