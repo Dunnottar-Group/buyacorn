@@ -324,18 +324,11 @@ import favicon from './public/favicon.jpeg';
                     <p class="eyebrow">FOUNDING ACCESS</p>
                     <h2>Join the waitlist to discover Acorn for yourself</h2>
                     <p class="capacity-note">Sign up below, and you'll hear from Brian and get invited when a space opens up.</p>
-                    <form id="waitlist-form" class="waitlist-form" method="POST" action="/api/waitlist" novalidate>
-                        <label for="name">Name
-                            <input id="name" name="name" type="text" required autocomplete="name" />
-                        </label>
+                    <form id="waitlist-form" class="waitlist-form homepage-waitlist-form" method="POST" action="/api/waitlist" novalidate>
+                        <input type="hidden" name="name" value="Homepage waitlist" />
+                        <input type="hidden" name="company" value="Not provided" />
                         <label for="email">Email
-                            <input id="email" name="email" type="email" required autocomplete="email" />
-                        </label>
-                        <label for="company">Company
-                            <input id="company" name="company" type="text" required autocomplete="organization" />
-                        </label>
-                        <label for="referral_text">Who sent you? <span class="optional">(optional)</span>
-                            <input id="referral_text" name="referral_text" type="text" placeholder="A name, if someone pointed you here" />
+                            <input id="email" name="email" type="email" required autocomplete="email" placeholder="you@company.com" />
                         </label>
                         <input type="hidden" name="source_slug" value="homepage" />
                         <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">
@@ -1665,6 +1658,36 @@ import favicon from './public/favicon.jpeg';
         gap: 12px;
     }
 
+    .homepage-waitlist-form {
+        align-items: flex-end;
+        margin: 32px auto 0;
+        max-width: 640px;
+    }
+
+    .homepage-waitlist-form label {
+        color: rgba(245, 242, 235, 0.78);
+        display: grid;
+        flex: 1 1 auto;
+        font-size: 12px;
+        font-weight: 800;
+        gap: 9px;
+        letter-spacing: 0.12em;
+        text-align: left;
+        text-transform: uppercase;
+    }
+
+    .homepage-waitlist-form input[type="email"] {
+        border-color: rgba(245, 242, 235, 0.32);
+        box-shadow: 0 18px 34px rgba(0, 0, 0, 0.18);
+        min-height: 58px;
+    }
+
+    .homepage-waitlist-form button {
+        min-height: 58px;
+        padding: 0 28px;
+        white-space: nowrap;
+    }
+
     input {
         background: var(--white);
         border: 1px solid var(--border);
@@ -2047,6 +2070,10 @@ import favicon from './public/favicon.jpeg';
         .hero-buttons,
         .waitlist-form {
             flex-direction: column;
+        }
+
+        .homepage-waitlist-form {
+            align-items: stretch;
         }
 
         .metric-strip,
