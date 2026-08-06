@@ -247,16 +247,22 @@ import favicon from './public/favicon.jpeg';
     button {
         background: var(--text-primary);
         border: 1px solid var(--text-primary);
-        border-radius: 6px;
+        border-radius: 4px;
         color: var(--bg-primary);
         cursor: pointer;
         font: inherit;
-        font-weight: 800;
-        min-height: 50px;
-        padding: 14px 18px;
-        transition: box-shadow 180ms ease, transform 180ms ease;
+        font-weight: 700;
+        min-height: 46px;
+        padding: 0.72rem 1.25rem;
+        transition: background 180ms ease, border-color 180ms ease, color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
     }
-    button:hover { box-shadow: 0 18px 34px rgba(0,0,0,0.22); transform: translateY(-3px); }
+    button:hover, button:focus-visible {
+        background: var(--accent-light);
+        border-color: var(--accent-light);
+        box-shadow: 0 18px 34px rgba(0,0,0,0.22);
+        color: var(--bg-primary);
+        transform: translateY(-3px);
+    }
     .hp-field { display: none !important; }
     .form-status { border-radius: 6px; font-size: 14px; font-weight: 600; letter-spacing: normal; line-height: 1.6; padding: 12px 14px; text-transform: none; }
     .form-status a { color: inherit; font-weight: 800; }

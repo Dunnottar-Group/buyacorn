@@ -1359,6 +1359,7 @@ h3 {
 #status-link-form button,
 .status-claim-button,
 .status-stuck-chat,
+.status-chrome-help,
 .copy-button {
   border-radius: 4px;
   font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
@@ -1388,15 +1389,27 @@ h3 {
 .status-claim-button,
 .status-stuck-chat,
 .status-chrome-help {
-  color: var(--signal-sage);
-  border-color: rgba(169, 195, 177, 0.45);
+  background: var(--paper-white);
+  border-color: var(--paper-white);
+  color: var(--ink-green);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.status-stuck-chat,
+.status-chrome-help {
+  padding: 0.72rem 1.25rem;
 }
 
 .copy-button:hover,
 .status-claim-button:hover,
-.status-stuck-chat:hover {
-  background: rgba(169, 195, 177, 0.12);
-  color: var(--paper-white);
+.status-stuck-chat:hover,
+.status-chrome-help:hover {
+  background: var(--signal-sage);
+  border-color: var(--signal-sage);
+  color: var(--ink-green);
 }
 
 .scope-note,
