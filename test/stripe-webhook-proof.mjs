@@ -13,7 +13,7 @@ function mockRes() {
     json(o) { this.body = o; return this; },
   };
 }
-const ENV_KEYS = ['STRIPE_WEBHOOK_SECRET', 'RESERVE_SLACK_BOT_TOKEN', 'CONTACT_SLACK_BOT_TOKEN', 'RESERVE_SLACK_CHANNEL', 'CONTACT_SLACK_CHANNEL', 'RESERVE_NOTIFY_USER_ID'];
+const ENV_KEYS = ['STRIPE_WEBHOOK_SECRET', 'RESERVE_SLACK_BOT_TOKEN', 'CONTACT_SLACK_BOT_TOKEN', 'SLACK_CHECKOUT_CHANNEL', 'RESERVE_NOTIFY_USER_ID'];
 async function call(req, env = {}) {
   const saved = {};
   for (const k of ENV_KEYS) { saved[k] = process.env[k]; delete process.env[k]; }
@@ -45,7 +45,11 @@ function ok(name, cond, detail = '') {
 }
 
 const SECRET = 'whsec_test_secret';
-const ENV = { STRIPE_WEBHOOK_SECRET: SECRET, RESERVE_SLACK_BOT_TOKEN: 'xoxb-test' };
+const ENV = {
+  STRIPE_WEBHOOK_SECRET: SECRET,
+  RESERVE_SLACK_BOT_TOKEN: 'xoxb-test',
+  SLACK_CHECKOUT_CHANNEL: 'C-CHECKOUT',
+};
 
 function sign(raw, secret = SECRET, t = Math.floor(Date.now() / 1000)) {
   const sig = crypto.createHmac('sha256', secret).update(`${t}.${raw}`, 'utf8').digest('hex');
@@ -115,7 +119,8 @@ ok('REPLAYED old event -> 400 and NOTHING posted', r.statusCode === 400 && slack
 slackCall = null;
 r = await call(req(PAID, sign(PAID)), ENV);
 ok('verified paid session -> 200 handled+paid', r.statusCode === 200 && r.body.handled === true && r.body.paid === true);
-ok('announces a PAID deposit and tags the founder', slackCall && /FOUNDING MEMBER DEPOSIT PAID/.test(slackCall.text) && /<@U0AU1SJGS92>/.test(slackCall.text));
+ok('announces a PAID deposit to SLACK_CHECKOUT_CHANNEL and tags the founder',
+  slackCall && slackCall.channel === 'C-CHECKOUT' && /FOUNDING MEMBER DEPOSIT PAID/.test(slackCall.text) && /<@U0AU1SJGS92>/.test(slackCall.text));
 // ACR-907: the deposit does not start a subscription, so this message is the
 // only thing that turns a paid buyer into work someone will actually do. If it
 // stops saying so, a $2,500 customer waits on nobody.

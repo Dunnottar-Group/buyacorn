@@ -12,7 +12,7 @@ function mockRes() {
 }
 
 async function call(req, env = {}) {
-  const keys = ['JOURNEY_SLACK_BOT_TOKEN', 'JOURNEY_SLACK_CHANNEL', 'CONTACT_SLACK_BOT_TOKEN', 'CONTACT_SLACK_CHANNEL'];
+  const keys = ['JOURNEY_SLACK_BOT_TOKEN', 'CONTACT_SLACK_BOT_TOKEN', 'SLACK_ALPHA_CHANNEL'];
   const saved = {};
   for (const k of keys) {
     saved[k] = process.env[k];
@@ -60,31 +60,34 @@ ok('empty body -> 400', r.statusCode === 400 && /event_type/.test(r.body.error))
 r = await call({ method: 'POST', body: { stage_id: 'aws_account' } });
 ok('valid but no token -> 503', r.statusCode === 503 && /not configured/.test(r.body.error));
 
+r = await call({ method: 'POST', body: { stage_id: 'aws_account' } }, { CONTACT_SLACK_BOT_TOKEN: 'xoxb-shared' });
+ok('valid token but no SLACK_ALPHA_CHANNEL -> 503', r.statusCode === 503 && /not configured/.test(r.body.error));
+
 r = await call(
   { method: 'POST', body: { event_type: 'support_requested', current_step: 'AWS account', support_for: 'aws_account', page: '/status' } },
-  { CONTACT_SLACK_BOT_TOKEN: 'xoxb-shared' },
+  { CONTACT_SLACK_BOT_TOKEN: 'xoxb-shared', SLACK_ALPHA_CHANNEL: 'C-ALPHA' },
 );
 ok('CONTACT token fallback -> 200 ok', r.statusCode === 200 && r.body.ok === true && r.body.ref === '1776.409');
-ok('defaults to HQ #acorn', lastPost && lastPost.channel === 'C0ATRTVMCH1');
+ok('routes journey to SLACK_ALPHA_CHANNEL for now', lastPost && lastPost.channel === 'C-ALPHA');
 ok('support payload names event and context', /Setup support requested/.test(lastPost.text) && /AWS account/.test(lastPost.text) && /aws_account/.test(lastPost.text));
 
 r = await call(
   { method: 'POST', body: { stage_id: 'server_up', page: '/status?token=secret-token', token: 'secret-token', email: 'person@example.com' } },
-  { JOURNEY_SLACK_BOT_TOKEN: 'xoxb-journey', JOURNEY_SLACK_CHANNEL: 'C-JOURNEY' },
+  { JOURNEY_SLACK_BOT_TOKEN: 'xoxb-journey', SLACK_ALPHA_CHANNEL: 'C-ALPHA-JOURNEY' },
 );
-ok('JOURNEY channel override honored', r.statusCode === 200 && lastPost.channel === 'C-JOURNEY');
+ok('JOURNEY token still posts to SLACK_ALPHA_CHANNEL', r.statusCode === 200 && lastPost.channel === 'C-ALPHA-JOURNEY');
 ok('does not forward token or email into Slack text', !/secret-token|person@example\.com/.test(lastPost.text));
 
 r = await call(
   { method: 'POST', body: { event_type: 'support_requested', current_step: '<!channel> & step', support_for: '<script>' } },
-  { CONTACT_SLACK_BOT_TOKEN: 'xoxb-shared' },
+  { CONTACT_SLACK_BOT_TOKEN: 'xoxb-shared', SLACK_ALPHA_CHANNEL: 'C-ALPHA' },
 );
 ok('Slack markup is escaped', r.statusCode === 200 && !/<!channel>/.test(lastPost.text) && /&lt;!channel&gt; &amp; step/.test(lastPost.text));
 
 global.fetch = async () => ({ json: async () => ({ ok: false, error: 'channel_not_found' }) });
 r = await call(
   { method: 'POST', body: { event_type: 'setup_link_requested' } },
-  { CONTACT_SLACK_BOT_TOKEN: 'xoxb-shared' },
+  { CONTACT_SLACK_BOT_TOKEN: 'xoxb-shared', SLACK_ALPHA_CHANNEL: 'C-ALPHA' },
 );
 ok('Slack not-ok -> 503 with real error', r.statusCode === 503 && /channel_not_found/.test(r.body.error));
 

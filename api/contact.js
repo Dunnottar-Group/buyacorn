@@ -1,5 +1,6 @@
 // ACR-751: real transport for buyacorn.com/contact.
-// Replaces the mailto: form. Delivers the report to HQ #acorn via Slack
+// Replaces the mailto: form. Delivers the report to the contact leads channel
+// configured by SLACK_CONTACT_CHANNEL via Slack
 // chat.postMessage and confirms success to the user ONLY after Slack
 // confirms delivery. Any other outcome is surfaced as an explicit failure
 // with the real error state. Never a silent drop, never an invented reason.
@@ -8,7 +9,6 @@
 // variable (server side only). It is never present in client code or in
 // this repository.
 
-const DEFAULT_SLACK_CHANNEL = 'C0ATRTVMCH1'; // HQ #acorn
 const MAX_NAME = 200;
 const MAX_EMAIL = 320;
 const MAX_MESSAGE = 5000;
@@ -76,8 +76,8 @@ export default async function handler(req, res) {
   }
 
   const token = process.env.CONTACT_SLACK_BOT_TOKEN;
-  const channel = process.env.CONTACT_SLACK_CHANNEL || DEFAULT_SLACK_CHANNEL;
-  if (!token) {
+  const channel = process.env.SLACK_CONTACT_CHANNEL;
+  if (!token || !channel) {
     // Real state: the delivery channel is not configured on this deployment.
     return res.status(503).json({
       ok: false,

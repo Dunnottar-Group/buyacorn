@@ -4,8 +4,9 @@
 // handler existed in this repo after the static-pages migration (commit
 // 995271e carried the pages, not the July backend), so every JS-enabled
 // applicant hit 404 -> "Something went wrong" forever. This restores a real
-// endpoint modeled on api/contact.js (ACR-751): deliver the application to HQ
-// #acorn via Slack chat.postMessage and confirm success ONLY after Slack
+// endpoint modeled on api/contact.js (ACR-751): deliver the application to
+// the alpha leads channel configured by SLACK_ALPHA_CHANNEL via Slack
+// chat.postMessage and confirm success ONLY after Slack
 // confirms delivery. Never a silent drop, never an invented reason.
 //
 // UNLIKE contact.js there is NO honeypot: the alpha form's `company` field is a
@@ -240,9 +241,8 @@ export default async function handler(req, res) {
   }
 
   const token = process.env.ALPHA_SLACK_BOT_TOKEN || process.env.CONTACT_SLACK_BOT_TOKEN;
-  const channel =
-    process.env.ALPHA_SLACK_CHANNEL || process.env.CONTACT_SLACK_CHANNEL || 'C0ATRTVMCH1'; // HQ #acorn
-  if (!token) {
+  const channel = process.env.SLACK_ALPHA_CHANNEL;
+  if (!token || !channel) {
     if (asForm) {
       return respondFormError(res, 503, 'delivery channel is not configured on the server', backHref);
     }

@@ -47,11 +47,10 @@ import waitlistHandler from '../api/waitlist.js';
 // 2026-08-03). Keep in sync with api/alpha.js and api/waitlist.js.
 const HANDLER_ENV = [
   'ALPHA_SLACK_BOT_TOKEN',
-  'ALPHA_SLACK_CHANNEL',
   'WAITLIST_SLACK_BOT_TOKEN',
-  'WAITLIST_SLACK_CHANNEL',
   'CONTACT_SLACK_BOT_TOKEN',
-  'CONTACT_SLACK_CHANNEL',
+  'SLACK_ALPHA_CHANNEL',
+  'SLACK_WAITLIST_CHANNEL',
 ];
 
 // Records everything a real res can carry, INCLUDING end() and the raw body.
@@ -107,7 +106,11 @@ const fetchOk = async (url, opts) => {
 const fetchSlackError = async () => ({ json: async () => ({ ok: false, error: 'channel_not_found' }) });
 const fetchNetworkDown = async () => { throw new Error('boom'); };
 
-const TOKEN_ENV = { CONTACT_SLACK_BOT_TOKEN: 'xoxb-test' };
+const TOKEN_ENV = {
+  CONTACT_SLACK_BOT_TOKEN: 'xoxb-test',
+  SLACK_ALPHA_CHANNEL: 'C-ALPHA',
+  SLACK_WAITLIST_CHANNEL: 'C-WAITLIST',
+};
 
 console.log('ACR-829 form-encoded (no-JS) proof\n');
 
