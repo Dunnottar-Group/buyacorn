@@ -10,8 +10,7 @@
 // the fix; removing the mailto path from the form and the JS is the other.
 //
 // Modeled on api/contact.js (ACR-751) and api/alpha.js (ACR-769): deliver to
-// the configured waitlist Slack channel via chat.postMessage and confirm
-// success to the visitor ONLY
+// HQ #acorn via Slack chat.postMessage and confirm success to the visitor ONLY
 // after Slack confirms delivery, returning the Slack message ts as a reference
 // the visitor can quote. Any other outcome is surfaced as an explicit failure
 // carrying the real error state. Never a silent drop, never an invented
@@ -233,10 +232,7 @@ export default async function handler(req, res) {
 
   const token = process.env.WAITLIST_SLACK_BOT_TOKEN || process.env.CONTACT_SLACK_BOT_TOKEN;
   const channel =
-    process.env.SLACK_WAITLIST_CHANNEL
-    || process.env.WAITLIST_SLACK_CHANNEL
-    || process.env.CONTACT_SLACK_CHANNEL
-    || 'C0ATRTVMCH1'; // HQ #acorn fallback
+    process.env.WAITLIST_SLACK_CHANNEL || process.env.CONTACT_SLACK_CHANNEL || 'C0ATRTVMCH1'; // HQ #acorn
   if (!token) {
     if (asForm) {
       return respondFormError(res, 503, 'delivery channel is not configured on the server', backHref);
